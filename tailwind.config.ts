@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,43 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom feminine colors
+				rose: {
+					50: '#fef7f5',
+					100: '#fef0ec',
+					200: '#fcddd5',
+					300: '#f9c4b8',
+					400: '#f49f92',
+					500: '#ee7d6e',
+					600: '#e05d4c',
+					700: '#c8453a',
+					800: '#a73b34',
+					900: '#8b3531',
+				},
+				lavender: {
+					50: '#f8f6ff',
+					100: '#f2efff',
+					200: '#e7e1ff',
+					300: '#d4c7ff',
+					400: '#bb9fff',
+					500: '#a171ff',
+					600: '#8b47ff',
+					700: '#7c2fff',
+					800: '#6b21d5',
+					900: '#5a1ca8',
+				},
+				coral: {
+					50: '#fff4f2',
+					100: '#ffe7e3',
+					200: '#ffd5cc',
+					300: '#ffb8a8',
+					400: '#ff8f75',
+					500: '#ff6b4a',
+					600: '#ed4f2a',
+					700: '#c83f20',
+					800: '#a5371f',
+					900: '#873220',
 				}
 			},
 			borderRadius: {
@@ -84,11 +122,31 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'gentle-bounce': {
+					'0%, 100%': {
+						transform: 'translateY(0)',
+					},
+					'50%': {
+						transform: 'translateY(-4px)',
+					},
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)',
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)',
+					},
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'gentle-bounce': 'gentle-bounce 2s infinite',
+				'fade-in': 'fade-in 0.3s ease-out',
 			}
 		}
 	},

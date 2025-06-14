@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Brain, Pill, Heart } from 'lucide-react';
+import { Brain, Pill, Heart, Plus, Minus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { HeadacheEntry } from '@/types/headache';
 import { medicationOptions, triggerOptions, symptomOptions, reliefOptions, moodOptions } from '@/data/options';
@@ -15,7 +14,6 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Plus, Minus } from 'lucide-react';
 
 interface HeadacheFormProps {
   onSave: (entry: HeadacheEntry) => void;
@@ -117,12 +115,11 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
       case 3:
         return (
           <StepCard
-            icon={<Brain className="mx-auto h-16 w-16 text-coral-400 mb-3 drop-shadow" />}
+            icon={<Brain className="mx-auto h-12 w-12 text-pink-500 mb-2" />}
             title="Síntomas"
-            subtitle="Haz tap en los síntomas para seleccionarlos"
-            bgColor="bg-coral-50"
+            subtitle="Selecciona los síntomas que experimentaste"
           >
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-coral-50 p-4 rounded-xl border border-coral-200 shadow-inner">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {symptomOptions.map((symptom) => (
                 <InteractiveButton
                   key={symptom}
@@ -133,7 +130,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                     )
                   }
                   variant="secondary"
-                  className="flex-1"
+                  className="text-xs"
                 >
                   {symptom}
                 </InteractiveButton>
@@ -144,48 +141,49 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
       case 4:
         return (
           <StepCard
-            icon={<Pill className="mx-auto h-16 w-16 text-lavender-500 mb-3 drop-shadow" />}
+            icon={<Pill className="mx-auto h-12 w-12 text-pink-500 mb-2" />}
             title="Tratamiento"
-            subtitle="Selecciona medicamentos y acciones que ayudaron"
-            bgColor="bg-pink-50"
+            subtitle="¿Qué usaste para aliviar el dolor?"
           >
-            <div>
-              <Label className="block text-lg font-bold text-rose-600 mb-2">Medicamentos</Label>
-              <div className="flex flex-wrap gap-2">
-                {medicationOptions.map((med) => (
-                  <InteractiveButton
-                    key={med.id}
-                    isSelected={formData.medications.includes(med.name)}
-                    onClick={() =>
-                      toggleArrayItem(formData.medications, med.name, (newMeds) =>
-                        setFormData({ ...formData, medications: newMeds })
-                      )
-                    }
-                    className="text-sm"
-                  >
-                    {med.name}
-                  </InteractiveButton>
-                ))}
+            <div className="space-y-6">
+              <div>
+                <Label className="block text-sm font-medium text-gray-700 mb-3">Medicamentos</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {medicationOptions.map((med) => (
+                    <InteractiveButton
+                      key={med.id}
+                      isSelected={formData.medications.includes(med.name)}
+                      onClick={() =>
+                        toggleArrayItem(formData.medications, med.name, (newMeds) =>
+                          setFormData({ ...formData, medications: newMeds })
+                        )
+                      }
+                      className="text-xs"
+                    >
+                      {med.name}
+                    </InteractiveButton>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="mt-4">
-              <Label className="block text-lg font-bold text-lavender-600 mb-2">¿Qué ayudó a aliviar el dolor?</Label>
-              <div className="flex flex-wrap gap-2">
-                {reliefOptions.map((relief) => (
-                  <InteractiveButton
-                    key={relief}
-                    isSelected={formData.relievedBy.includes(relief)}
-                    onClick={() =>
-                      toggleArrayItem(formData.relievedBy, relief, (newRelief) =>
-                        setFormData({ ...formData, relievedBy: newRelief })
-                      )
-                    }
-                    variant="secondary"
-                    className="text-sm"
-                  >
-                    {relief}
-                  </InteractiveButton>
-                ))}
+              <div>
+                <Label className="block text-sm font-medium text-gray-700 mb-3">¿Qué más ayudó?</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {reliefOptions.map((relief) => (
+                    <InteractiveButton
+                      key={relief}
+                      isSelected={formData.relievedBy.includes(relief)}
+                      onClick={() =>
+                        toggleArrayItem(formData.relievedBy, relief, (newRelief) =>
+                          setFormData({ ...formData, relievedBy: newRelief })
+                        )
+                      }
+                      variant="accent"
+                      className="text-xs"
+                    >
+                      {relief}
+                    </InteractiveButton>
+                  ))}
+                </div>
               </div>
             </div>
           </StepCard>
@@ -193,112 +191,115 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
       case 5:
         return (
           <StepCard
-            icon={<Heart className="mx-auto h-16 w-16 text-rose-400 mb-4 drop-shadow" />}
+            icon={<Heart className="mx-auto h-12 w-12 text-pink-500 mb-2" />}
             title="Contexto adicional"
-            subtitle="Completa solo lo que desees, es opcional"
-            bgColor="bg-pink-50"
-            sparkle
+            subtitle="Información opcional que puede ayudar"
           >
-            <div>
-              <Label className="block text-lg font-bold text-rose-600 mb-2">Posibles desencadenantes</Label>
-              <div className="flex flex-wrap gap-2">
-                {triggerOptions.map((trigger) => (
-                  <InteractiveButton
-                    key={trigger.id}
-                    isSelected={formData.triggers.includes(trigger.name)}
-                    onClick={() =>
-                      toggleArrayItem(formData.triggers, trigger.name, (newTriggers) =>
-                        setFormData({ ...formData, triggers: newTriggers })
-                      )
-                    }
-                    variant="accent"
-                    className="text-sm"
+            <div className="space-y-6">
+              <div>
+                <Label className="block text-sm font-medium text-gray-700 mb-3">Posibles desencadenantes</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {triggerOptions.map((trigger) => (
+                    <InteractiveButton
+                      key={trigger.id}
+                      isSelected={formData.triggers.includes(trigger.name)}
+                      onClick={() =>
+                        toggleArrayItem(formData.triggers, trigger.name, (newTriggers) =>
+                          setFormData({ ...formData, triggers: newTriggers })
+                        )
+                      }
+                      variant="accent"
+                      className="text-xs"
+                    >
+                      {trigger.name}
+                    </InteractiveButton>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <Label className="block text-sm font-medium text-gray-700 mb-2">Estado de ánimo</Label>
+                  <Select onValueChange={(value) => setFormData({ ...formData, mood: value })}>
+                    <SelectTrigger className="border-pink-200 focus:border-pink-300">
+                      <SelectValue placeholder="Selecciona..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {moodOptions.map((mood) => (
+                        <SelectItem key={mood} value={mood}>{mood}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="block text-sm font-medium text-gray-700 mb-2">Clima</Label>
+                  <Select onValueChange={(value) => setFormData({ ...formData, weather: value })}>
+                    <SelectTrigger className="border-pink-200 focus:border-pink-300">
+                      <SelectValue placeholder="Selecciona..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {weatherOptions.map((weather) => (
+                        <SelectItem key={weather} value={weather}>{weather}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="block text-sm font-medium text-gray-700 mb-2">Ciclo menstrual</Label>
+                  <Select onValueChange={(value) => setFormData({ ...formData, menstrualCycle: value })}>
+                    <SelectTrigger className="border-pink-200 focus:border-pink-300">
+                      <SelectValue placeholder="Selecciona..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {menstrualOptions.map((cycle) => (
+                        <SelectItem key={cycle} value={cycle}>{cycle}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-xl border border-purple-100">
+                <Label className="block text-sm font-medium text-gray-700 mb-3 text-center">Horas de sueño</Label>
+                <div className="flex items-center gap-4 justify-center">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => adjustSleep(false)}
+                    disabled={sleepOptions.indexOf(formData.sleepHours) === 0}
+                    className="h-10 w-10 border-purple-200 hover:bg-purple-50"
                   >
-                    {trigger.name}
-                  </InteractiveButton>
-                ))}
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gray-800">{formData.sleepHours}</div>
+                    <span className="text-sm text-gray-600">horas</span>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => adjustSleep(true)}
+                    disabled={sleepOptions.indexOf(formData.sleepHours) === sleepOptions.length - 1}
+                    className="h-10 w-10 border-purple-200 hover:bg-purple-50"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-5">
+              
               <div>
-                <Label className="block text-lg font-bold text-lavender-600 mb-1">Estado de ánimo</Label>
-                <Select onValueChange={(value) => setFormData({ ...formData, mood: value })}>
-                  <SelectTrigger className="text-base font-semibold p-3 border-2 border-lavender-200 rounded-xl bg-white/90 shadow">
-                    <SelectValue placeholder={formData.mood || "Selecciona..."} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {moodOptions.map((mood) => (
-                      <SelectItem key={mood} value={mood} className="text-base">{mood}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">Notas adicionales</Label>
+                <Textarea
+                  id="notes"
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="¿Algo más que quieras agregar?"
+                  className="border-pink-200 focus:border-pink-300 bg-white/90"
+                  rows={3}
+                />
               </div>
-              <div>
-                <Label className="block text-lg font-bold text-pink-600 mb-1">Clima</Label>
-                <Select onValueChange={(value) => setFormData({ ...formData, weather: value })}>
-                  <SelectTrigger className="text-base font-semibold p-3 border-2 border-pink-200 rounded-xl bg-white/90 shadow">
-                    <SelectValue placeholder={formData.weather || "Selecciona..."} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {weatherOptions.map((weather) => (
-                      <SelectItem key={weather} value={weather} className="text-base">{weather}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="block text-lg font-bold text-coral-600 mb-1">Ciclo menstrual</Label>
-                <Select onValueChange={(value) => setFormData({ ...formData, menstrualCycle: value })}>
-                  <SelectTrigger className="text-base font-semibold p-3 border-2 border-coral-200 rounded-xl bg-white/90 shadow">
-                    <SelectValue placeholder={formData.menstrualCycle || "Selecciona..."} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {menstrualOptions.map((cycle) => (
-                      <SelectItem key={cycle} value={cycle} className="text-base">{cycle}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            <div className="mt-5 flex flex-col items-center bg-rose-50/80 p-4 rounded-xl">
-              <Label className="block text-lg font-bold text-lavender-600 mb-1">Horas de sueño</Label>
-              <div className="flex items-center gap-3 justify-center">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => adjustSleep(false)}
-                  disabled={sleepOptions.indexOf(formData.sleepHours) === 0}
-                  className="h-10 w-10 border-2 border-lavender-300 hover:bg-lavender-50 font-bold"
-                >
-                  <Minus className="h-5 w-5" />
-                </Button>
-                <div className="text-2xl font-bold text-lavender-600 mx-3">{formData.sleepHours}<span className="text-base ml-1 font-normal">h</span></div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => adjustSleep(true)}
-                  disabled={sleepOptions.indexOf(formData.sleepHours) === sleepOptions.length - 1}
-                  className="h-10 w-10 border-2 border-lavender-300 hover:bg-lavender-50 font-bold"
-                >
-                  <Plus className="h-5 w-5" />
-                </Button>
-              </div>
-            </div>
-            
-            <div className="mt-5">
-              <Label htmlFor="notes" className="block text-lg font-bold text-lavender-600 mb-1">Notas adicionales</Label>
-              <Textarea
-                id="notes"
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="¿Algo más que quieras agregar?"
-                className="text-base p-3 border-2 border-lavender-200 rounded-xl bg-white/80 shadow"
-                rows={2}
-              />
             </div>
           </StepCard>
         );
@@ -308,15 +309,15 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-2 z-50 animate-fade-in">
-      <Card className="w-full max-w-3xl max-h-[94vh] overflow-y-auto gradient-card shadow-2xl border-4 border-lavender-100 relative">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <Card className="w-full max-w-3xl max-h-[95vh] overflow-y-auto bg-white shadow-2xl border-0 rounded-2xl">
         <FormHeader 
           currentStep={currentStep}
           totalSteps={totalSteps}
           onCancel={onCancel}
         />
 
-        <CardContent className="space-y-8 px-4 md:px-10 pt-8 pb-8 bg-white/50 rounded-b-[1rem] animate-fade-in">
+        <CardContent className="p-6 space-y-6">
           <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
           {renderStep()}
           <FormNavigation 

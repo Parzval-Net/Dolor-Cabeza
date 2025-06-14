@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, Sparkles } from 'lucide-react';
+import { X, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -12,18 +12,23 @@ interface FormHeaderProps {
 
 const FormHeader = ({ currentStep, totalSteps, onCancel }: FormHeaderProps) => {
   return (
-    <CardHeader className="flex flex-row items-center justify-between border-b border-rose-100 pb-6 bg-white/70 rounded-t-[1rem]">
+    <CardHeader className="flex flex-row items-center justify-between border-b border-pink-100 pb-6 bg-gradient-to-r from-pink-50/70 to-rose-50/70 backdrop-blur-sm rounded-t-[1rem]">
       <div>
-        <CardTitle className="text-3xl font-extrabold text-rose-600 font-playfair flex items-center">
+        <CardTitle className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+          <Heart className="h-6 w-6 text-pink-400" />
           Registro dolor de cabeza
-          <Sparkles className="ml-2 text-coral-300 h-7 w-7 animate-gentle-bounce" />
         </CardTitle>
-        <p className="text-lg text-lavender-700 mt-1 italic">
-          Paso {currentStep} de {totalSteps}
+        <p className="text-sm text-gray-600 mt-1">
+          Paso {currentStep} de {totalSteps} • Cuida tu bienestar
         </p>
       </div>
-      <Button variant="ghost" size="icon" onClick={onCancel} className="h-10 w-10 bg-transparent hover:bg-rose-100">
-        <X className="h-7 w-7 text-rose-300" />
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        onClick={onCancel} 
+        className="h-9 w-9 text-gray-400 hover:text-gray-600 hover:bg-pink-50"
+      >
+        <X className="h-5 w-5" />
       </Button>
     </CardHeader>
   );

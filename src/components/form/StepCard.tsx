@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Sparkles } from 'lucide-react';
 
 interface StepCardProps {
   icon: React.ReactNode;
@@ -12,20 +11,19 @@ interface StepCardProps {
 }
 
 const StepCard = ({ icon, title, subtitle, children, bgColor = '', sparkle = false }: StepCardProps) => (
-  <div className={`space-y-8 ${bgColor}`}>
-    <div className="text-center relative">
-      {sparkle && (
-        <Sparkles className="absolute left-[13%] -top-3 text-lavender-200 animate-gentle-bounce" size={32} />
-      )}
-      <div className="flex flex-col items-center justify-center">
+  <div className={`space-y-6 ${bgColor}`}>
+    <div className="text-center">
+      <div className="flex flex-col items-center justify-center mb-4">
         {icon}
-        <h3 className="text-3xl font-extrabold text-rose-500 font-playfair mb-2 drop-shadow">
+        <h3 className="text-2xl font-bold text-gray-800 mb-1">
           {title}
         </h3>
-        <p className="text-lg text-lavender-900 font-medium">{subtitle}</p>
+        <p className="text-gray-600">{subtitle}</p>
       </div>
     </div>
-    {children}
+    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-pink-100">
+      {children}
+    </div>
   </div>
 );
 

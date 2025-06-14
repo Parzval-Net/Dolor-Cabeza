@@ -49,8 +49,8 @@ const Dashboard = ({ entries }: DashboardProps) => {
 
   const getIntensityGradient = (intensity: number) => {
     if (intensity <= 3) return 'from-emerald-400 to-emerald-500';
-    if (intensity <= 6) return 'from-yellow-400 to-orange-400';
-    if (intensity <= 8) return 'from-orange-400 to-red-400';
+    if (intensity <= 6) return 'from-orange-400 to-orange-500';
+    if (intensity <= 8) return 'from-red-400 to-red-500';
     return 'from-red-500 to-red-600';
   };
 

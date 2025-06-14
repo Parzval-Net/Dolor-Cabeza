@@ -13,27 +13,27 @@ interface IntensityStressStepProps {
 const IntensityStressStep = ({ formData, setFormData }: IntensityStressStepProps) => {
   const getIntensityColor = (value: number) => {
     if (value <= 3) return 'text-emerald-600';
-    if (value <= 6) return 'text-yellow-600';
-    if (value <= 8) return 'text-orange-600';
+    if (value <= 6) return 'text-orange-600';
+    if (value <= 8) return 'text-red-500';
     return 'text-red-600';
   };
 
   const getStressColor = (value: number) => {
     if (value <= 2) return 'text-emerald-600';
-    if (value <= 3) return 'text-yellow-600';
+    if (value <= 3) return 'text-violet-600';
     return 'text-red-600';
   };
 
   const getIntensityGradient = (value: number) => {
     if (value <= 3) return 'from-emerald-400 to-emerald-500';
-    if (value <= 6) return 'from-yellow-400 to-orange-400';
-    if (value <= 8) return 'from-orange-400 to-red-400';
+    if (value <= 6) return 'from-orange-400 to-orange-500';
+    if (value <= 8) return 'from-red-400 to-red-500';
     return 'from-red-500 to-red-600';
   };
 
   const getStressGradient = (value: number) => {
     if (value <= 2) return 'from-emerald-400 to-emerald-500';
-    if (value <= 3) return 'from-yellow-400 to-orange-400';
+    if (value <= 3) return 'from-violet-400 to-purple-500';
     return 'from-red-400 to-red-500';
   };
 
@@ -80,11 +80,11 @@ const IntensityStressStep = ({ formData, setFormData }: IntensityStressStepProps
                 <span>Leve (1-3)</span>
               </span>
               <span className="flex flex-col items-center">
-                <div className="w-3 h-3 bg-yellow-400 rounded-full mb-1"></div>
+                <div className="w-3 h-3 bg-orange-400 rounded-full mb-1"></div>
                 <span>Moderado (4-6)</span>
               </span>
               <span className="flex flex-col items-center">
-                <div className="w-3 h-3 bg-orange-500 rounded-full mb-1"></div>
+                <div className="w-3 h-3 bg-red-400 rounded-full mb-1"></div>
                 <span>Severo (7-8)</span>
               </span>
               <span className="flex flex-col items-center">

@@ -127,7 +127,7 @@
   .intensity-1 { @apply bg-emerald-400 shadow-emerald-200; }
   .intensity-2 { @apply bg-emerald-500 shadow-emerald-300; }
   .intensity-3 { @apply bg-lime-400 shadow-lime-200; }
-  .intensity-4 { @apply bg-yellow-400 shadow-yellow-200; }
+  .intensity-4 { @apply bg-orange-300 shadow-orange-200; }
   .intensity-5 { @apply bg-orange-400 shadow-orange-200; }
   .intensity-6 { @apply bg-orange-500 shadow-orange-300; }
   .intensity-7 { @apply bg-red-400 shadow-red-200; }

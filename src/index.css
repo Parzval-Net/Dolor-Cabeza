@@ -91,28 +91,28 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-rose-50 via-lavender-50 to-coral-50 text-foreground min-h-screen;
+    @apply bg-gradient-to-br from-rose-50 via-pink-50 to-lavender-50 text-foreground min-h-screen;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   }
 }
 
 @layer components {
   .gradient-card {
-    @apply bg-gradient-to-br from-white/80 to-rose-50/50 backdrop-blur-sm border border-rose-100/50;
+    @apply bg-gradient-to-br from-white/90 to-rose-50/60 backdrop-blur-sm border border-rose-200/50 shadow-lg;
   }
   
   .intensity-dot {
-    @apply w-3 h-3 rounded-full transition-all duration-200;
+    @apply w-3 h-3 rounded-full transition-all duration-200 shadow-sm;
   }
   
   .intensity-1 { @apply bg-green-300; }
   .intensity-2 { @apply bg-green-400; }
-  .intensity-3 { @apply bg-yellow-300; }
-  .intensity-4 { @apply bg-yellow-400; }
-  .intensity-5 { @apply bg-orange-300; }
-  .intensity-6 { @apply bg-orange-400; }
-  .intensity-7 { @apply bg-red-300; }
-  .intensity-8 { @apply bg-red-400; }
-  .intensity-9 { @apply bg-red-500; }
-  .intensity-10 { @apply bg-red-600; }
+  .intensity-3 { @apply bg-emerald-400; }
+  .intensity-4 { @apply bg-rose-300; }
+  .intensity-5 { @apply bg-rose-400; }
+  .intensity-6 { @apply bg-rose-500; }
+  .intensity-7 { @apply bg-red-400; }
+  .intensity-8 { @apply bg-red-500; }
+  .intensity-9 { @apply bg-red-600; }
+  .intensity-10 { @apply bg-red-700; }
 }

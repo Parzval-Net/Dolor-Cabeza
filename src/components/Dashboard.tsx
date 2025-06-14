@@ -48,72 +48,101 @@ const Dashboard = ({ entries }: DashboardProps) => {
     .slice(0, 5);
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
+      {/* Welcome Section */}
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-rose-600 to-lavender-600 bg-clip-text text-transparent mb-2">
+          Tu bienestar en resumen
+        </h2>
+        <p className="text-gray-600">Monitorea y comprende tus patrones de dolor</p>
+      </div>
+
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="gradient-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Este Mes</CardTitle>
-            <Calendar className="h-4 w-4 text-rose-500" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="bg-gradient-to-br from-rose-50 to-pink-50 border-rose-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-medium text-gray-700">Este Mes</CardTitle>
+            <div className="p-2 bg-rose-100 rounded-full">
+              <Calendar className="h-5 w-5 text-rose-600" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-rose-600">{monthlyEntries.length}</div>
-            <p className="text-xs text-gray-500 mt-1">episodios registrados</p>
+            <div className="text-3xl font-bold text-rose-700 mb-1">{monthlyEntries.length}</div>
+            <p className="text-xs text-gray-600">episodios registrados</p>
           </CardContent>
         </Card>
 
-        <Card className="gradient-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Intensidad Promedio</CardTitle>
-            <TrendingUp className="h-4 w-4 text-orange-500" />
+        <Card className="bg-gradient-to-br from-purple-50 to-lavender-50 border-purple-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-medium text-gray-700">Intensidad Promedio</CardTitle>
+            <div className="p-2 bg-purple-100 rounded-full">
+              <TrendingUp className="h-5 w-5 text-purple-600" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">
+            <div className="text-3xl font-bold text-purple-700 mb-1">
               {averageIntensity.toFixed(1)}/10
             </div>
-            <p className="text-xs text-gray-500 mt-1">nivel de dolor</p>
+            <p className="text-xs text-gray-600">nivel de dolor</p>
           </CardContent>
         </Card>
 
-        <Card className="gradient-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Duración Total</CardTitle>
-            <Clock className="h-4 w-4 text-lavender-500" />
+        <Card className="bg-gradient-to-br from-coral-50 to-rose-50 border-coral-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-medium text-gray-700">Duración Total</CardTitle>
+            <div className="p-2 bg-coral-100 rounded-full">
+              <Clock className="h-5 w-5 text-coral-600" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-lavender-600">{totalDuration}h</div>
-            <p className="text-xs text-gray-500 mt-1">horas con dolor</p>
+            <div className="text-3xl font-bold text-coral-700 mb-1">{totalDuration}h</div>
+            <p className="text-xs text-gray-600">horas con dolor</p>
           </CardContent>
         </Card>
 
-        <Card className="gradient-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Medicamento Frecuente</CardTitle>
-            <Pill className="h-4 w-4 text-coral-500" />
+        <Card className="bg-gradient-to-br from-pink-50 to-rose-50 border-pink-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-medium text-gray-700">Medicamento Frecuente</CardTitle>
+            <div className="p-2 bg-pink-100 rounded-full">
+              <Pill className="h-5 w-5 text-pink-600" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-sm font-bold text-coral-600 truncate">{topMedication}</div>
-            <p className="text-xs text-gray-500 mt-1">más utilizado</p>
+            <div className="text-sm font-bold text-pink-700 truncate mb-1">{topMedication}</div>
+            <p className="text-xs text-gray-600">más utilizado</p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Entries */}
-        <Card className="gradient-card">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-700">Episodios Recientes</CardTitle>
+        <Card className="bg-white/70 backdrop-blur-sm border-rose-200/50 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-t-lg border-b border-rose-100">
+            <CardTitle className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+              <div className="w-2 h-8 bg-gradient-to-b from-rose-400 to-pink-500 rounded-full"></div>
+              Episodios Recientes
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="p-6 space-y-4">
             {recentEntries.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No hay registros aún</p>
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Calendar className="h-8 w-8 text-rose-400" />
+                </div>
+                <p className="text-gray-500">No hay registros aún</p>
+                <p className="text-sm text-gray-400">Comienza registrando tu primer episodio</p>
+              </div>
             ) : (
               recentEntries.map((entry) => (
-                <div key={entry.id} className="flex items-center justify-between p-3 bg-white/50 rounded-lg border border-rose-100/50">
-                  <div className="flex items-center space-x-3">
-                    <div className={`intensity-dot intensity-${entry.intensity}`}></div>
+                <div key={entry.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-white to-rose-50/50 rounded-xl border border-rose-100 hover:shadow-md transition-all duration-200">
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-4 h-4 rounded-full ${
+                      entry.intensity <= 3 ? 'bg-green-400' :
+                      entry.intensity <= 6 ? 'bg-rose-300' :
+                      entry.intensity <= 8 ? 'bg-rose-400' : 'bg-rose-600'
+                    } shadow-sm`}></div>
                     <div>
-                      <p className="font-medium text-gray-700">
+                      <p className="font-semibold text-gray-800">
                         {new Date(entry.date).toLocaleDateString('es-ES', { 
                           weekday: 'short', 
                           month: 'short', 
@@ -124,7 +153,7 @@ const Dashboard = ({ entries }: DashboardProps) => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-700">Intensidad {entry.intensity}/10</p>
+                    <p className="text-sm font-semibold text-gray-800">Intensidad {entry.intensity}/10</p>
                     <p className="text-xs text-gray-500">{entry.duration}h duración</p>
                   </div>
                 </div>
@@ -134,25 +163,39 @@ const Dashboard = ({ entries }: DashboardProps) => {
         </Card>
 
         {/* Top Triggers */}
-        <Card className="gradient-card">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-700">Desencadenantes Principales</CardTitle>
+        <Card className="bg-white/70 backdrop-blur-sm border-purple-200/50 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-lavender-50 rounded-t-lg border-b border-purple-100">
+            <CardTitle className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+              <div className="w-2 h-8 bg-gradient-to-b from-purple-400 to-lavender-500 rounded-full"></div>
+              Desencadenantes Principales
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="p-6 space-y-4">
             {topTriggers.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No hay datos suficientes</p>
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <TrendingDown className="h-8 w-8 text-purple-400" />
+                </div>
+                <p className="text-gray-500">No hay datos suficientes</p>
+                <p className="text-sm text-gray-400">Registra más episodios para ver patrones</p>
+              </div>
             ) : (
               topTriggers.map(([trigger, count], index) => (
-                <div key={trigger} className="flex items-center justify-between p-3 bg-white/50 rounded-lg border border-rose-100/50">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold ${
-                      index === 0 ? 'bg-rose-400' : index === 1 ? 'bg-orange-400' : 'bg-yellow-400'
+                <div key={trigger} className="flex items-center justify-between p-4 bg-gradient-to-r from-white to-purple-50/50 rounded-xl border border-purple-100 hover:shadow-md transition-all duration-200">
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-sm ${
+                      index === 0 ? 'bg-gradient-to-r from-rose-400 to-pink-500' : 
+                      index === 1 ? 'bg-gradient-to-r from-purple-400 to-lavender-500' : 
+                      'bg-gradient-to-r from-coral-400 to-rose-400'
                     }`}>
                       {index + 1}
                     </div>
-                    <span className="font-medium text-gray-700">{trigger}</span>
+                    <span className="font-semibold text-gray-800">{trigger}</span>
                   </div>
-                  <span className="text-sm text-gray-500">{count} veces</span>
+                  <div className="text-right">
+                    <span className="text-sm font-semibold text-gray-700">{count} veces</span>
+                    <p className="text-xs text-gray-500">este mes</p>
+                  </div>
                 </div>
               ))
             )}

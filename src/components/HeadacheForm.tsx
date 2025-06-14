@@ -115,11 +115,16 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
       case 3:
         return (
           <StepCard
-            icon={<Brain className="mx-auto h-12 w-12 text-pink-500 mb-2" />}
-            title="Síntomas"
-            subtitle="Selecciona los síntomas que experimentaste"
+            icon={
+              <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 via-blue-500 to-indigo-500 rounded-3xl flex items-center justify-center shadow-xl shadow-cyan-500/30 floating-animation">
+                <Brain className="h-8 w-8 text-white" />
+              </div>
+            }
+            title="Síntomas asociados"
+            subtitle="Selecciona todos los síntomas que experimentaste durante el episodio"
+            sparkle
           >
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {symptomOptions.map((symptom) => (
                 <InteractiveButton
                   key={symptom}
@@ -130,7 +135,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                     )
                   }
                   variant="secondary"
-                  className="text-xs"
+                  className="text-xs h-12"
                 >
                   {symptom}
                 </InteractiveButton>
@@ -141,14 +146,20 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
       case 4:
         return (
           <StepCard
-            icon={<Pill className="mx-auto h-12 w-12 text-pink-500 mb-2" />}
-            title="Tratamiento"
-            subtitle="¿Qué usaste para aliviar el dolor?"
+            icon={
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-3xl flex items-center justify-center shadow-xl shadow-emerald-500/30 floating-animation">
+                <Pill className="h-8 w-8 text-white" />
+              </div>
+            }
+            title="Tratamiento utilizado"
+            subtitle="¿Qué medicamentos o métodos usaste para aliviar el dolor?"
+            sparkle
           >
-            <div className="space-y-6">
-              <div>
-                <Label className="block text-sm font-medium text-gray-700 mb-3">Medicamentos</Label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="space-y-8">
+              {/* Medications */}
+              <div className="space-y-4">
+                <Label className="block text-lg font-semibold text-slate-700 text-center">Medicamentos</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {medicationOptions.map((med) => (
                     <InteractiveButton
                       key={med.id}
@@ -158,16 +169,18 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                           setFormData({ ...formData, medications: newMeds })
                         )
                       }
-                      className="text-xs"
+                      className="text-xs h-12"
                     >
                       {med.name}
                     </InteractiveButton>
                   ))}
                 </div>
               </div>
-              <div>
-                <Label className="block text-sm font-medium text-gray-700 mb-3">¿Qué más ayudó?</Label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              
+              {/* Relief Methods */}
+              <div className="space-y-4">
+                <Label className="block text-lg font-semibold text-slate-700 text-center">Métodos de alivio</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {reliefOptions.map((relief) => (
                     <InteractiveButton
                       key={relief}
@@ -178,7 +191,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                         )
                       }
                       variant="accent"
-                      className="text-xs"
+                      className="text-xs h-12"
                     >
                       {relief}
                     </InteractiveButton>
@@ -191,14 +204,20 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
       case 5:
         return (
           <StepCard
-            icon={<Heart className="mx-auto h-12 w-12 text-pink-500 mb-2" />}
+            icon={
+              <div className="w-16 h-16 bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 rounded-3xl flex items-center justify-center shadow-xl shadow-rose-500/30 floating-animation">
+                <Heart className="h-8 w-8 text-white" />
+              </div>
+            }
             title="Contexto adicional"
-            subtitle="Información opcional que puede ayudar"
+            subtitle="Información adicional que nos ayudará a entender mejor tu episodio"
+            sparkle
           >
-            <div className="space-y-6">
-              <div>
-                <Label className="block text-sm font-medium text-gray-700 mb-3">Posibles desencadenantes</Label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="space-y-8">
+              {/* Triggers */}
+              <div className="space-y-4">
+                <Label className="block text-lg font-semibold text-slate-700 text-center">Posibles desencadenantes</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {triggerOptions.map((trigger) => (
                     <InteractiveButton
                       key={trigger.id}
@@ -209,7 +228,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                         )
                       }
                       variant="accent"
-                      className="text-xs"
+                      className="text-xs h-12"
                     >
                       {trigger.name}
                     </InteractiveButton>
@@ -217,11 +236,12 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div>
-                  <Label className="block text-sm font-medium text-gray-700 mb-2">Estado de ánimo</Label>
+              {/* Context Information */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold text-slate-700">Estado de ánimo</Label>
                   <Select onValueChange={(value) => setFormData({ ...formData, mood: value })}>
-                    <SelectTrigger className="border-pink-200 focus:border-pink-300">
+                    <SelectTrigger className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl h-12">
                       <SelectValue placeholder="Selecciona..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -231,10 +251,10 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  <Label className="block text-sm font-medium text-gray-700 mb-2">Clima</Label>
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold text-slate-700">Clima</Label>
                   <Select onValueChange={(value) => setFormData({ ...formData, weather: value })}>
-                    <SelectTrigger className="border-pink-200 focus:border-pink-300">
+                    <SelectTrigger className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl h-12">
                       <SelectValue placeholder="Selecciona..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -244,10 +264,10 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  <Label className="block text-sm font-medium text-gray-700 mb-2">Ciclo menstrual</Label>
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold text-slate-700">Ciclo menstrual</Label>
                   <Select onValueChange={(value) => setFormData({ ...formData, menstrualCycle: value })}>
-                    <SelectTrigger className="border-pink-200 focus:border-pink-300">
+                    <SelectTrigger className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl h-12">
                       <SelectValue placeholder="Selecciona..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -259,22 +279,23 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                 </div>
               </div>
               
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-xl border border-purple-100">
-                <Label className="block text-sm font-medium text-gray-700 mb-3 text-center">Horas de sueño</Label>
-                <div className="flex items-center gap-4 justify-center">
+              {/* Sleep Hours */}
+              <div className="glass-card rounded-3xl p-6 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border border-indigo-100">
+                <Label className="block text-sm font-semibold text-slate-700 mb-4 text-center">Horas de sueño la noche anterior</Label>
+                <div className="flex items-center gap-6 justify-center">
                   <Button
                     type="button"
                     variant="outline"
                     size="icon"
                     onClick={() => adjustSleep(false)}
                     disabled={sleepOptions.indexOf(formData.sleepHours) === 0}
-                    className="h-10 w-10 border-purple-200 hover:bg-purple-50"
+                    className="h-12 w-12 border-2 border-indigo-200 hover:bg-indigo-50 hover:border-indigo-300 disabled:opacity-50 rounded-2xl"
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-800">{formData.sleepHours}</div>
-                    <span className="text-sm text-gray-600">horas</span>
+                  <div className="text-center space-y-2 min-w-[100px]">
+                    <div className="text-3xl font-bold text-slate-800">{formData.sleepHours}</div>
+                    <span className="text-sm text-slate-600 font-medium">horas</span>
                   </div>
                   <Button
                     type="button"
@@ -282,22 +303,23 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                     size="icon"
                     onClick={() => adjustSleep(true)}
                     disabled={sleepOptions.indexOf(formData.sleepHours) === sleepOptions.length - 1}
-                    className="h-10 w-10 border-purple-200 hover:bg-purple-50"
+                    className="h-12 w-12 border-2 border-indigo-200 hover:bg-indigo-50 hover:border-indigo-300 disabled:opacity-50 rounded-2xl"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
               
-              <div>
-                <Label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">Notas adicionales</Label>
+              {/* Notes */}
+              <div className="space-y-3">
+                <Label htmlFor="notes" className="text-sm font-semibold text-slate-700">Notas adicionales</Label>
                 <Textarea
                   id="notes"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="¿Algo más que quieras agregar?"
-                  className="border-pink-200 focus:border-pink-300 bg-white/90"
-                  rows={3}
+                  placeholder="¿Hay algo más que te gustaría agregar sobre este episodio?"
+                  className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10 resize-none"
+                  rows={4}
                 />
               </div>
             </div>
@@ -309,15 +331,15 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-3xl max-h-[95vh] overflow-y-auto bg-white shadow-2xl border-0 rounded-2xl">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-lg flex items-center justify-center p-4 z-50">
+      <Card className="w-full max-w-4xl max-h-[95vh] overflow-y-auto glass-card-dark shadow-2xl border-0 rounded-3xl">
         <FormHeader 
           currentStep={currentStep}
           totalSteps={totalSteps}
           onCancel={onCancel}
         />
 
-        <CardContent className="p-6 space-y-6">
+        <CardContent className="p-8 space-y-8">
           <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
           {renderStep()}
           <FormNavigation 

@@ -17,22 +17,22 @@ const InteractiveButton = ({
   variant = 'primary',
   className = ''
 }: InteractiveButtonProps) => {
-  const baseClasses = "text-sm font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border-2 px-3 py-2";
+  const baseClasses = "text-sm font-medium rounded-2xl transition-all duration-300 border-2 px-4 py-3 relative overflow-hidden group";
   
   const getVariantClasses = () => {
     switch (variant) {
       case 'secondary':
         return isSelected 
-          ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white border-purple-300 shadow-md' 
-          : 'bg-white text-purple-700 border-purple-200 hover:border-purple-300 hover:bg-purple-50';
+          ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white border-violet-300 shadow-lg shadow-violet-500/25' 
+          : 'bg-white/80 text-violet-700 border-violet-200 hover:border-violet-300 hover:bg-violet-50 hover:shadow-lg hover:shadow-violet-500/10';
       case 'accent':
         return isSelected 
-          ? 'bg-gradient-to-r from-rose-400 to-pink-400 text-white border-rose-300 shadow-md' 
-          : 'bg-white text-rose-600 border-rose-200 hover:border-rose-300 hover:bg-rose-50';
+          ? 'bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white border-fuchsia-300 shadow-lg shadow-fuchsia-500/25' 
+          : 'bg-white/80 text-fuchsia-600 border-fuchsia-200 hover:border-fuchsia-300 hover:bg-fuchsia-50 hover:shadow-lg hover:shadow-fuchsia-500/10';
       default:
         return isSelected 
-          ? 'bg-gradient-to-r from-pink-400 to-rose-400 text-white border-pink-300 shadow-md' 
-          : 'bg-white text-pink-700 border-pink-200 hover:border-pink-300 hover:bg-pink-50';
+          ? 'bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 text-white border-violet-300 shadow-lg shadow-purple-500/25' 
+          : 'bg-white/80 text-slate-700 border-slate-200 hover:border-violet-300 hover:bg-violet-50 hover:shadow-lg hover:shadow-violet-500/10';
     }
   };
 
@@ -42,7 +42,10 @@ const InteractiveButton = ({
       className={`${baseClasses} ${getVariantClasses()} ${className}`}
       onClick={onClick}
     >
-      {children}
+      {isSelected && (
+        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+      )}
+      <span className="relative">{children}</span>
     </Button>
   );
 };

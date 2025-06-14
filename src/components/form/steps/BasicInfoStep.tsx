@@ -24,59 +24,68 @@ const BasicInfoStep = ({ formData, setFormData, durationOptions }: BasicInfoStep
 
   return (
     <StepCard
-      icon={<Calendar className="mx-auto h-12 w-12 text-pink-500 mb-2" />}
+      icon={
+        <div className="w-16 h-16 bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 rounded-3xl flex items-center justify-center shadow-xl shadow-purple-500/30 floating-animation">
+          <Calendar className="h-8 w-8 text-white" />
+        </div>
+      }
       title="Información básica"
-      subtitle="¿Cuándo ocurrió y cuánto duró?"
+      subtitle="Cuéntanos cuándo ocurrió tu episodio y cuánto tiempo duró"
+      sparkle
     >
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="date" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-              <Calendar className="h-4 w-4 text-pink-500" />
-              Fecha
+      <div className="space-y-8">
+        {/* Date and Time Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            <Label htmlFor="date" className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <Calendar className="h-4 w-4 text-violet-500" />
+              Fecha del episodio
             </Label>
             <Input
               id="date"
               type="date"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              className="text-base p-3 border-2 border-pink-100 focus:border-pink-300 rounded-lg bg-white/90 shadow-sm"
+              className="text-base p-4 border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10"
             />
           </div>
-          <div>
-            <Label htmlFor="time" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-              <Clock className="h-4 w-4 text-pink-500" />
-              Hora
+          <div className="space-y-3">
+            <Label htmlFor="time" className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <Clock className="h-4 w-4 text-violet-500" />
+              Hora de inicio
             </Label>
             <Input
               id="time"
               type="time"
               value={formData.time}
               onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              className="text-base p-3 border-2 border-pink-100 focus:border-pink-300 rounded-lg bg-white/90 shadow-sm"
+              className="text-base p-4 border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10"
             />
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-6 rounded-xl border border-pink-100">
-          <Label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-4">
-            <Timer className="h-4 w-4 text-pink-500" />
+        {/* Duration Selector */}
+        <div className="glass-card rounded-3xl p-8 bg-gradient-to-br from-violet-50/50 to-purple-50/50 border border-violet-100">
+          <Label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-6 justify-center">
+            <Timer className="h-4 w-4 text-violet-500" />
             Duración aproximada
           </Label>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-6">
             <Button
               type="button"
               variant="outline"
               size="icon"
               onClick={() => adjustDuration(false)}
               disabled={durationOptions.indexOf(formData.duration) === 0}
-              className="h-10 w-10 border-pink-200 hover:bg-pink-50 hover:border-pink-300"
+              className="h-12 w-12 border-2 border-violet-200 hover:bg-violet-50 hover:border-violet-300 disabled:opacity-50 rounded-2xl transition-all duration-300"
             >
-              <span className="text-lg">−</span>
+              <span className="text-xl font-bold text-violet-600">−</span>
             </Button>
-            <div className="text-center mx-4">
-              <div className="text-3xl font-bold text-gray-800">{formData.duration}</div>
-              <span className="text-sm text-gray-600">{formData.duration !== 1 ? "horas" : "hora"}</span>
+            <div className="text-center space-y-2 min-w-[120px]">
+              <div className="text-4xl font-bold text-slate-800">{formData.duration}</div>
+              <span className="text-sm text-slate-600 font-medium">
+                {formData.duration !== 1 ? "horas" : "hora"}
+              </span>
             </div>
             <Button
               type="button"
@@ -84,9 +93,9 @@ const BasicInfoStep = ({ formData, setFormData, durationOptions }: BasicInfoStep
               size="icon"
               onClick={() => adjustDuration(true)}
               disabled={durationOptions.indexOf(formData.duration) === durationOptions.length - 1}
-              className="h-10 w-10 border-pink-200 hover:bg-pink-50 hover:border-pink-300"
+              className="h-12 w-12 border-2 border-violet-200 hover:bg-violet-50 hover:border-violet-300 disabled:opacity-50 rounded-2xl transition-all duration-300"
             >
-              <span className="text-lg">+</span>
+              <span className="text-xl font-bold text-violet-600">+</span>
             </Button>
           </div>
         </div>

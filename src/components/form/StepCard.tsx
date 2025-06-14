@@ -18,7 +18,7 @@ const StepCard = ({ icon, title, subtitle, children, bgColor = '', sparkle = fal
         <div className="relative">
           {icon}
           {sparkle && (
-            <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center shadow-lg">
+            <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-rose-400 to-orange-400 rounded-full flex items-center justify-center shadow-lg">
               <span className="text-white text-xs">✨</span>
             </div>
           )}

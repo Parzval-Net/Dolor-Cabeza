@@ -1,8 +1,7 @@
 
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Calendar } from '@/components/ui/calendar';
 import { HeadacheEntry } from '@/types/headache';
 
 interface CalendarViewProps {
@@ -10,147 +9,77 @@ interface CalendarViewProps {
 }
 
 const CalendarView = ({ entries }: CalendarViewProps) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const { modifiers, modifiersClassNames } = useMemo(() => {
+    const entryDays = entries.reduce((acc, entry) => {
+      const date = entry.date;
+      const intensity = entry.intensity;
+      if (!acc[date] || intensity > acc[date]) {
+        acc[date] = intensity;
+      }
+      return acc;
+    }, {} as Record<string, number>);
 
-  const monthNames = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-  ];
+    const newModifiers = Object.entries(entryDays).reduce((acc, [date, intensity]) => {
+      const dateObj = new Date(`${date}T00:00:00`);
 
-  const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+      if (intensity <= 3) {
+        if (!acc.level1) acc.level1 = [];
+        acc.level1.push(dateObj);
+      } else if (intensity <= 6) {
+        if (!acc.level2) acc.level2 = [];
+        acc.level2.push(dateObj);
+      } else if (intensity <= 8) {
+        if (!acc.level3) acc.level3 = [];
+        acc.level3.push(dateObj);
+      } else {
+        if (!acc.level4) acc.level4 = [];
+        acc.level4.push(dateObj);
+      }
+      return acc;
+    }, {} as Record<string, Date[]>);
 
-  const goToPreviousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-  };
-
-  const goToNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-  };
-
-  const getDaysInMonth = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-
-    const days = [];
-
-    // Add empty cells for days before the first day of the month
-    for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(null);
-    }
-
-    // Add all days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      days.push(day);
-    }
-
-    return days;
-  };
-
-  const getEntriesForDate = (day: number) => {
-    const dateStr = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    return entries.filter(entry => entry.date === dateStr);
-  };
-
-  const getIntensityColor = (intensity: number) => {
-    if (intensity <= 3) return 'bg-green-400';
-    if (intensity <= 6) return 'bg-yellow-400';
-    if (intensity <= 8) return 'bg-orange-400';
-    return 'bg-red-400';
-  };
-
-  const days = getDaysInMonth();
+    return {
+      modifiers: newModifiers,
+      modifiersClassNames: {
+        level1: 'intensity-level-1',
+        level2: 'intensity-level-2',
+        level3: 'intensity-level-3',
+        level4: 'intensity-level-4',
+      },
+    };
+  }, [entries]);
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <Card className="gradient-card">
+      <Card className="glass-card-dark">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-semibold text-gray-700">
-              {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
-            </CardTitle>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="icon" onClick={goToPreviousMonth}>
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="icon" onClick={goToNextMonth}>
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+          <CardTitle className="text-xl font-bold text-slate-800">
+            Calendario de Migrañas
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          {/* Day Headers */}
-          <div className="grid grid-cols-7 gap-1 mb-2">
-            {dayNames.map((day) => (
-              <div key={day} className="p-2 text-center text-sm font-medium text-gray-500">
-                {day}
-              </div>
-            ))}
-          </div>
-
-          {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-1">
-            {days.map((day, index) => {
-              if (day === null) {
-                return <div key={index} className="h-16"></div>;
-              }
-
-              const dayEntries = getEntriesForDate(day);
-              const hasEntries = dayEntries.length > 0;
-              const maxIntensity = hasEntries ? Math.max(...dayEntries.map(e => e.intensity)) : 0;
-
-              return (
-                <div
-                  key={day}
-                  className={`
-                    h-16 p-1 border border-rose-100 rounded-lg relative
-                    ${hasEntries ? 'bg-white/80' : 'bg-white/40'}
-                    hover:bg-white/90 transition-colors cursor-pointer
-                  `}
-                >
-                  <div className="text-sm font-medium text-gray-700">{day}</div>
-                  {hasEntries && (
-                    <div className="absolute top-1 right-1 flex flex-col items-end space-y-1">
-                      <div className={`w-3 h-3 rounded-full ${getIntensityColor(maxIntensity)}`}></div>
-                      {dayEntries.length > 1 && (
-                        <div className="text-xs text-gray-500 bg-white/80 rounded px-1">
-                          +{dayEntries.length - 1}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {hasEntries && (
-                    <div className="absolute bottom-1 left-1 right-1">
-                      <div className="text-xs text-gray-600 truncate">
-                        {dayEntries[0].medications[0] || 'Sin medicamento'}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Legend */}
-          <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs">
+        <CardContent className="flex flex-col items-center">
+          <Calendar
+            modifiers={modifiers}
+            modifiersClassNames={modifiersClassNames}
+            className="p-0"
+            numberOfMonths={1}
+            onSelect={() => {}} 
+          />
+          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-slate-600">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="w-3 h-3 bg-emerald-400 rounded-full"></div>
               <span>Leve (1-3)</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+              <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
               <span>Moderado (4-6)</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+              <div className="w-3 h-3 bg-red-400 rounded-full"></div>
               <span>Severo (7-8)</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+              <div className="w-3 h-3 bg-red-600 rounded-full"></div>
               <span>Extremo (9-10)</span>
             </div>
           </div>

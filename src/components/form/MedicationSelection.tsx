@@ -39,7 +39,7 @@ const MedicationSelection = ({
         Medicamentos tomados
       </Label>
       
-      {/* Medicamentos seleccionados con mejor diseño móvil */}
+      {/* Medicamentos seleccionados con mejor separación visual */}
       {medications.length > 0 && (
         <div className="space-y-3 mb-4 sm:mb-6 p-3 sm:p-4 bg-white/80 rounded-2xl border border-blue-200/50 shadow-inner">
           <h4 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
@@ -50,12 +50,15 @@ const MedicationSelection = ({
             {medications.map((med, index) => (
               <div 
                 key={med.name} 
-                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 bg-white/90 rounded-xl border border-violet-200/50 shadow-sm animate-fade-in"
+                className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-white rounded-xl border border-violet-200/50 shadow-sm animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-violet-500 flex-shrink-0"></div>
-                  <span className="text-sm font-bold text-slate-800 truncate">{med.name}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-slate-800 mb-1">{med.name}</div>
+                    <div className="text-xs text-slate-600">Dosis: {med.customDosage || med.dosage}</div>
+                  </div>
                 </div>
                 
                 {med.isEditing ? (
@@ -64,13 +67,13 @@ const MedicationSelection = ({
                       value={med.customDosage || ''}
                       onChange={(e) => onUpdateCustomDosage(med.name, e.target.value)}
                       placeholder={med.dosage}
-                      className="h-10 text-sm rounded-lg border-violet-300 bg-white focus:border-violet-500 focus:ring-0 flex-1 sm:w-24"
+                      className="h-10 text-sm rounded-lg border-violet-300 bg-white focus:border-violet-500 focus:ring-0 flex-1 sm:w-32"
                     />
                     <Button
                       onClick={() => onSaveCustomDosage(med.name)}
                       variant="ghost"
                       size="sm"
-                      className="h-10 w-10 p-0 text-green-600 hover:bg-green-100 rounded-lg mobile-touch-target flex-shrink-0"
+                      className="h-10 w-10 p-0 bg-green-100 text-green-600 border border-green-200 hover:bg-green-200 hover:text-green-700 rounded-lg shadow-sm"
                     >
                       <Save className="w-4 h-4" />
                     </Button>
@@ -78,25 +81,20 @@ const MedicationSelection = ({
                       onClick={() => onToggleEditDosage(med.name)}
                       variant="ghost"
                       size="sm"
-                      className="h-10 w-10 p-0 text-red-600 hover:bg-red-100 rounded-lg mobile-touch-target flex-shrink-0"
+                      className="h-10 w-10 p-0 bg-red-100 text-red-600 border border-red-200 hover:bg-red-200 hover:text-red-700 rounded-lg shadow-sm"
                     >
                       <X className="w-4 h-4" />
                     </Button>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
-                    <Badge variant="outline" className="text-xs bg-violet-50 border-violet-300 text-violet-800 px-2 py-1">
-                      {med.customDosage || med.dosage}
-                    </Badge>
-                    <Button
-                      onClick={() => onToggleEditDosage(med.name)}
-                      variant="ghost"
-                      size="sm"
-                      className="h-10 w-10 p-0 text-blue-600 hover:bg-blue-100 rounded-lg mobile-touch-target flex-shrink-0"
-                    >
-                      <Edit3 className="w-4 h-4" />
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={() => onToggleEditDosage(med.name)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-10 w-10 p-0 bg-blue-100 text-blue-600 border border-blue-200 hover:bg-blue-200 hover:text-blue-700 rounded-lg shadow-sm"
+                  >
+                    <Edit3 className="w-4 h-4" />
+                  </Button>
                 )}
               </div>
             ))}
@@ -104,7 +102,7 @@ const MedicationSelection = ({
         </div>
       )}
 
-      {/* Grid de medicamentos disponibles optimizado para móvil */}
+      {/* Grid de medicamentos disponibles con mejor separación */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {medicationOptions.filter(med => med.isCommon).slice(0, 9).map((med, index) => (
           <div
@@ -115,10 +113,12 @@ const MedicationSelection = ({
             <InteractiveButton
               isSelected={medications.some(m => m.name === med.name)}
               onClick={() => onToggleMedication(med)}
-              className="h-auto min-h-[80px] sm:h-20 flex flex-col gap-2 p-3 sm:p-4 text-xs rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg safari-interactive-button mobile-touch-target w-full bg-white/90 hover:bg-white border-blue-200 hover:border-blue-400 text-slate-800"
+              className="h-auto min-h-[90px] flex flex-col gap-2 p-4 text-xs rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg w-full bg-white/90 hover:bg-white border-blue-200 hover:border-blue-400 text-slate-800"
             >
-              <span className="font-bold leading-tight text-center text-sm">{med.name}</span>
-              <span className="text-xs opacity-75 leading-tight text-center text-slate-600">{med.dosage}</span>
+              <div className="text-sm font-bold leading-tight text-center text-slate-800">{med.name}</div>
+              <div className="text-xs text-slate-600 bg-slate-50 px-2 py-1 rounded-lg border">
+                {med.dosage}
+              </div>
               {med.type === 'preventive' && (
                 <Badge variant="secondary" className="text-xs mt-1 bg-blue-100 text-blue-800 border-blue-200">
                   Preventivo

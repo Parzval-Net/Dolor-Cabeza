@@ -23,7 +23,11 @@ interface MedicationWithDoseManagerProps {
   }) => React.ReactNode;
 }
 
-const MedicationWithDoseManager = ({ medications, onMedicationsChange, children }: MedicationWithDoseManagerProps) => {
+const MedicationWithDoseManager = ({ 
+  medications, 
+  onMedicationsChange, 
+  children 
+}: MedicationWithDoseManagerProps) => {
   const [medicationOptions, setMedicationOptions] = useState(defaultMedicationOptions);
 
   useEffect(() => {
@@ -50,42 +54,52 @@ const MedicationWithDoseManager = ({ medications, onMedicationsChange, children 
   }, []);
 
   const toggleMedication = (med: MedicationOption) => {
-    const isSelected = medications.some(m => m.name === med.name);
+    const existingIndex = medications.findIndex(m => m.name === med.name);
     
-    if (isSelected) {
-      onMedicationsChange(medications.filter(m => m.name !== med.name));
+    if (existingIndex >= 0) {
+      // Remover medicamento
+      const newMedications = medications.filter((_, index) => index !== existingIndex);
+      onMedicationsChange(newMedications);
     } else {
-      onMedicationsChange([...medications, {
+      // Agregar medicamento
+      const newMedication: MedicationWithDose = {
         name: med.name,
         dosage: med.dosage,
-        customDosage: '',
         isEditing: false
-      }]);
+      };
+      onMedicationsChange([...medications, newMedication]);
     }
   };
 
   const toggleEditDosage = (medName: string) => {
-    onMedicationsChange(medications.map(med => 
+    const updatedMedications = medications.map(med => 
       med.name === medName 
         ? { ...med, isEditing: !med.isEditing, customDosage: med.customDosage || med.dosage }
-        : med
-    ));
+        : { ...med, isEditing: false }
+    );
+    onMedicationsChange(updatedMedications);
   };
 
   const updateCustomDosage = (medName: string, dosage: string) => {
-    onMedicationsChange(medications.map(med => 
+    const updatedMedications = medications.map(med => 
       med.name === medName 
         ? { ...med, customDosage: dosage }
         : med
-    ));
+    );
+    onMedicationsChange(updatedMedications);
   };
 
   const saveCustomDosage = (medName: string) => {
-    onMedicationsChange(medications.map(med => 
+    const updatedMedications = medications.map(med => 
       med.name === medName 
-        ? { ...med, isEditing: false }
+        ? { 
+            ...med, 
+            dosage: med.customDosage || med.dosage,
+            isEditing: false 
+          }
         : med
-    ));
+    );
+    onMedicationsChange(updatedMedications);
   };
 
   return (

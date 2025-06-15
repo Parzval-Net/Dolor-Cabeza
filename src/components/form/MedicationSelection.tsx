@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MedicationOption } from '@/types/headache';
-import InteractiveButton from '@/components/form/InteractiveButton';
 
 interface MedicationWithDose {
   name: string;
@@ -41,7 +40,7 @@ const MedicationSelection = ({
       
       {/* Medicamentos seleccionados */}
       {medications.length > 0 && (
-        <div className="space-y-3 p-3 sm:p-4 glass-card rounded-2xl">
+        <div className="space-y-3 p-3 sm:p-4 bg-white/80 backdrop-blur-sm rounded-2xl border border-violet-200/60 shadow-sm">
           <h4 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
             <Check className="w-4 h-4 text-green-600" />
             Seleccionados ({medications.length})
@@ -50,13 +49,13 @@ const MedicationSelection = ({
             {medications.map((med, index) => (
               <div 
                 key={`${med.name}-${index}`}
-                className="bg-white/95 rounded-xl border border-violet-200/50 shadow-sm p-3 sm:p-4 space-y-3"
+                className="bg-white rounded-xl border border-violet-200/50 shadow-sm p-3 sm:p-4 space-y-3"
               >
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-violet-500 to-purple-600 flex-shrink-0"></div>
+                    <div className="w-3 h-3 rounded-full bg-violet-500 flex-shrink-0"></div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-bold text-slate-800 mb-1">{med.name}</div>
+                      <div className="text-sm font-bold text-slate-800 mb-1 break-words">{med.name}</div>
                       <div className="text-xs text-slate-600">
                         Dosis: <span className="font-semibold text-slate-800">{med.customDosage || med.dosage}</span>
                       </div>
@@ -68,9 +67,9 @@ const MedicationSelection = ({
                       onClick={() => onToggleEditDosage(med.name)}
                       variant="outline"
                       size="sm"
-                      className="h-8 px-3 text-violet-600 border-violet-200 hover:bg-violet-50 hover:text-violet-700 rounded-lg w-full sm:w-auto mobile-touch-target"
+                      className="h-10 px-4 text-violet-600 border-violet-200 hover:bg-violet-50 hover:text-violet-700 rounded-lg w-full mobile-touch-target"
                     >
-                      <Edit3 className="w-3 h-3 mr-1" />
+                      <Edit3 className="w-3 h-3 mr-2" />
                       Editar dosis
                     </Button>
                   )}
@@ -84,25 +83,25 @@ const MedicationSelection = ({
                         value={med.customDosage || ''}
                         onChange={(e) => onUpdateCustomDosage(med.name, e.target.value)}
                         placeholder={med.dosage}
-                        className="h-10 text-sm rounded-lg border-violet-300 bg-white/95 focus:border-violet-500 focus:ring-1 focus:ring-violet-200 mobile-input"
+                        className="h-12 text-base rounded-lg border-violet-300 bg-white focus:border-violet-500 focus:ring-1 focus:ring-violet-200 mobile-input"
                       />
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex flex-col gap-2">
                       <Button
                         onClick={() => onSaveCustomDosage(med.name)}
                         size="sm"
-                        className="h-10 flex-1 bg-green-600 hover:bg-green-700 text-white rounded-lg mobile-touch-target"
+                        className="h-12 bg-green-600 hover:bg-green-700 text-white rounded-lg mobile-touch-target"
                       >
-                        <Save className="w-3 h-3 mr-1" />
+                        <Save className="w-4 h-4 mr-2" />
                         Guardar
                       </Button>
                       <Button
                         onClick={() => onToggleEditDosage(med.name)}
                         variant="outline"
                         size="sm"
-                        className="h-10 flex-1 border-slate-300 text-slate-600 hover:bg-slate-50 rounded-lg mobile-touch-target"
+                        className="h-12 border-slate-300 text-slate-600 hover:bg-slate-50 rounded-lg mobile-touch-target"
                       >
-                        <X className="w-3 h-3 mr-1" />
+                        <X className="w-4 h-4 mr-2" />
                         Cancelar
                       </Button>
                     </div>
@@ -115,10 +114,11 @@ const MedicationSelection = ({
       )}
 
       {/* Grid de medicamentos disponibles */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {medicationOptions.filter(med => med.isCommon).slice(0, 9).map((med, index) => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {medicationOptions.filter(med => med.isCommon).slice(0, 8).map((med, index) => {
           const selectedMed = medications.find(m => m.name === med.name);
           const displayDosage = selectedMed ? (selectedMed.customDosage || selectedMed.dosage) : med.dosage;
+          const isSelected = medications.some(m => m.name === med.name);
           
           return (
             <div
@@ -126,21 +126,28 @@ const MedicationSelection = ({
               className="animate-fade-in"
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <InteractiveButton
-                isSelected={medications.some(m => m.name === med.name)}
+              <button
                 onClick={() => onToggleMedication(med)}
-                className="h-auto min-h-[90px] flex flex-col gap-2 p-3 sm:p-4 text-xs rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg w-full"
+                className={`w-full h-auto min-h-[80px] flex flex-col gap-2 p-3 sm:p-4 text-sm rounded-xl border-2 transition-all duration-300 mobile-touch-target ${
+                  isSelected
+                    ? 'bg-violet-500 text-white border-violet-400 shadow-md'
+                    : 'bg-white text-slate-700 border-slate-200 hover:border-violet-300 hover:bg-violet-50 hover:text-violet-700'
+                }`}
               >
-                <div className="text-sm font-bold leading-tight text-center">{med.name}</div>
-                <div className="text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded-lg">
+                <div className="font-bold leading-tight text-center break-words">{med.name}</div>
+                <div className={`text-xs px-2 py-1 rounded-lg ${
+                  isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                }`}>
                   {displayDosage}
                 </div>
                 {med.type === 'preventive' && (
-                  <Badge variant="secondary" className="text-xs mt-1 bg-violet-100 text-violet-800">
+                  <Badge variant="secondary" className={`text-xs mt-1 ${
+                    isSelected ? 'bg-white/20 text-white' : 'bg-violet-100 text-violet-800'
+                  }`}>
                     Preventivo
                   </Badge>
                 )}
-              </InteractiveButton>
+              </button>
             </div>
           );
         })}

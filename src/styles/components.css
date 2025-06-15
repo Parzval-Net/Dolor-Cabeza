@@ -65,14 +65,44 @@
     @apply shadow-xl shadow-purple-500/10 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300;
   }
 
-  /* Eliminar marcos amarillos de focus */
-  *:focus {
-    outline: none !important;
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .glass-card,
+    .glass-card-dark,
+    .glass-card-mobile {
+      @apply rounded-t-3xl;
+    }
+
+    .mobile-touch-target {
+      @apply min-h-[44px] min-w-[44px];
+      touch-action: manipulation;
+    }
+
+    .mobile-text {
+      @apply text-base leading-relaxed;
+    }
+
+    .mobile-button {
+      @apply px-4 py-3 text-base font-semibold rounded-xl min-h-[48px];
+      touch-action: manipulation;
+    }
+
+    .mobile-input {
+      @apply px-4 py-3 text-base rounded-xl min-h-[48px];
+      font-size: 16px !important; /* Prevent zoom on iOS */
+    }
   }
 
-  *:focus-visible {
-    outline: 2px solid rgb(139 92 246) !important;
-    outline-offset: 2px !important;
+  /* Touch improvements for iOS */
+  @media (hover: none) and (pointer: coarse) {
+    button, .button, [role="button"] {
+      @apply min-h-[44px] min-w-[44px];
+      touch-action: manipulation;
+    }
+    
+    input, select, textarea {
+      font-size: 16px !important; /* Prevent zoom on iOS Safari */
+    }
   }
 
   /* Safari mobile specific fixes */
@@ -87,7 +117,7 @@
       border: 1px solid rgba(167, 139, 250, 0.4) !important;
     }
 
-    /* Eliminar marcos amarillos en Safari iOS */
+    /* Remove yellow frames on Safari iOS */
     * {
       -webkit-tap-highlight-color: transparent !important;
       -webkit-touch-callout: none !important;
@@ -97,43 +127,31 @@
     input, textarea, [contenteditable] {
       -webkit-user-select: text !important;
     }
-  }
 
-  /* Mobile optimizations */
-  @media (max-width: 768px) {
-    .glass-card,
-    .glass-card-dark,
-    .glass-card-mobile {
-      @apply mx-2 rounded-2xl;
-    }
-
-    .mobile-touch-target {
-      @apply min-h-[44px] min-w-[44px];
-    }
-
-    .mobile-text {
-      @apply text-base leading-relaxed;
-    }
-
-    .mobile-button {
-      @apply px-4 py-3 text-base font-semibold rounded-xl;
-    }
-
-    .mobile-input {
-      @apply px-4 py-3 text-base rounded-xl;
+    button, [role="button"] {
+      -webkit-appearance: none !important;
+      touch-action: manipulation;
     }
   }
 
-  /* Touch improvements for iOS */
-  @media (hover: none) and (pointer: coarse) {
-    button, .button, [role="button"] {
-      @apply min-h-[44px] min-w-[44px];
-    }
-    
-    input, select, textarea {
-      @apply text-base;
-      /* Prevent zoom on iOS Safari */
-      font-size: 16px !important;
-    }
+  /* Focus states - improved accessibility */
+  *:focus {
+    outline: none !important;
+  }
+
+  *:focus-visible {
+    outline: 2px solid rgb(139 92 246) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Remove any remaining yellow focus rings */
+  button:focus,
+  input:focus,
+  textarea:focus,
+  select:focus,
+  [role="button"]:focus {
+    outline: 2px solid rgb(139, 92, 246) !important;
+    outline-offset: 2px !important;
+    -webkit-focus-ring-color: transparent !important;
   }
 }

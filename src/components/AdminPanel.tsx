@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import AdminTabs from './admin/AdminTabs';
 import GeneralTab from './admin/GeneralTab';
 import AppearanceTab from './admin/AppearanceTab';
 import DataTab from './admin/DataTab';
+import SecurityTab from './admin/SecurityTab';
 
 interface AdminSettings {
   appName: string;
@@ -37,7 +39,7 @@ const AdminPanel = () => {
     timezone: 'America/Santiago',
     exportFormat: 'PDF'
   });
-  const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'medications' | 'data'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'medications' | 'data' | 'security'>('general');
   const { toast } = useToast();
 
   // Authentication check
@@ -119,6 +121,10 @@ const AdminPanel = () => {
     setShowChangePassword(false);
   };
 
+  const handleShowChangePassword = () => {
+    setShowChangePassword(true);
+  };
+
   if (!isAuthenticated) {
     return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
   }
@@ -133,6 +139,8 @@ const AdminPanel = () => {
         return <MedicationManager />;
       case 'data':
         return <DataTab settings={settings} onSettingsChange={setSettings} />;
+      case 'security':
+        return <SecurityTab onChangePassword={handleShowChangePassword} />;
       default:
         return null;
     }
@@ -169,7 +177,7 @@ const AdminPanel = () => {
           <CardContent className="space-y-4 sm:space-y-6 admin-panel-content">
             {renderTabContent()}
 
-            {activeTab !== 'medications' && (
+            {activeTab !== 'medications' && activeTab !== 'security' && (
               <div className="flex justify-end pt-4 sm:pt-6 border-t border-slate-300">
                 <Button
                   onClick={handleSave}

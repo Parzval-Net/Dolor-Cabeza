@@ -52,9 +52,9 @@ const ChangePasswordModal = ({ onPasswordChanged }: ChangePasswordModalProps) =>
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="glass-card-dark w-full max-w-md mx-auto">
-        <CardHeader className="text-center">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-md mx-auto bg-white border border-slate-200 shadow-2xl">
+        <CardHeader className="text-center bg-white rounded-t-lg">
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-violet-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
             <Shield className="w-8 h-8 text-white" />
           </div>
@@ -66,7 +66,7 @@ const ChangePasswordModal = ({ onPasswordChanged }: ChangePasswordModalProps) =>
           </p>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="bg-white rounded-b-lg">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="newPassword" className="text-slate-800 font-bold">

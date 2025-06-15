@@ -91,11 +91,11 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
-          <div className="bg-slate-50/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-slate-200 w-full max-w-3xl">
+          <div className="bg-slate-800 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-slate-600 w-full max-w-4xl">
             <Calendar
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
-              className="p-0 w-full calendar-dark-text"
+              className="p-0 w-full calendar-light-text"
               numberOfMonths={1}
               onDayClick={handleDayClick}
               selected={selectedDay}

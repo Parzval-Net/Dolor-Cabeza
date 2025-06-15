@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 interface AdminSettings {
   appName: string;
   appDescription: string;
+  dashboardDescription: string;
   primaryColor: string;
   secondaryColor: string;
   appIcon: string;
@@ -45,7 +46,7 @@ const GeneralTab = ({ settings, onSettingsChange }: GeneralTabProps) => {
 
       <div className="space-y-2">
         <Label htmlFor="appDescription" className="text-slate-800 font-bold text-sm sm:text-base">
-          Descripción
+          Descripción de la App
         </Label>
         <Textarea
           id="appDescription"
@@ -55,6 +56,21 @@ const GeneralTab = ({ settings, onSettingsChange }: GeneralTabProps) => {
           rows={3}
           className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500 mobile-input"
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="dashboardDescription" className="text-slate-800 font-bold text-sm sm:text-base">
+          Descripción del Dashboard
+        </Label>
+        <Textarea
+          id="dashboardDescription"
+          value={settings.dashboardDescription}
+          onChange={e => updateSetting('dashboardDescription', e.target.value)}
+          placeholder="Descripción que aparecerá bajo 'Tu salud en perspectiva'"
+          rows={2}
+          className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500 mobile-input"
+        />
+        <p className="text-xs text-slate-600">Este texto aparece bajo el título principal del dashboard</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

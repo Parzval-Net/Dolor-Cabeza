@@ -1,9 +1,10 @@
+
+import { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import EpisodeCountCard from './dashboard/EpisodeCountCard';
 import AverageIntensityCard from './dashboard/AverageIntensityCard';
 import TopMedicationCard from './dashboard/TopMedicationCard';
 import RecentEpisodesList from './dashboard/RecentEpisodesList';
-import WeeklyPatternsList from './dashboard/WeeklyPatternsList';
 import TopDayCard from './dashboard/TopDayCard';
 import QuoteSection from './dashboard/QuoteSection';
 import { HeadacheEntry } from '@/types/headache';
@@ -13,6 +14,40 @@ interface DashboardProps {
 }
 
 const Dashboard = ({ entries }: DashboardProps) => {
+  const [dashboardDescription, setDashboardDescription] = useState('Conoce mejor tus patrones de dolor y toma decisiones informadas para tu bienestar');
+
+  useEffect(() => {
+    // Load dashboard description from admin settings
+    const loadDashboardDescription = () => {
+      const savedSettings = localStorage.getItem('admin-settings');
+      if (savedSettings) {
+        try {
+          const settings = JSON.parse(savedSettings);
+          if (settings.dashboardDescription) {
+            setDashboardDescription(settings.dashboardDescription);
+          }
+        } catch (error) {
+          console.error('Error loading dashboard description:', error);
+        }
+      }
+    };
+
+    loadDashboardDescription();
+
+    // Listen for admin settings updates
+    const handleSettingsUpdate = (event: CustomEvent) => {
+      if (event.detail?.dashboardDescription) {
+        setDashboardDescription(event.detail.dashboardDescription);
+      }
+    };
+
+    window.addEventListener('admin-settings-updated', handleSettingsUpdate as EventListener);
+    
+    return () => {
+      window.removeEventListener('admin-settings-updated', handleSettingsUpdate as EventListener);
+    };
+  }, []);
+
   const thisMonth = new Date().getMonth();
   const thisYear = new Date().getFullYear();
   
@@ -60,7 +95,7 @@ const Dashboard = ({ entries }: DashboardProps) => {
           Tu salud en perspectiva
         </h2>
         <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-          Conoce mejor tus patrones de dolor y toma decisiones informadas para tu bienestar
+          {dashboardDescription}
         </p>
       </div>
 

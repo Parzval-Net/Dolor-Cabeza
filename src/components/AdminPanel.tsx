@@ -15,6 +15,7 @@ import DataTab from './admin/DataTab';
 interface AdminSettings {
   appName: string;
   appDescription: string;
+  dashboardDescription: string;
   primaryColor: string;
   secondaryColor: string;
   appIcon: string;
@@ -29,6 +30,7 @@ const AdminPanel = () => {
   const [settings, setSettings] = useState<AdminSettings>({
     appName: 'MigraCare',
     appDescription: 'Tu aplicación para el seguimiento de migrañas',
+    dashboardDescription: 'Conoce mejor tus patrones de dolor y toma decisiones informadas para tu bienestar',
     primaryColor: '#8B5CF6',
     secondaryColor: '#EC4899',
     appIcon: 'Heart',
@@ -88,7 +90,7 @@ const AdminPanel = () => {
     try {
       localStorage.setItem('admin-settings', JSON.stringify(settings));
       updateDocumentTitle(settings.appName);
-      window.dispatchEvent(new CustomEvent('admin-settings-updated'));
+      window.dispatchEvent(new CustomEvent('admin-settings-updated', { detail: settings }));
       
       toast({
         title: "Configuración guardada",

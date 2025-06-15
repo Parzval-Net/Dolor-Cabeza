@@ -2,15 +2,17 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Moon, Sun } from 'lucide-react';
 
+import type { HeadacheEntry } from '@/types/headache';
+
 interface SleepPatternsListProps {
-  entries: any[];
+  entries: HeadacheEntry[];
 }
 
 const SleepPatternsList = ({ entries }: SleepPatternsListProps) => {
   // Calcular estadísticas de sueño
   const sleepData = entries
-    .filter(entry => entry.sleep !== undefined && entry.sleep !== null)
-    .map(entry => ({ sleep: entry.sleep, date: entry.date }));
+    .filter(entry => entry.sleepHours !== undefined && entry.sleepHours !== null)
+    .map(entry => ({ sleep: entry.sleepHours, date: entry.date }));
 
   const averageSleep = sleepData.length > 0 
     ? sleepData.reduce((sum, item) => sum + item.sleep, 0) / sleepData.length

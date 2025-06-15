@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { HeadacheEntry } from '@/types/headache';
+import { HeadacheEntry, MedicationOption } from '@/types/headache';
 import { medicationOptions as defaultMedicationOptions } from '@/data/options';
 import EpisodeBasicFields from './EpisodeBasicFields';
 import EpisodeMedicationSelector from './EpisodeMedicationSelector';
@@ -23,7 +23,7 @@ const EditEpisodeForm = ({ entry, onFormDataChange }: EditEpisodeFormProps) => {
       if (customMedications) {
         try {
           const parsed = JSON.parse(customMedications);
-          const validatedMedications = parsed.map((med: any) => ({
+          const validatedMedications = parsed.map((med: MedicationOption) => ({
             ...med,
             type: (med.type === 'preventive' || med.type === 'acute') ? med.type : 'acute'
           }));

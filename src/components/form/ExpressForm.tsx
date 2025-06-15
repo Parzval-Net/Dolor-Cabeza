@@ -8,14 +8,16 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 
+interface ExpressFormData {
+  date: string;
+  time: string;
+  intensity: number[];
+  stressLevel: number[];
+}
+
 interface ExpressFormProps {
-  formData: {
-    date: string;
-    time: string;
-    intensity: number[];
-    stressLevel: number[];
-  };
-  onFormDataChange: (data: any) => void;
+  formData: ExpressFormData;
+  onFormDataChange: (data: ExpressFormData) => void;
   onSubmit: () => void;
   onCancel: () => void;
   onSwitchToComplete: () => void;

@@ -8,7 +8,14 @@ interface TrendsViewProps {
 
 const TrendsView = ({ entries }: TrendsViewProps) => {
   // Monthly intensity data
-  const monthlyData = entries.reduce((acc, entry) => {
+  interface MonthlyAccum {
+    month: string;
+    totalIntensity: number;
+    count: number;
+    totalDuration: number;
+  }
+
+  const monthlyData = entries.reduce<Record<string, MonthlyAccum>>((acc, entry) => {
     const date = new Date(entry.date);
     const monthKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
     
@@ -21,9 +28,9 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
     acc[monthKey].totalDuration += entry.duration;
     
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, MonthlyAccum>);
 
-  const monthlyChartData = Object.values(monthlyData).map((data: any) => ({
+  const monthlyChartData = Object.values(monthlyData).map((data) => ({
     month: data.month,
     averageIntensity: Math.round((data.totalIntensity / data.count) * 10) / 10,
     episodeCount: data.count,
@@ -44,9 +51,14 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
     .slice(0, 8);
 
   // Medication effectiveness (based on average intensity when used)
+  interface MedicationStats {
+    totalIntensity: number;
+    count: number;
+  }
+
   const medicationData = entries
     .filter(entry => entry.medications.length > 0)
-    .reduce((acc, entry) => {
+    .reduce<Record<string, MedicationStats>>((acc, entry) => {
       entry.medications.forEach(med => {
         if (!acc[med]) {
           acc[med] = { totalIntensity: 0, count: 0 };
@@ -55,10 +67,10 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
         acc[med].count += 1;
       });
       return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, MedicationStats>);
 
   const medicationChartData = Object.entries(medicationData)
-    .map(([medication, data]: [string, any]) => ({
+    .map(([medication, data]: [string, MedicationStats]) => ({
       medication,
       averageIntensity: Math.round((data.totalIntensity / data.count) * 10) / 10,
       timesUsed: data.count,

@@ -5,9 +5,14 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import StepCard from '../StepCard';
 
+interface IntensityStressData {
+  intensity: number[];
+  stressLevel: number[];
+}
+
 interface IntensityStressStepProps {
-  formData: any;
-  setFormData: (data: any) => void;
+  formData: IntensityStressData;
+  setFormData: (data: IntensityStressData) => void;
 }
 
 const IntensityStressStep = ({ formData, setFormData }: IntensityStressStepProps) => {

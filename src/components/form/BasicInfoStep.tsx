@@ -6,14 +6,16 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 
+interface BasicInfoData {
+  date: string;
+  time: string;
+  intensity: number[];
+  stressLevel: number[];
+}
+
 interface BasicInfoStepProps {
-  formData: {
-    date: string;
-    time: string;
-    intensity: number[];
-    stressLevel: number[];
-  };
-  onFormDataChange: (data: any) => void;
+  formData: BasicInfoData;
+  onFormDataChange: (data: BasicInfoData) => void;
 }
 
 const BasicInfoStep = ({ formData, onFormDataChange }: BasicInfoStepProps) => {

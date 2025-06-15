@@ -14,10 +14,10 @@ export const useMobile = () => {
 
     // Detectar si está en modo standalone (PWA instalada)
     const checkStandalone = () => {
-      setIsStandalone(
-        window.matchMedia('(display-mode: standalone)').matches ||
-        (window.navigator as any).standalone === true
-      );
+        setIsStandalone(
+          window.matchMedia('(display-mode: standalone)').matches ||
+          (window.navigator as Navigator & { standalone?: boolean }).standalone === true
+        );
     };
 
     checkMobile();
@@ -31,7 +31,12 @@ export const useMobile = () => {
   }, []);
 
   // Función para instalar PWA
-  const installPWA = async (deferredPrompt: any) => {
+  interface BeforeInstallPromptEvent extends Event {
+    prompt: () => Promise<void>;
+    userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+  }
+
+  const installPWA = async (deferredPrompt: BeforeInstallPromptEvent | null) => {
     if (!deferredPrompt) return false;
     
     deferredPrompt.prompt();

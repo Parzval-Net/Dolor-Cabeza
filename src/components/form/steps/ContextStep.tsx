@@ -9,16 +9,18 @@ import StepCard from '@/components/form/StepCard';
 import InteractiveButton from '@/components/form/InteractiveButton';
 import SleepSelector from '@/components/form/SleepSelector';
 
+interface ContextData {
+  triggers: string[];
+  mood: string;
+  weather: string;
+  menstrualCycle: string;
+  sleepHours: number;
+  notes: string;
+}
+
 interface ContextStepProps {
-  formData: {
-    triggers: string[];
-    mood: string;
-    weather: string;
-    menstrualCycle: string;
-    sleepHours: number;
-    notes: string;
-  };
-  onFormDataChange: (data: any) => void;
+  formData: ContextData;
+  onFormDataChange: (data: ContextData) => void;
   toggleArrayItem: (array: string[], item: string, setter: (value: string[]) => void) => void;
 }
 

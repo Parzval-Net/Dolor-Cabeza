@@ -1,15 +1,15 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { 
-  Heart, 
-  Activity, 
-  Brain, 
-  Zap, 
-  Shield, 
-  Star, 
-  Moon, 
-  Sun, 
+import {
+  Heart,
+  Activity,
+  Brain,
+  Zap,
+  Shield,
+  Star,
+  Moon,
+  Sun,
   Flame,
   Eye,
   Target,
@@ -18,7 +18,8 @@ import {
   Stethoscope,
   Pill,
   Clock,
-  Sparkles
+  Sparkles,
+  type LucideIcon,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -35,7 +36,7 @@ const Header = ({ onNewEntry }: HeaderProps) => {
   });
 
   // Mapeo de iconos
-  const iconMap: { [key: string]: React.ComponentType<any> } = {
+  const iconMap: Record<string, LucideIcon> = {
     Heart,
     Activity,
     Brain,

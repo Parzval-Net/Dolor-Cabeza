@@ -11,6 +11,11 @@ import AdminPanel from '@/components/AdminPanel';
 import SimpleHeadacheForm from '@/components/SimpleHeadacheForm';
 import { HeadacheEntry } from '@/types/headache';
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+}
+
 const Index = () => {
   const [entries, setEntries] = useState<HeadacheEntry[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -51,7 +56,7 @@ const Index = () => {
     }
 
     // Handle PWA install prompt
-    let deferredPrompt: any;
+    let deferredPrompt: BeforeInstallPromptEvent | null;
     window.addEventListener('beforeinstallprompt', (e) => {
       deferredPrompt = e;
       console.log('PWA install prompt available');

@@ -1,8 +1,10 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Calendar } from 'lucide-react';
 
+import type { HeadacheEntry } from '@/types/headache';
+
 interface WeeklyPatternsListProps {
-  entries: any[];
+  entries: HeadacheEntry[];
 }
 
 const WeeklyPatternsList = ({ entries }: WeeklyPatternsListProps) => {

@@ -5,11 +5,13 @@ import { symptomOptions } from '@/data/options';
 import StepCard from '@/components/form/StepCard';
 import InteractiveButton from '@/components/form/InteractiveButton';
 
+interface SymptomsData {
+  symptoms: string[];
+}
+
 interface SymptomsStepProps {
-  formData: {
-    symptoms: string[];
-  };
-  onFormDataChange: (data: any) => void;
+  formData: SymptomsData;
+  onFormDataChange: (data: SymptomsData) => void;
   toggleArrayItem: (array: string[], item: string, setter: (value: string[]) => void) => void;
 }
 

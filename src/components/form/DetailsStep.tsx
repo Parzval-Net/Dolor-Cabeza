@@ -14,14 +14,16 @@ interface MedicationWithDose {
   isEditing?: boolean;
 }
 
+interface DetailsData {
+  medications: MedicationWithDose[];
+  symptoms: string[];
+  notes: string;
+}
+
 interface DetailsStepProps {
-  formData: {
-    medications: MedicationWithDose[];
-    symptoms: string[];
-    notes: string;
-  };
+  formData: DetailsData;
   medicationOptions: MedicationOption[];
-  onFormDataChange: (data: any) => void;
+  onFormDataChange: (data: DetailsData) => void;
   onToggleMedication: (med: MedicationOption) => void;
   onToggleEditDosage: (medName: string) => void;
   onUpdateCustomDosage: (medName: string, dosage: string) => void;

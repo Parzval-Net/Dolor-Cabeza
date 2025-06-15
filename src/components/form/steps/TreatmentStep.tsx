@@ -7,13 +7,15 @@ import { reliefOptions } from '@/data/options';
 import StepCard from '@/components/form/StepCard';
 import InteractiveButton from '@/components/form/InteractiveButton';
 
+interface TreatmentData {
+  medications: string[];
+  relievedBy: string[];
+}
+
 interface TreatmentStepProps {
-  formData: {
-    medications: string[];
-    relievedBy: string[];
-  };
+  formData: TreatmentData;
   medicationOptions: MedicationOption[];
-  onFormDataChange: (data: any) => void;
+  onFormDataChange: (data: TreatmentData) => void;
   toggleArrayItem: (array: string[], item: string, setter: (value: string[]) => void) => void;
 }
 

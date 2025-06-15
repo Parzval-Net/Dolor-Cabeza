@@ -25,7 +25,7 @@ const MobileBottomNav = ({ currentView, onViewChange }: MobileBottomNavProps) =>
           return (
             <button
               key={item.id}
-              onClick={() => onViewChange(item.id as any)}
+              onClick={() => onViewChange(item.id)}
               className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-300 min-w-0 flex-1 active:scale-95 ${
                 isActive
                   ? 'bg-gradient-to-t from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-500/25'

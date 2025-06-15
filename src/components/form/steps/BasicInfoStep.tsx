@@ -6,9 +6,15 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import StepCard from '../StepCard';
 
+interface BasicInfoData {
+  date: string;
+  time: string;
+  duration: number;
+}
+
 interface BasicInfoStepProps {
-  formData: any;
-  setFormData: (data: any) => void;
+  formData: BasicInfoData;
+  setFormData: (data: BasicInfoData) => void;
   durationOptions: number[];
 }
 

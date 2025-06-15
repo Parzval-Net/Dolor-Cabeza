@@ -46,7 +46,8 @@ const BasicInfoStep = ({ formData, setFormData, durationOptions }: BasicInfoStep
               type="date"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              className="text-base p-4 border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10"
+              className="text-base p-4 border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10 text-slate-800 font-medium"
+              style={{ colorScheme: 'light' }}
             />
           </div>
           <div className="space-y-3">
@@ -59,7 +60,8 @@ const BasicInfoStep = ({ formData, setFormData, durationOptions }: BasicInfoStep
               type="time"
               value={formData.time}
               onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              className="text-base p-4 border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10"
+              className="text-base p-4 border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10 text-slate-800 font-medium"
+              style={{ colorScheme: 'light' }}
             />
           </div>
         </div>

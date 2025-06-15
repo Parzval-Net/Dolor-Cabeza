@@ -1,4 +1,3 @@
-
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HeadacheEntry } from '@/types/headache';
@@ -86,7 +85,7 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Monthly Trends */}
-        <Card className="gradient-card">
+        <Card className="glass-card-dark">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-700">
               Tendencia Mensual - Intensidad Promedio
@@ -118,7 +117,7 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
         </Card>
 
         {/* Episode Count */}
-        <Card className="gradient-card">
+        <Card className="glass-card-dark">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-700">
               Número de Episodios por Mes
@@ -144,7 +143,7 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
         </Card>
 
         {/* Trigger Analysis */}
-        <Card className="gradient-card">
+        <Card className="glass-card-dark">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-700">
               Desencadenantes Más Frecuentes
@@ -176,7 +175,7 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
         </Card>
 
         {/* Intensity Distribution */}
-        <Card className="gradient-card">
+        <Card className="glass-card-dark">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-700">
               Distribución de Intensidad
@@ -208,7 +207,7 @@ const TrendsView = ({ entries }: TrendsViewProps) => {
 
       {/* Medication Effectiveness */}
       {medicationChartData.length > 0 && (
-        <Card className="gradient-card">
+        <Card className="glass-card-dark">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-700">
               Efectividad de Medicamentos (Intensidad Promedio)

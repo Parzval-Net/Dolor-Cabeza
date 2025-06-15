@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { HeadacheEntry } from '@/types/headache';
 import { useToast } from '@/hooks/use-toast';
-import { Save, Calendar, Clock } from 'lucide-react';
+import { Save, Calendar, Clock, X } from 'lucide-react';
 import EditEpisodeForm from './episode-edit/EditEpisodeForm';
 
 interface EditEpisodeDialogProps {
@@ -29,7 +29,7 @@ const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) 
   return (
     <Dialog open={true} onOpenChange={onCancel}>
       <DialogContent 
-        className="w-full h-full max-w-none max-h-none p-0 gap-0 bg-white border-0 rounded-none sm:w-[95vw] sm:h-[95vh] sm:max-w-4xl sm:max-h-[95vh] sm:rounded-2xl sm:border sm:border-violet-200 overflow-hidden"
+        className="w-full h-full max-w-none max-h-none p-0 gap-0 bg-white border-0 rounded-none sm:w-[95vw] sm:h-[95vh] sm:max-w-4xl sm:max-h-[95vh] sm:rounded-2xl sm:border sm:border-violet-200 overflow-hidden [&>button]:hidden"
         style={{
           position: 'fixed',
           top: '0',
@@ -40,31 +40,40 @@ const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) 
           transform: 'none',
         }}
       >
-        {/* Header adaptativo - sin botón X duplicado */}
+        {/* Header con botón de cerrar personalizado */}
         <DialogHeader className="px-4 py-4 sm:px-6 sm:py-5 bg-gradient-to-r from-violet-50 via-purple-50 to-fuchsia-50 border-b border-violet-200/50 flex-shrink-0">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 flex items-center justify-center shadow-lg">
-              <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <DialogTitle className="text-lg sm:text-xl font-bold text-slate-800 mb-1 truncate">
-                Editar Episodio
-              </DialogTitle>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-slate-600">
-                <div className="flex items-center gap-1">
-                  <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="truncate">{new Date(formData.date).toLocaleDateString('es-ES', { 
-                    weekday: 'short', 
-                    day: 'numeric', 
-                    month: 'short'
-                  })}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span>{formData.time}</span>
+          <div className="flex items-center justify-between min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <DialogTitle className="text-lg sm:text-xl font-bold text-slate-800 mb-1 truncate">
+                  Editar Episodio
+                </DialogTitle>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-slate-600">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="truncate">{new Date(formData.date).toLocaleDateString('es-ES', { 
+                      weekday: 'short', 
+                      day: 'numeric', 
+                      month: 'short'
+                    })}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span>{formData.time}</span>
+                  </div>
                 </div>
               </div>
             </div>
+            {/* Botón de cerrar personalizado */}
+            <button
+              onClick={onCancel}
+              className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/80 hover:bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-800 transition-all duration-200 shadow-sm hover:shadow-md mobile-touch-target"
+            >
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
+            </button>
           </div>
         </DialogHeader>
         

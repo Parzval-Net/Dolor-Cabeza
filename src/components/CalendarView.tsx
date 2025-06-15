@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
@@ -91,11 +92,11 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
-          <div className="bg-slate-800 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-slate-600 w-full max-w-4xl">
+          <div className="bg-slate-800 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-slate-600 w-full max-w-4xl safari-calendar-container">
             <Calendar
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
-              className="p-0 w-full calendar-light-text"
+              className="p-0 w-full calendar-light-text safari-calendar-wrapper"
               numberOfMonths={1}
               onDayClick={handleDayClick}
               selected={selectedDay}
@@ -103,19 +104,19 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
             />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
+            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Leve (1-3)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
+            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-orange-500 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Moderado (4-6)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
+            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-red-500 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Severo (7-8)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
+            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-red-700 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Extremo (9-10)</span>
             </div>
@@ -133,7 +134,7 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           <CardContent>
             <div className="space-y-4">
               {selectedDayEntries.map(entry => (
-                <div key={entry.id} className="bg-white/90 backdrop-blur-sm p-5 rounded-2xl border border-white/40 shadow-lg">
+                <div key={entry.id} className="glass-card p-5 rounded-2xl border border-white/40 shadow-lg">
                   <div className="flex items-center space-x-4">
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-xl text-white font-bold text-lg`}>
                       {entry.intensity}

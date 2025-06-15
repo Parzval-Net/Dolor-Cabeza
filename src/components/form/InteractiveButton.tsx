@@ -17,7 +17,7 @@ const InteractiveButton = ({
   variant = 'primary',
   className = ''
 }: InteractiveButtonProps) => {
-  const baseClasses = "text-sm font-medium rounded-2xl transition-all duration-300 border-2 px-4 py-3 relative overflow-hidden group";
+  const baseClasses = "text-sm font-medium rounded-2xl transition-all duration-300 border-2 px-4 py-3 relative overflow-hidden group safari-interactive-button";
   
   const getVariantClasses = () => {
     switch (variant) {

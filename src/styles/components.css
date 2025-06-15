@@ -45,13 +45,52 @@
   .intensity-9 { @apply bg-red-700 shadow-red-500; }
   .intensity-10 { @apply bg-red-800 shadow-red-600; }
 
-  /* Safari mobile specific fixes */
+  /* Safari mobile specific fixes for all interactive elements */
   @supports (-webkit-touch-callout: none) {
     .glass-card,
     .glass-card-dark {
       background: rgba(255, 255, 255, 0.95) !important;
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    .safari-button-fix,
+    .safari-select-fix,
+    .safari-pagination-fix,
+    .safari-toggle-fix,
+    .safari-badge-fix,
+    .safari-interactive-button,
+    .safari-form-button,
+    .safari-calendar-fix,
+    .safari-nav-button-fix,
+    .safari-day-button-fix {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(148, 163, 184, 0.8) !important;
+    }
+
+    .safari-button-fix[data-state="checked"],
+    .safari-toggle-fix[data-state="on"],
+    .safari-interactive-button.selected {
+      background: linear-gradient(to right, rgb(139, 92, 246), rgb(147, 51, 234)) !important;
+      color: white !important;
+      border-color: rgb(139, 92, 246) !important;
+    }
+
+    .safari-popover-fix,
+    .safari-select-item-fix {
+      background-color: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    .safari-calendar-fix .rdp-day {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    }
+
+    .safari-calendar-fix .rdp-day_selected {
+      background-color: rgb(139, 92, 246) !important;
+      color: white !important;
     }
   }
 }

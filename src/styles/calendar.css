@@ -6,3 +6,74 @@
 @import './calendar/calendar-dark-text.css';
 @import './calendar/calendar-safari-fixes.css';
 @import './calendar/calendar-intensity.css';
+
+@layer components {
+  /* Tema oscuro mejorado para el calendario */
+  .calendar-dark-theme {
+    @apply text-slate-100;
+  }
+
+  .calendar-dark-theme .rdp-day {
+    @apply bg-slate-700/50 border border-slate-600 text-slate-200 hover:bg-slate-600 hover:text-white transition-all duration-200;
+  }
+
+  .calendar-dark-theme .rdp-day_selected {
+    @apply bg-violet-600 text-white border-violet-500 hover:bg-violet-700;
+  }
+
+  .calendar-dark-theme .rdp-day_today {
+    @apply bg-violet-500 text-white border-violet-400 ring-2 ring-violet-400/50;
+  }
+
+  .calendar-dark-theme .rdp-day_outside {
+    @apply text-slate-500 bg-slate-800/30 border-slate-700;
+  }
+
+  .calendar-dark-theme .rdp-head_cell {
+    @apply text-slate-300 font-bold;
+  }
+
+  .calendar-dark-theme .rdp-caption_label {
+    @apply text-slate-100 font-bold;
+  }
+
+  .calendar-dark-theme .rdp-nav_button {
+    @apply bg-slate-700 border border-slate-600 text-slate-200 hover:bg-slate-600 hover:text-white;
+  }
+
+  /* Arreglos específicos para Safari */
+  @supports (-webkit-touch-callout: none) {
+    .calendar-dark-theme .rdp-day {
+      background-color: rgba(51, 65, 85, 0.5) !important;
+      border: 1px solid rgba(100, 116, 139, 0.8) !important;
+      color: rgb(226, 232, 240) !important;
+    }
+
+    .calendar-dark-theme .rdp-day_selected {
+      background-color: rgb(139, 92, 246) !important;
+      border: 1px solid rgb(124, 58, 237) !important;
+      color: white !important;
+    }
+
+    .calendar-dark-theme .rdp-day_today {
+      background-color: rgb(147, 51, 234) !important;
+      border: 1px solid rgb(139, 92, 246) !important;
+      color: white !important;
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5) !important;
+    }
+
+    .calendar-dark-theme .rdp-nav_button {
+      background-color: rgba(51, 65, 85, 0.8) !important;
+      border: 1px solid rgba(100, 116, 139, 0.8) !important;
+      color: rgb(203, 213, 225) !important;
+    }
+
+    .calendar-dark-theme .rdp-caption_label {
+      color: rgb(248, 250, 252) !important;
+    }
+
+    .calendar-dark-theme .rdp-head_cell {
+      color: rgb(203, 213, 225) !important;
+    }
+  }
+}

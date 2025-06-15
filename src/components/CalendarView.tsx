@@ -47,7 +47,7 @@ export default function CalendarView({ entries }: CalendarViewProps) {
     const dayEntries = entriesByDate[dateKey];
     
     if (!dayEntries || dayEntries.length === 0) {
-      return <span>{day.getDate()}</span>;
+      return <span className="text-slate-100 font-semibold">{day.getDate()}</span>;
     }
 
     const maxIntensity = Math.max(...dayEntries.map(e => e.intensity));
@@ -55,9 +55,9 @@ export default function CalendarView({ entries }: CalendarViewProps) {
 
     return (
       <div className="w-full h-full flex items-center justify-center relative">
-        <span className="z-10 font-semibold">{day.getDate()}</span>
+        <span className="z-10 font-bold text-slate-100">{day.getDate()}</span>
         <div 
-          className={`absolute bottom-1 right-1 w-2 h-2 rounded-full ${colorClass} border border-white shadow-sm`}
+          className={`absolute bottom-1 right-1 w-3 h-3 rounded-full ${colorClass} border border-slate-800 shadow-lg`}
         />
       </div>
     );
@@ -89,21 +89,41 @@ export default function CalendarView({ entries }: CalendarViewProps) {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4">
-              <div className="bg-white rounded-xl p-4 shadow-inner border">
+              <div className="bg-slate-800 rounded-xl p-6 shadow-inner border border-slate-700">
                 <Calendar
                   mode="single"
                   selected={selectedDay}
                   onSelect={setSelectedDay}
-                  className="w-full"
+                  className="w-full calendar-dark-theme"
                   numberOfMonths={1}
                   modifiers={{
                     hasEpisodes: datesWithEpisodes
                   }}
                   modifiersClassNames={{
-                    hasEpisodes: "bg-blue-50 border-blue-200"
+                    hasEpisodes: "bg-slate-700 border-slate-600"
                   }}
                   components={{
                     DayContent: ({ date }) => renderDayContent(date)
+                  }}
+                  classNames={{
+                    months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                    month: "space-y-4",
+                    caption: "flex justify-center pt-1 relative items-center",
+                    caption_label: "text-xl font-bold text-slate-100",
+                    nav: "space-x-1 flex items-center",
+                    nav_button: "h-9 w-9 bg-slate-700 border border-slate-600 text-slate-200 hover:bg-slate-600 hover:text-white rounded-lg transition-all duration-200",
+                    nav_button_previous: "absolute left-1",
+                    nav_button_next: "absolute right-1",
+                    table: "w-full border-collapse space-y-1",
+                    head_row: "flex",
+                    head_cell: "text-slate-300 rounded-md w-12 h-12 font-bold text-sm flex items-center justify-center",
+                    row: "flex w-full mt-1",
+                    cell: "h-12 w-12 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+                    day: "h-12 w-12 p-0 font-semibold bg-slate-700/50 border border-slate-600 text-slate-200 hover:bg-slate-600 hover:text-white rounded-lg transition-all duration-200 flex items-center justify-center relative",
+                    day_selected: "bg-violet-600 text-white border-violet-500 hover:bg-violet-700",
+                    day_today: "bg-violet-500 text-white border-violet-400 ring-2 ring-violet-400/50",
+                    day_outside: "text-slate-500 bg-slate-800/30 border-slate-700",
+                    day_disabled: "text-slate-600 bg-slate-800/20 border-slate-700",
                   }}
                 />
               </div>
@@ -115,23 +135,10 @@ export default function CalendarView({ entries }: CalendarViewProps) {
         <div className="space-y-4">
           <IntensityLegend />
           
-          {selectedDay ? (
-            <EpisodeListForDay 
-              date={selectedDay} 
-              entries={selectedEntries} 
-            />
-          ) : (
-            <Card className="glass-card-dark">
-              <CardContent className="p-6 text-center">
-                <div className="text-slate-500">
-                  <p className="mb-2">📅</p>
-                  <p className="text-sm">
-                    Selecciona una fecha en el calendario para ver los episodios registrados
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          <EpisodeListForDay 
+            date={selectedDay} 
+            entries={selectedEntries} 
+          />
 
           {/* Resumen rápido */}
           <Card className="glass-card-dark">

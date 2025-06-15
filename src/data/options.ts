@@ -1,5 +1,7 @@
 
-export const medicationOptions = [
+import { MedicationOption, TriggerOption } from '@/types/headache';
+
+export const medicationOptions: MedicationOption[] = [
   // Medicamentos comunes en Chile para migrañas
   { id: 'med1', name: 'Paracetamol', dosage: '500mg', type: 'acute', isCommon: true },
   { id: 'med2', name: 'Ibuprofeno', dosage: '400mg', type: 'acute', isCommon: true },
@@ -13,7 +15,7 @@ export const medicationOptions = [
   { id: 'med10', name: 'Topiramato', dosage: '25mg', type: 'preventive', isCommon: false },
 ];
 
-export const triggerOptions = [
+export const triggerOptions: TriggerOption[] = [
   { id: 'trig1', name: 'Estrés', category: 'stress' },
   { id: 'trig2', name: 'Cafeína', category: 'food' },
   { id: 'trig3', name: 'Chocolate', category: 'food' },

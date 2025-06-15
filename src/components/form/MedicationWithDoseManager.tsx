@@ -95,6 +95,7 @@ const MedicationWithDoseManager = ({
         ? { 
             ...med, 
             dosage: med.customDosage || med.dosage,
+            customDosage: med.customDosage || med.dosage,
             isEditing: false 
           }
         : med

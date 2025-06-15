@@ -84,41 +84,44 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 animate-fade-in">
       <Card className="glass-card-dark">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-slate-800">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-xl font-bold text-slate-800">
             Calendario de Migrañas
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col items-center">
-          <div className="bg-slate-800 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-slate-600 w-full max-w-4xl safari-calendar-container">
+        <CardContent className="p-4">
+          {/* Calendario más compacto */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-slate-200 w-full max-w-2xl mx-auto">
             <Calendar
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
-              className="p-0 w-full calendar-light-text safari-calendar-wrapper"
+              className="w-full calendar-compact"
               numberOfMonths={1}
               onDayClick={handleDayClick}
               selected={selectedDay}
               mode="single"
             />
           </div>
-          <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
-              <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-lg"></div>
-              <span className="text-slate-800 font-semibold">Leve (1-3)</span>
+          
+          {/* Leyenda más compacta */}
+          <div className="mt-4 flex flex-wrap justify-center gap-3 text-sm">
+            <div className="flex items-center space-x-2 bg-white/80 px-3 py-2 rounded-lg shadow border border-emerald-200">
+              <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+              <span className="text-slate-700 font-medium">Leve (1-3)</span>
             </div>
-            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
-              <div className="w-4 h-4 bg-orange-500 rounded-full shadow-lg"></div>
-              <span className="text-slate-800 font-semibold">Moderado (4-6)</span>
+            <div className="flex items-center space-x-2 bg-white/80 px-3 py-2 rounded-lg shadow border border-orange-200">
+              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+              <span className="text-slate-700 font-medium">Moderado (4-6)</span>
             </div>
-            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
-              <div className="w-4 h-4 bg-red-500 rounded-full shadow-lg"></div>
-              <span className="text-slate-800 font-semibold">Severo (7-8)</span>
+            <div className="flex items-center space-x-2 bg-white/80 px-3 py-2 rounded-lg shadow border border-red-200">
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <span className="text-slate-700 font-medium">Severo (7-8)</span>
             </div>
-            <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl shadow-lg border border-white/30">
-              <div className="w-4 h-4 bg-red-700 rounded-full shadow-lg"></div>
-              <span className="text-slate-800 font-semibold">Extremo (9-10)</span>
+            <div className="flex items-center space-x-2 bg-white/80 px-3 py-2 rounded-lg shadow border border-red-300">
+              <div className="w-3 h-3 bg-red-700 rounded-full"></div>
+              <span className="text-slate-700 font-medium">Extremo (9-10)</span>
             </div>
           </div>
         </CardContent>
@@ -126,22 +129,22 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
       
       {selectedDayEntries.length > 0 && (
         <Card className="glass-card-dark">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold text-slate-800">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-bold text-slate-800">
               Detalles del {selectedDay?.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-4">
+            <div className="space-y-3">
               {selectedDayEntries.map(entry => (
-                <div key={entry.id} className="glass-card p-5 rounded-2xl border border-white/40 shadow-lg">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-xl text-white font-bold text-lg`}>
+                <div key={entry.id} className="bg-white/90 p-4 rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow text-white font-bold`}>
                       {entry.intensity}
                     </div>
                     <div className="flex-1">
-                      <p className="font-bold text-slate-900 text-lg">Episodio a las {entry.time}</p>
-                      <p className="text-slate-700 font-medium">{entry.duration}h de duración</p>
+                      <p className="font-semibold text-slate-800">Episodio a las {entry.time}</p>
+                      <p className="text-slate-600 text-sm">{entry.duration}h de duración</p>
                     </div>
                   </div>
                 </div>
@@ -153,14 +156,14 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
 
       {selectedDay && selectedDayEntries.length === 0 && (
         <Card className="glass-card-dark">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold text-slate-800">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-bold text-slate-800">
               {selectedDay.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <p className="text-lg text-slate-700 font-medium">No hay episodios registrados en esta fecha.</p>
+          <CardContent className="p-4">
+            <div className="text-center py-6">
+              <p className="text-slate-600">No hay episodios registrados en esta fecha.</p>
             </div>
           </CardContent>
         </Card>

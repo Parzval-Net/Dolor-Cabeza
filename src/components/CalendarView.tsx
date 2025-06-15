@@ -6,7 +6,7 @@ import IntensityLegend from "./IntensityLegend";
 import { EpisodeListForDay } from "./EpisodeListForDay";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Returns intensity string for css classes
+// Get correct intensity key for day classes
 const getIntensityKey = (maxIntensity: number) => {
   if (maxIntensity <= 3) return "intensity-level-1";
   if (maxIntensity <= 6) return "intensity-level-2";
@@ -24,7 +24,7 @@ interface CalendarViewProps {
 export default function CalendarView({ entries }: CalendarViewProps) {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>();
 
-  // Mapea cada fecha a su clase de intensidad
+  // Map (string date) => entries & map (string date) => className
   const { entriesByDate, daysWithIntensityKey } = useMemo(() => {
     const map: Record<string, HeadacheEntry[]> = {};
     const classMap: Record<string, string> = {};
@@ -42,17 +42,7 @@ export default function CalendarView({ entries }: CalendarViewProps) {
     };
   }, [entries]);
 
-  // Function to render content inside a day cell (shows only the number; the dot is via css using class)
-  function renderDayContent(day: Date) {
-    return (
-      <div className="w-full h-full flex items-center justify-center relative">
-        <span className="z-10">{day.getDate()}</span>
-        {/* The visual indication is now handled by className */}
-      </div>
-    );
-  }
-
-  // Map date to modifiers for highlighting
+  // Prepare modifiers and their classNames for DayPicker
   const modifiers: Record<string, (date: Date) => boolean> = {};
   const modifiersClassNames: Record<string, string> = {};
 
@@ -61,6 +51,15 @@ export default function CalendarView({ entries }: CalendarViewProps) {
     modifiers[modName] = (date: Date) => formatDateKey(date) === dateStr;
     modifiersClassNames[modName] = intensityClass;
   });
+
+  // Custom Day component that just delegates to default day rendering (props.children) - CSS classes will add dots
+  function CustomDay(props: any) {
+    return (
+      <div className="w-full h-full flex items-center justify-center relative">
+        <span className="z-10">{props.day.getDate()}</span>
+      </div>
+    );
+  }
 
   const selectedEntries = selectedDay
     ? entriesByDate[formatDateKey(selectedDay)] || []
@@ -86,7 +85,9 @@ export default function CalendarView({ entries }: CalendarViewProps) {
                   numberOfMonths={1}
                   modifiers={modifiers}
                   modifiersClassNames={modifiersClassNames}
-                  dayContent={renderDayContent}
+                  components={{
+                    Day: CustomDay,
+                  }}
                 />
               </div>
             </CardContent>

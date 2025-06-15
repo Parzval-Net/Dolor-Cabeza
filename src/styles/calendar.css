@@ -1,36 +1,35 @@
 
-/* Import modular calendar styles */
+/* Estilos optimizados y unificados para el calendario */
 @import './calendar/calendar-base.css';
-@import './calendar/calendar-compact.css';
-@import './calendar/calendar-light-text.css';
-@import './calendar/calendar-dark-text.css';
-@import './calendar/calendar-safari-fixes.css';
-@import './calendar/calendar-intensity.css';
 
 @layer components {
-  /* Tema oscuro mejorado para el calendario */
+  /* Tema principal del calendario optimizado para móvil y escritorio */
   .calendar-dark-theme {
     @apply text-slate-100;
   }
 
   .calendar-dark-theme .rdp-day {
-    @apply bg-slate-700/50 border border-slate-600 text-slate-200 hover:bg-slate-600 hover:text-white transition-all duration-200;
+    @apply bg-slate-700/60 border border-slate-600/70 text-slate-200 hover:bg-slate-600 hover:text-white transition-all duration-200 touch-manipulation;
+    /* Mejor contraste y táctil en móviles */
+    min-height: 32px;
+    font-weight: 600;
   }
 
   .calendar-dark-theme .rdp-day_selected {
-    @apply bg-violet-600 text-white border-violet-500 hover:bg-violet-700;
+    @apply bg-violet-600 text-white border-violet-500 hover:bg-violet-700 shadow-lg;
   }
 
   .calendar-dark-theme .rdp-day_today {
-    @apply bg-violet-500 text-white border-violet-400 ring-2 ring-violet-400/50;
+    @apply bg-violet-500 text-white border-violet-400 shadow-lg;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
   .calendar-dark-theme .rdp-day_outside {
-    @apply text-slate-500 bg-slate-800/30 border-slate-700;
+    @apply text-slate-500 bg-slate-800/30 border-slate-700/50;
   }
 
   .calendar-dark-theme .rdp-head_cell {
-    @apply text-slate-300 font-bold;
+    @apply text-slate-300 font-bold text-center;
   }
 
   .calendar-dark-theme .rdp-caption_label {
@@ -38,34 +37,51 @@
   }
 
   .calendar-dark-theme .rdp-nav_button {
-    @apply bg-slate-700 border border-slate-600 text-slate-200 hover:bg-slate-600 hover:text-white;
+    @apply bg-slate-700/80 border border-slate-600 text-slate-200 hover:bg-slate-600 hover:text-white transition-all duration-200 touch-manipulation;
   }
 
-  /* Arreglos específicos para Safari */
+  /* Optimizaciones específicas para Safari y dispositivos móviles */
   @supports (-webkit-touch-callout: none) {
+    .calendar-dark-theme {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
     .calendar-dark-theme .rdp-day {
-      background-color: rgba(51, 65, 85, 0.5) !important;
+      background: rgba(51, 65, 85, 0.7) !important;
       border: 1px solid rgba(100, 116, 139, 0.8) !important;
       color: rgb(226, 232, 240) !important;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 36px !important;
+    }
+
+    .calendar-dark-theme .rdp-day:hover,
+    .calendar-dark-theme .rdp-day:active {
+      background: rgba(71, 85, 105, 0.9) !important;
+      color: white !important;
+      transform: scale(0.98);
     }
 
     .calendar-dark-theme .rdp-day_selected {
-      background-color: rgb(139, 92, 246) !important;
+      background: rgb(139, 92, 246) !important;
       border: 1px solid rgb(124, 58, 237) !important;
       color: white !important;
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3) !important;
     }
 
     .calendar-dark-theme .rdp-day_today {
-      background-color: rgb(147, 51, 234) !important;
+      background: rgb(147, 51, 234) !important;
       border: 1px solid rgb(139, 92, 246) !important;
       color: white !important;
       box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5) !important;
     }
 
     .calendar-dark-theme .rdp-nav_button {
-      background-color: rgba(51, 65, 85, 0.8) !important;
+      background: rgba(51, 65, 85, 0.8) !important;
       border: 1px solid rgba(100, 116, 139, 0.8) !important;
       color: rgb(203, 213, 225) !important;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .calendar-dark-theme .rdp-caption_label {
@@ -74,6 +90,59 @@
 
     .calendar-dark-theme .rdp-head_cell {
       color: rgb(203, 213, 225) !important;
+    }
+
+    /* Arreglo del borde amarillo fosforescente en Safari */
+    .calendar-dark-theme .rdp-day,
+    .calendar-dark-theme .rdp-nav_button,
+    .calendar-dark-theme button {
+      outline: none !important;
+      -webkit-appearance: none !important;
+      -webkit-focus-ring-color: transparent !important;
+      border-color: rgba(100, 116, 139, 0.8) !important;
+    }
+
+    .calendar-dark-theme .rdp-day:focus,
+    .calendar-dark-theme .rdp-nav_button:focus {
+      outline: none !important;
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5) !important;
+      border-color: rgb(139, 92, 246) !important;
+    }
+  }
+
+  /* Mejoras responsivas generales */
+  @media (max-width: 640px) {
+    .calendar-dark-theme .rdp-day {
+      font-size: 12px;
+      min-height: 32px;
+      font-weight: 700;
+    }
+
+    .calendar-dark-theme .rdp-caption_label {
+      font-size: 18px;
+    }
+
+    .calendar-dark-theme .rdp-head_cell {
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .calendar-dark-theme .rdp-nav_button {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  /* Clase auxiliar para cards con mejor consistencia visual */
+  .glass-card-dark {
+    @apply bg-white/95 backdrop-blur-sm border-slate-200/50 shadow-lg;
+  }
+
+  @supports (-webkit-backdrop-filter: blur(20px)) {
+    .glass-card-dark {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
     }
   }
 }

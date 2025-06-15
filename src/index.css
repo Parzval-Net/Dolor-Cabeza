@@ -127,7 +127,7 @@
     padding-right: env(safe-area-inset-right);
   }
 
-  /* Safari mobile specific fixes */
+  /* Optimizaciones mejoradas para Safari mobile */
   @supports (-webkit-touch-callout: none) {
     body {
       background: linear-gradient(to bottom right, #f8fafc, #f3f4f6, #faf5ff) !important;
@@ -137,9 +137,24 @@
     .glass-card-dark,
     .glass-card-mobile {
       background: rgba(255, 255, 255, 0.95) !important;
-      border: 1px solid rgba(167, 139, 250, 0.4) !important;
+      border: 1px solid rgba(167, 139, 250, 0.3) !important;
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    /* Mejora el tap highlighting en iOS */
+    button, .touch-manipulation {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    /* Arregla el problema del borde amarillo fosforescente */
+    button:focus,
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none !important;
+      -webkit-focus-ring-color: transparent !important;
     }
   }
 
@@ -147,5 +162,37 @@
   html, body {
     overflow-x: hidden;
     width: 100%;
+  }
+
+  /* Mejoras de accesibilidad táctil */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  @media (max-width: 640px) {
+    .mobile-touch-target {
+      min-height: 48px;
+      min-width: 48px;
+    }
+  }
+
+  /* Optimización para formularios en Safari */
+  .safari-form-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .safari-button-fix {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0.75rem;
+  }
+
+  .safari-interactive-button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
 }

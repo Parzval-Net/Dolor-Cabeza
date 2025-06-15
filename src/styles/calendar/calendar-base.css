@@ -1,13 +1,35 @@
 
 @layer components {
-  /* Base Calendar variables and core styles */
+  /* Variables base optimizadas para el calendario */
   .rdp {
-    --rdp-cell-size: 60px;
+    --rdp-cell-size: 48px;
     --rdp-accent-color: rgb(139 92 246);
     --rdp-background-color: rgb(248 250 252);
     --rdp-accent-color-dark: rgb(124 58 237);
     --rdp-background-color-dark: rgb(30 41 59);
-    --rdp-outline: 3px solid var(--rdp-accent-color);
-    --rdp-outline-selected: 3px solid rgba(0, 0, 0, 0.75);
+    --rdp-outline: 2px solid var(--rdp-accent-color);
+    --rdp-outline-selected: 2px solid rgba(139, 92, 246, 0.8);
+  }
+
+  @media (max-width: 640px) {
+    .rdp {
+      --rdp-cell-size: 32px;
+    }
+  }
+
+  /* Optimización de rendimiento */
+  .rdp * {
+    box-sizing: border-box;
+  }
+
+  .rdp button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+
+  .rdp button:focus-visible {
+    outline: 2px solid var(--rdp-accent-color);
+    outline-offset: 2px;
   }
 }

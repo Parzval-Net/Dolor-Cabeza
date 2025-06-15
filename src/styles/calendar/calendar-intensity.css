@@ -1,101 +1,138 @@
 
 @layer components {
-  /* Calendario con indicadores de intensidad - COMPLETAMENTE NUEVO */
+  /* Calendario con indicadores de intensidad - VERSIÓN CORREGIDA */
   .calendar-with-intensity {
-    --rdp-cell-size: 80px;
+    --rdp-cell-size: 70px;
   }
 
-  /* Estilos base para los días */
+  /* Resetear estilos base para los días */
   .calendar-with-intensity .rdp-day {
-    @apply text-slate-100 font-bold text-lg hover:bg-slate-700 hover:text-white transition-all duration-200 w-20 h-20 rounded-xl border border-transparent bg-slate-700/40 relative overflow-visible;
+    @apply text-slate-100 font-semibold text-base hover:bg-slate-700 hover:text-white transition-all duration-200 w-16 h-16 rounded-xl border border-transparent bg-slate-700/40 relative overflow-visible !important;
+    position: relative !important;
   }
 
   .calendar-with-intensity .rdp-day:hover {
-    @apply bg-slate-700 text-white scale-105 shadow-md border-slate-600;
+    @apply bg-slate-700 text-white scale-105 shadow-md border-slate-600 !important;
   }
 
   .calendar-with-intensity .rdp-day_selected {
-    @apply bg-violet-600 text-white font-bold shadow-lg scale-105 border-violet-500;
+    @apply bg-violet-600 text-white font-bold shadow-lg scale-105 border-violet-500 !important;
   }
 
   .calendar-with-intensity .rdp-day_today {
-    @apply bg-violet-500 text-white font-bold ring-2 ring-violet-400 shadow-lg border-violet-400;
+    @apply bg-violet-500 text-white font-bold ring-2 ring-violet-400 shadow-lg border-violet-400 !important;
   }
 
   .calendar-with-intensity .rdp-day_outside {
-    @apply text-slate-500 font-medium bg-slate-800/20;
+    @apply text-slate-500 font-medium bg-slate-800/20 !important;
   }
 
   .calendar-with-intensity .rdp-day_disabled {
-    @apply text-slate-600 bg-slate-800/10;
+    @apply text-slate-600 bg-slate-800/10 !important;
   }
 
   /* Headers del calendario */
   .calendar-with-intensity .rdp-head_cell {
-    @apply text-slate-200 font-bold text-lg w-20 h-12;
+    @apply text-slate-200 font-bold text-base w-16 h-10 !important;
   }
 
   .calendar-with-intensity .rdp-caption_label {
-    @apply text-slate-100 font-bold text-2xl;
+    @apply text-slate-100 font-bold text-xl !important;
   }
 
   /* Botones de navegación */
   .calendar-with-intensity .rdp-nav_button {
-    @apply text-slate-200 hover:text-white hover:bg-slate-700 w-12 h-12 rounded-full transition-all duration-200 border border-slate-600 hover:border-slate-500 bg-slate-700/60;
+    @apply text-slate-200 hover:text-white hover:bg-slate-700 w-10 h-10 rounded-full transition-all duration-200 border border-slate-600 hover:border-slate-500 bg-slate-700/60 !important;
   }
 
-  /* INDICADORES DE INTENSIDAD - NUEVOS NOMBRES Y ESTILOS */
+  /* INDICADORES DE INTENSIDAD CON MÁXIMA ESPECIFICIDAD */
   
   /* Intensidad LEVE (1-3) - Verde */
-  .calendar-with-intensity .intensity-mild {
-    @apply bg-emerald-500/30 border-emerald-400 relative;
+  .calendar-with-intensity .rdp-day.intensity-mild {
+    background-color: rgba(16, 185, 129, 0.3) !important;
+    border-color: rgb(52, 211, 153) !important;
+    border-width: 2px !important;
   }
   
-  .calendar-with-intensity .intensity-mild::after {
-    content: '';
-    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
-    background: #10b981;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.9);
+  .calendar-with-intensity .rdp-day.intensity-mild::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 2px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: #10b981 !important;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+    border: 2px solid rgba(255, 255, 255, 0.9) !important;
+    z-index: 10 !important;
   }
 
   /* Intensidad MODERADA (4-6) - Naranja */
-  .calendar-with-intensity .intensity-moderate {
-    @apply bg-orange-500/30 border-orange-400 relative;
+  .calendar-with-intensity .rdp-day.intensity-moderate {
+    background-color: rgba(249, 115, 22, 0.3) !important;
+    border-color: rgb(251, 146, 60) !important;
+    border-width: 2px !important;
   }
   
-  .calendar-with-intensity .intensity-moderate::after {
-    content: '';
-    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
-    background: #f97316;
-    box-shadow: 0 0 8px rgba(249, 115, 22, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.9);
+  .calendar-with-intensity .rdp-day.intensity-moderate::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 2px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: #f97316 !important;
+    box-shadow: 0 0 6px rgba(249, 115, 22, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+    border: 2px solid rgba(255, 255, 255, 0.9) !important;
+    z-index: 10 !important;
   }
 
   /* Intensidad SEVERA (7-8) - Rojo claro */
-  .calendar-with-intensity .intensity-severe {
-    @apply bg-red-500/30 border-red-400 relative;
+  .calendar-with-intensity .rdp-day.intensity-severe {
+    background-color: rgba(239, 68, 68, 0.3) !important;
+    border-color: rgb(248, 113, 113) !important;
+    border-width: 2px !important;
   }
   
-  .calendar-with-intensity .intensity-severe::after {
-    content: '';
-    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
-    background: #ef4444;
-    box-shadow: 0 0 8px rgba(239, 68, 68, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.9);
+  .calendar-with-intensity .rdp-day.intensity-severe::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 2px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: #ef4444 !important;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+    border: 2px solid rgba(255, 255, 255, 0.9) !important;
+    z-index: 10 !important;
   }
 
   /* Intensidad EXTREMA (9-10) - Rojo oscuro */
-  .calendar-with-intensity .intensity-extreme {
-    @apply bg-red-700/30 border-red-600 relative;
+  .calendar-with-intensity .rdp-day.intensity-extreme {
+    background-color: rgba(220, 38, 38, 0.3) !important;
+    border-color: rgb(239, 68, 68) !important;
+    border-width: 2px !important;
   }
   
-  .calendar-with-intensity .intensity-extreme::after {
-    content: '';
-    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
-    background: #dc2626;
-    box-shadow: 0 0 8px rgba(220, 38, 38, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.9);
+  .calendar-with-intensity .rdp-day.intensity-extreme::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 2px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: #dc2626 !important;
+    box-shadow: 0 0 6px rgba(220, 38, 38, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+    border: 2px solid rgba(255, 255, 255, 0.9) !important;
+    z-index: 10 !important;
   }
 
   /* Días seleccionados con indicadores */
@@ -103,22 +140,32 @@
   .calendar-with-intensity .rdp-day_selected.intensity-moderate::after,
   .calendar-with-intensity .rdp-day_selected.intensity-severe::after,
   .calendar-with-intensity .rdp-day_selected.intensity-extreme::after {
-    @apply bg-white;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(139, 92, 246, 0.8);
+    background: white !important;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.9) !important;
+    border: 2px solid rgba(139, 92, 246, 0.8) !important;
   }
 
-  /* Espaciado de la tabla */
+  /* Espaciado y layout de la tabla */
   .calendar-with-intensity .rdp-table {
-    @apply mx-auto w-full;
+    @apply mx-auto w-full !important;
   }
 
   .calendar-with-intensity .rdp-row {
-    @apply mb-2;
+    @apply mb-2 !important;
   }
 
   /* Asegurar que los indicadores estén siempre visibles */
   .calendar-with-intensity .rdp-day[class*="intensity-"] {
-    @apply relative overflow-visible;
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  /* Contenedor del calendario */
+  .calendar-with-intensity .rdp-months {
+    @apply flex-col sm:flex-row !important;
+  }
+
+  .calendar-with-intensity .rdp-month {
+    @apply space-y-4 !important;
   }
 }

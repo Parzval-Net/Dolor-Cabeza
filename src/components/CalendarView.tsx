@@ -16,6 +16,8 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
     const entryDays: Record<string, number> = {};
     const newEntriesByDate: Record<string, HeadacheEntry[]> = {};
 
+    console.log('Processing entries:', entries);
+
     // Procesar entradas y agrupar por fecha
     entries.forEach((entry) => {
       const date = entry.date;
@@ -33,6 +35,8 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
       newEntriesByDate[date].push(entry);
     });
 
+    console.log('Entry days processed:', entryDays);
+
     // Crear arrays de fechas por nivel de intensidad
     const mild: Date[] = [];
     const moderate: Date[] = [];
@@ -43,19 +47,24 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
       const [year, month, day] = date.split('-').map(Number);
       const dateObj = new Date(year, month - 1, day);
 
+      console.log(`Processing date ${date} with intensity ${intensity}`);
+
       if (intensity <= 3) {
         mild.push(dateObj);
+        console.log('Added to mild:', dateObj);
       } else if (intensity <= 6) {
         moderate.push(dateObj);
+        console.log('Added to moderate:', dateObj);
       } else if (intensity <= 8) {
         severe.push(dateObj);
+        console.log('Added to severe:', dateObj);
       } else {
         extreme.push(dateObj);
+        console.log('Added to extreme:', dateObj);
       }
     });
 
-    console.log('Processed entry days:', entryDays);
-    console.log('Calendar modifiers:', { mild, moderate, severe, extreme });
+    console.log('Final modifiers:', { mild, moderate, severe, extreme });
 
     return {
       modifiers: {
@@ -99,10 +108,10 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
 
   return (
     <div className="w-full max-w-none animate-fade-in">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
         
-        {/* Calendario */}
-        <div className="lg:col-span-2">
+        {/* Calendario - ocupa más espacio en pantallas grandes */}
+        <div className="xl:col-span-3">
           <Card className="glass-card-dark h-full">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-bold text-slate-800">
@@ -110,11 +119,11 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="bg-slate-800 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-slate-600 w-full">
+              <div className="bg-slate-800 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-slate-600 w-full overflow-hidden">
                 <Calendar
                   modifiers={modifiers}
                   modifiersClassNames={modifiersClassNames}
-                  className="w-full calendar-with-intensity mx-auto"
+                  className="w-full calendar-with-intensity mx-auto [&_.rdp-table]:w-full [&_.rdp-months]:justify-center"
                   numberOfMonths={1}
                   onDayClick={handleDayClick}
                   selected={selectedDay}
@@ -125,8 +134,8 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           </Card>
         </div>
 
-        {/* Panel lateral */}
-        <div className="lg:col-span-1 space-y-4">
+        {/* Panel lateral - más espacio en pantallas grandes */}
+        <div className="xl:col-span-2 space-y-4">
           {/* Leyenda */}
           <Card className="glass-card-dark">
             <CardHeader className="pb-3">

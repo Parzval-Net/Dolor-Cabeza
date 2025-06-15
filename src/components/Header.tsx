@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -139,7 +138,7 @@ const Header = ({ onNewEntry }: HeaderProps) => {
             onClick={onNewEntry}
             className="bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 hover:from-violet-600 hover:via-purple-600 hover:to-fuchsia-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 rounded-2xl px-3 py-2 lg:px-6 lg:py-3 active:scale-95 text-sm lg:text-base"
           >
-            <span className="hidden sm:inline mr-2">Nuevo</span>
+            <span className="hidden sm:inline mr-2">Registrar dolor</span>
             <span className="text-lg">+</span>
           </Button>
         </div>

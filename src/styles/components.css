@@ -1,11 +1,19 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/60 backdrop-blur-xl border border-white/20 shadow-xl shadow-purple-100/20;
+    @apply bg-white/90 backdrop-blur-xl border border-white/30 shadow-xl shadow-purple-100/20;
+    /* Safari fallback */
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
   
   .glass-card-dark {
-    @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-2xl shadow-purple-200/30;
+    @apply bg-white/95 backdrop-blur-xl border border-white/40 shadow-2xl shadow-purple-200/30;
+    /* Safari fallback */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
   
   .gradient-button {
@@ -36,4 +44,14 @@
   .intensity-8 { @apply bg-red-600 shadow-red-400; }
   .intensity-9 { @apply bg-red-700 shadow-red-500; }
   .intensity-10 { @apply bg-red-800 shadow-red-600; }
+
+  /* Safari mobile specific fixes */
+  @supports (-webkit-touch-callout: none) {
+    .glass-card,
+    .glass-card-dark {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+  }
 }

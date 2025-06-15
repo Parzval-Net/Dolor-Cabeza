@@ -5,6 +5,8 @@
            bg-white text-slate-800 font-semibold
            focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500
            hover:border-slate-500 transition-colors;
+    /* Safari fallback */
+    background: rgba(255, 255, 255, 1) !important;
   }
 
   .admin-select-fixed:focus {
@@ -13,6 +15,8 @@
 
   .admin-preview-card-fixed {
     @apply bg-slate-100 border-2 border-slate-300 rounded-lg p-4;
+    /* Safari fallback */
+    background: rgba(248, 250, 252, 1) !important;
   }
 
   .admin-file-input-fixed {
@@ -22,6 +26,8 @@
            hover:file:bg-violet-200 file:transition-colors
            border-2 border-slate-400 rounded-md p-2 bg-white
            hover:border-slate-500 focus:border-violet-500;
+    /* Safari fallback */
+    background: rgba(255, 255, 255, 1) !important;
   }
 
   .admin-select {

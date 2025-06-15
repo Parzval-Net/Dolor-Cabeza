@@ -99,5 +99,23 @@
     @apply bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 text-foreground min-h-screen;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     font-feature-settings: 'cv03', 'cv04', 'cv11';
+    
+    /* Safari mobile optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Safari mobile specific fixes */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      background: linear-gradient(to bottom right, #f8fafc, #f3f4f6, #faf5ff) !important;
+    }
+    
+    .glass-card,
+    .glass-card-dark {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    }
   }
 }

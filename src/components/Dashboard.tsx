@@ -4,7 +4,7 @@ import EpisodeCountCard from './dashboard/EpisodeCountCard';
 import AverageIntensityCard from './dashboard/AverageIntensityCard';
 import TopMedicationCard from './dashboard/TopMedicationCard';
 import RecentEpisodesList from './dashboard/RecentEpisodesList';
-import SleepPatternsList from './dashboard/SleepPatternsList';
+import WeeklyPatternsList from './dashboard/WeeklyPatternsList';
 import { HeadacheEntry } from '@/types/headache';
 
 interface DashboardProps {
@@ -77,7 +77,7 @@ const Dashboard = ({ entries }: DashboardProps) => {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <RecentEpisodesList entries={recentEntries} getIntensityGradient={getIntensityGradient} />
-        <SleepPatternsList entries={monthlyEntries} />
+        <WeeklyPatternsList entries={monthlyEntries} />
       </div>
     </div>
   );

@@ -118,12 +118,12 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div 
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300"
               style={{
-                background: `linear-gradient(to br, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`
+                background: `linear-gradient(135deg, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`
               }}
             >
-              <SelectedIcon className="w-6 h-6 text-white" />
+              <SelectedIcon className="w-6 h-6 text-white drop-shadow-sm" />
             </div>
             <div>
               <h1 

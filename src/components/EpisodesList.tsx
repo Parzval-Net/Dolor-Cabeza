@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HeadacheEntry } from '@/types/headache';
 import EditEpisodeDialog from './EditEpisodeDialog';
-import { Calendar, Clock, Zap, Pill, AlertTriangle, Edit3, Trash2, User } from 'lucide-react';
+import { Calendar, Clock, Edit3, Trash2, User, Brain, Activity } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface EpisodesListProps {
@@ -15,10 +15,10 @@ interface EpisodesListProps {
 }
 
 const getIntensityColor = (intensity: number) => {
-  if (intensity <= 3) return "bg-emerald-500 text-white border-emerald-600";
-  if (intensity <= 6) return "bg-orange-500 text-white border-orange-600";
-  if (intensity <= 8) return "bg-red-500 text-white border-red-600";
-  return "bg-red-700 text-white border-red-800";
+  if (intensity <= 3) return "from-emerald-400 to-emerald-600";
+  if (intensity <= 6) return "from-orange-400 to-orange-600";
+  if (intensity <= 8) return "from-red-400 to-red-600";
+  return "from-red-600 to-red-800";
 };
 
 const getIntensityText = (intensity: number) => {
@@ -26,6 +26,23 @@ const getIntensityText = (intensity: number) => {
   if (intensity <= 6) return "Moderado";
   if (intensity <= 8) return "Severo";
   return "Extremo";
+};
+
+const getMoodEmoji = (mood: string) => {
+  const moodMap: Record<string, string> = {
+    'muy_mal': '😰',
+    'mal': '😟',
+    'regular': '😐',
+    'bien': '🙂',
+    'muy_bien': '😄'
+  };
+  return moodMap[mood] || '😐';
+};
+
+const getStressColor = (level: number) => {
+  if (level <= 2) return "bg-green-100 text-green-800 border-green-200";
+  if (level <= 3) return "bg-yellow-100 text-yellow-800 border-yellow-200";
+  return "bg-red-100 text-red-800 border-red-200";
 };
 
 const EpisodesList = ({ entries, onUpdateEntry, onDeleteEntry }: EpisodesListProps) => {
@@ -80,106 +97,121 @@ const EpisodesList = ({ entries, onUpdateEntry, onDeleteEntry }: EpisodesListPro
         <div className="grid gap-3 sm:gap-4">
           {entries.map((entry) => (
             <Card key={entry.id} className="glass-card-mobile border border-violet-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-violet-300">
-              <CardHeader className="pb-2 sm:pb-3">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <CardHeader className="pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className={`px-3 py-1 rounded-full text-sm font-bold border-2 ${getIntensityColor(entry.intensity)}`}>
-                      {entry.intensity}/10
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${getIntensityColor(entry.intensity)} flex items-center justify-center shadow-lg`}>
+                      <span className="text-white font-bold text-lg">{entry.intensity}</span>
                     </div>
-                    <span className="text-sm font-semibold text-slate-700">
-                      {getIntensityText(entry.intensity)}
-                    </span>
+                    <div className="space-y-1">
+                      <CardTitle className="text-base sm:text-lg font-bold text-slate-800 capitalize">
+                        {formatDate(entry.date)}
+                      </CardTitle>
+                      <div className="flex items-center gap-2 text-sm text-slate-600">
+                        <Clock className="w-4 h-4 text-violet-500" />
+                        <span className="font-medium">{entry.time}</span>
+                        <span className="text-violet-600 font-semibold">• {getIntensityText(entry.intensity)}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      onClick={() => setEditingEntry(entry)}
-                      variant="ghost"
-                      size="sm"
-                      className="h-9 w-9 p-0 hover:bg-violet-100 hover:text-violet-700 transition-colors rounded-lg mobile-touch-target"
-                    >
-                      <Edit3 className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(entry.id)}
-                      variant="ghost"
-                      size="sm"
-                      className="h-9 w-9 p-0 hover:bg-red-100 hover:text-red-700 transition-colors rounded-lg mobile-touch-target"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                  <div className="flex items-center gap-2 sm:flex-col sm:items-end">
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => setEditingEntry(entry)}
+                        variant="ghost"
+                        size="sm"
+                        className="h-9 w-9 p-0 hover:bg-violet-100 hover:text-violet-700 transition-colors rounded-lg"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(entry.id)}
+                        variant="ghost"
+                        size="sm"
+                        className="h-9 w-9 p-0 hover:bg-red-100 hover:text-red-700 transition-colors rounded-lg"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
-                
-                <CardTitle className="text-base sm:text-lg font-bold text-slate-800 capitalize">
-                  {formatDate(entry.date)}
-                </CardTitle>
               </CardHeader>
               
               <CardContent className="space-y-4">
-                {/* Información básica */}
-                <div className="grid grid-cols-2 gap-3 p-3 bg-white/80 rounded-xl border border-violet-200/30">
-                  <div className="flex items-center gap-2 text-sm text-slate-700">
-                    <Clock className="w-4 h-4 text-violet-500" />
-                    <span className="font-medium">{entry.time}</span>
+                {/* Estado y Estrés */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-white/80 rounded-xl p-3 border border-violet-200/30">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">{getMoodEmoji(entry.mood)}</span>
+                      <span className="text-xs font-medium text-slate-600">Estado</span>
+                    </div>
+                    <p className="text-sm font-semibold text-slate-800 capitalize">
+                      {entry.mood.replace('_', ' ')}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-700">
-                    <Zap className="w-4 h-4 text-orange-500" />
-                    <span className="font-medium">{entry.duration}h duración</span>
+                  <div className="bg-white/80 rounded-xl p-3 border border-violet-200/30">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Activity className="w-4 h-4 text-orange-500" />
+                      <span className="text-xs font-medium text-slate-600">Estrés</span>
+                    </div>
+                    <Badge className={`text-xs font-semibold ${getStressColor(entry.stressLevel)}`}>
+                      Nivel {entry.stressLevel}/5
+                    </Badge>
                   </div>
                 </div>
 
-                {/* Síntomas */}
-                {entry.symptoms && entry.symptoms.length > 0 && (
+                {/* Medicamentos */}
+                {entry.medications && entry.medications.length > 0 && (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
-                      <AlertTriangle className="w-4 h-4 text-orange-600" />
-                      Síntomas
+                      <Brain className="w-4 h-4 text-blue-600" />
+                      Medicamentos
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {entry.symptoms.slice(0, 4).map((symptom, index) => (
+                      {entry.medications.slice(0, 2).map((med, index) => (
                         <Badge 
                           key={index} 
-                          variant="secondary" 
-                          className="text-xs bg-orange-100 text-orange-800 border border-orange-200 hover:bg-orange-200 transition-colors"
+                          variant="outline" 
+                          className="text-xs text-blue-800 border-blue-300 bg-blue-50 hover:bg-blue-100 transition-colors"
                         >
-                          {symptom}
+                          {med.split('(')[0].trim()}
                         </Badge>
                       ))}
-                      {entry.symptoms.length > 4 && (
+                      {entry.medications.length > 2 && (
                         <Badge 
                           variant="outline" 
                           className="text-xs text-slate-700 border-slate-400 bg-slate-50"
                         >
-                          +{entry.symptoms.length - 4} más
+                          +{entry.medications.length - 2} más
                         </Badge>
                       )}
                     </div>
                   </div>
                 )}
 
-                {/* Medicamentos */}
-                {entry.medications && entry.medications.length > 0 && (
+                {/* Síntomas */}
+                {entry.symptoms && entry.symptoms.length > 0 && (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
-                      <Pill className="w-4 h-4 text-blue-600" />
-                      Medicamentos
+                      <span className="text-orange-600">⚡</span>
+                      Síntomas principales
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {entry.medications.slice(0, 3).map((med, index) => (
+                      {entry.symptoms.slice(0, 3).map((symptom, index) => (
                         <Badge 
                           key={index} 
-                          variant="outline" 
-                          className="text-xs text-blue-800 border-blue-300 bg-blue-50 hover:bg-blue-100 transition-colors"
+                          variant="secondary" 
+                          className="text-xs bg-orange-100 text-orange-800 border border-orange-200"
                         >
-                          {med}
+                          {symptom}
                         </Badge>
                       ))}
-                      {entry.medications.length > 3 && (
+                      {entry.symptoms.length > 3 && (
                         <Badge 
                           variant="outline" 
                           className="text-xs text-slate-700 border-slate-400 bg-slate-50"
                         >
-                          +{entry.medications.length - 3} más
+                          +{entry.symptoms.length - 3} más
                         </Badge>
                       )}
                     </div>
@@ -190,7 +222,7 @@ const EpisodesList = ({ entries, onUpdateEntry, onDeleteEntry }: EpisodesListPro
                 {entry.triggers && entry.triggers.length > 0 && (
                   <div className="pt-3 border-t border-violet-200/50">
                     <p className="text-xs sm:text-sm text-slate-700">
-                      <span className="font-bold text-slate-800">Desencadenantes:</span>{' '}
+                      <span className="font-bold text-slate-800">Posibles desencadenantes:</span>{' '}
                       {entry.triggers.slice(0, 3).join(", ")}
                       {entry.triggers.length > 3 && ` (+${entry.triggers.length - 3} más)`}
                     </p>

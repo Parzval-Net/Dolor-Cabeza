@@ -92,12 +92,12 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-4">
-          {/* Calendario con fondo oscuro para mejor contraste */}
-          <div className="bg-slate-800 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-slate-600 w-full max-w-2xl mx-auto">
+          {/* Calendario con fondo oscuro ocupando todo el ancho */}
+          <div className="bg-slate-800 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-slate-600 w-full">
             <Calendar
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
-              className="w-full calendar-light-text"
+              className="w-full calendar-light-text mx-auto"
               numberOfMonths={1}
               onDayClick={handleDayClick}
               selected={selectedDay}

@@ -135,76 +135,85 @@
   .intensity-9 { @apply bg-red-700 shadow-red-500; }
   .intensity-10 { @apply bg-red-800 shadow-red-600; }
 
-  /* Calendar specific styles with better contrast */
+  /* Enhanced Calendar styles with larger, more readable design */
   .rdp {
-    --rdp-cell-size: 40px;
+    --rdp-cell-size: 52px;
     --rdp-accent-color: rgb(139 92 246);
     --rdp-background-color: rgb(255 255 255);
     --rdp-accent-color-dark: rgb(124 58 237);
     --rdp-background-color-dark: rgb(30 41 59);
-    --rdp-outline: 2px solid var(--rdp-accent-color);
-    --rdp-outline-selected: 2px solid rgba(0, 0, 0, 0.75);
+    --rdp-outline: 3px solid var(--rdp-accent-color);
+    --rdp-outline-selected: 3px solid rgba(0, 0, 0, 0.75);
   }
 
-  /* Calendar day cells with better text contrast */
+  /* Calendar day cells with better contrast and larger size */
   .rdp-day {
-    @apply text-slate-700 font-medium hover:bg-violet-50 hover:text-violet-800 transition-colors;
+    @apply text-slate-800 font-bold text-base hover:bg-violet-100 hover:text-violet-900 transition-all duration-200 w-12 h-12 rounded-xl;
   }
 
   .rdp-day:hover {
-    @apply bg-violet-100 text-violet-900;
+    @apply bg-violet-100 text-violet-900 scale-105 shadow-md;
   }
 
   .rdp-day_selected {
-    @apply bg-violet-500 text-white font-semibold;
+    @apply bg-violet-500 text-white font-bold shadow-lg scale-105;
   }
 
   .rdp-day_today {
-    @apply bg-violet-100 text-violet-900 font-bold ring-2 ring-violet-300;
+    @apply bg-violet-200 text-violet-900 font-bold ring-3 ring-violet-400 shadow-lg;
   }
 
   .rdp-day_outside {
-    @apply text-slate-400;
+    @apply text-slate-400 font-medium;
   }
 
   .rdp-day_disabled {
     @apply text-slate-300;
   }
 
-  /* Calendar headers with better contrast */
+  /* Calendar headers with better contrast and larger text */
   .rdp-head_cell {
-    @apply text-slate-600 font-semibold text-sm;
+    @apply text-slate-700 font-bold text-base w-12 h-8;
   }
 
   .rdp-caption_label {
-    @apply text-slate-800 font-bold;
+    @apply text-slate-900 font-bold text-xl;
   }
 
-  /* Navigation buttons */
+  /* Navigation buttons - larger and more prominent */
   .rdp-nav_button {
-    @apply text-slate-600 hover:text-violet-600 hover:bg-violet-50;
+    @apply text-slate-700 hover:text-violet-700 hover:bg-violet-100 w-10 h-10 rounded-full transition-all duration-200;
   }
 
-  /* Calendar entry dot styles with better visibility */
+  /* Enhanced Calendar entry dot styles with better visibility */
   .intensity-level-1:not(.rdp-day_selected)::after,
   .intensity-level-2:not(.rdp-day_selected)::after,
   .intensity-level-3:not(.rdp-day_selected)::after,
   .intensity-level-4:not(.rdp-day_selected)::after {
     content: '';
-    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full shadow-sm;
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full shadow-lg border border-white;
   }
   
-  .intensity-level-1::after { @apply bg-emerald-500 shadow-emerald-300; }
-  .intensity-level-2::after { @apply bg-orange-500 shadow-orange-300; }
-  .intensity-level-3::after { @apply bg-red-500 shadow-red-300; }
-  .intensity-level-4::after { @apply bg-red-700 shadow-red-500; }
+  .intensity-level-1::after { @apply bg-emerald-500 shadow-emerald-400; }
+  .intensity-level-2::after { @apply bg-orange-500 shadow-orange-400; }
+  .intensity-level-3::after { @apply bg-red-500 shadow-red-400; }
+  .intensity-level-4::after { @apply bg-red-700 shadow-red-600; }
 
   /* Selected day with intensity dots */
   .rdp-day_selected.intensity-level-1::after,
   .rdp-day_selected.intensity-level-2::after,
   .rdp-day_selected.intensity-level-3::after,
   .rdp-day_selected.intensity-level-4::after {
-    @apply bg-white shadow-white/50;
+    @apply bg-white shadow-white/80 border border-violet-300;
+  }
+
+  /* Calendar table spacing */
+  .rdp-table {
+    @apply mx-auto;
+  }
+
+  .rdp-row {
+    @apply mb-1;
   }
   
   .floating-animation {

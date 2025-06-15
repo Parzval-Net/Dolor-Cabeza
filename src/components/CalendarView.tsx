@@ -84,75 +84,86 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in grid grid-cols-1 md:grid-cols-3 gap-6">
-      <Card className="glass-card-dark md:col-span-2">
+    <div className="space-y-6 animate-fade-in">
+      <Card className="glass-card-dark">
         <CardHeader>
-          <CardTitle className="text-xl font-bold text-slate-800">
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
             Calendario de Migrañas
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/30">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/40 w-full max-w-md">
             <Calendar
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
-              className="p-0"
+              className="p-0 w-full"
               numberOfMonths={1}
               onDayClick={handleDayClick}
               selected={selectedDay}
             />
           </div>
-          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
-            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
-              <div className="w-3 h-3 bg-emerald-500 rounded-full shadow-sm"></div>
-              <span className="text-slate-700 font-medium">Leve (1-3)</span>
+          <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+              <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-lg"></div>
+              <span className="text-slate-800 font-semibold">Leve (1-3)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
-              <div className="w-3 h-3 bg-orange-500 rounded-full shadow-sm"></div>
-              <span className="text-slate-700 font-medium">Moderado (4-6)</span>
+            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+              <div className="w-4 h-4 bg-orange-500 rounded-full shadow-lg"></div>
+              <span className="text-slate-800 font-semibold">Moderado (4-6)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
-              <div className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></div>
-              <span className="text-slate-700 font-medium">Severo (7-8)</span>
+            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+              <div className="w-4 h-4 bg-red-500 rounded-full shadow-lg"></div>
+              <span className="text-slate-800 font-semibold">Severo (7-8)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
-              <div className="w-3 h-3 bg-red-700 rounded-full shadow-sm"></div>
-              <span className="text-slate-700 font-medium">Extremo (9-10)</span>
+            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+              <div className="w-4 h-4 bg-red-700 rounded-full shadow-lg"></div>
+              <span className="text-slate-800 font-semibold">Extremo (9-10)</span>
             </div>
           </div>
         </CardContent>
       </Card>
       
-      <Card className="glass-card-dark">
-        <CardHeader>
-          <CardTitle className="text-xl font-bold text-slate-800">
-            {selectedDay ? `Detalles del ${selectedDay.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}` : 'Detalles del día'}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {selectedDayEntries.length > 0 ? (
+      {selectedDayEntries.length > 0 && (
+        <Card className="glass-card-dark">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
+              Detalles del {selectedDay?.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="space-y-4">
               {selectedDayEntries.map(entry => (
-                <div key={entry.id} className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-white/20 shadow-sm">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-lg text-white font-bold`}>
+                <div key={entry.id} className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl border border-white/30 shadow-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-xl text-white font-bold text-lg`}>
                       {entry.intensity}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-slate-800">Episodio a las {entry.time}</p>
-                      <p className="text-sm text-slate-600">{entry.duration}h de duración</p>
+                      <p className="font-bold text-slate-900 text-lg">Episodio a las {entry.time}</p>
+                      <p className="text-slate-700 font-medium">{entry.duration}h de duración</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
-            <div className="text-center py-10 text-slate-600">
-              <p>Selecciona un día en el calendario para ver los detalles.</p>
+          </CardContent>
+        </Card>
+      )}
+
+      {selectedDay && selectedDayEntries.length === 0 && (
+        <Card className="glass-card-dark">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
+              {selectedDay.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-8 text-slate-600">
+              <p className="text-lg">No hay episodios registrados en esta fecha.</p>
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

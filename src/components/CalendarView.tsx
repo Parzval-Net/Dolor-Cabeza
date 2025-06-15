@@ -30,25 +30,32 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
       newEntriesByDate[date].push(entry);
     });
 
-    const newModifiers = Object.entries(entryDays).reduce((acc, [date, intensity]) => {
+    const intensityLevel1: Date[] = [];
+    const intensityLevel2: Date[] = [];
+    const intensityLevel3: Date[] = [];
+    const intensityLevel4: Date[] = [];
+
+    Object.entries(entryDays).forEach(([date, intensity]) => {
       const parts = date.split('-').map(Number);
       const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
 
       if (intensity <= 3) {
-        if (!acc.level1) acc.level1 = [];
-        acc.level1.push(dateObj);
+        intensityLevel1.push(dateObj);
       } else if (intensity <= 6) {
-        if (!acc.level2) acc.level2 = [];
-        acc.level2.push(dateObj);
+        intensityLevel2.push(dateObj);
       } else if (intensity <= 8) {
-        if (!acc.level3) acc.level3 = [];
-        acc.level3.push(dateObj);
+        intensityLevel3.push(dateObj);
       } else {
-        if (!acc.level4) acc.level4 = [];
-        acc.level4.push(dateObj);
+        intensityLevel4.push(dateObj);
       }
-      return acc;
-    }, {} as Record<string, Date[]>);
+    });
+
+    const newModifiers = {
+      intensityLevel1,
+      intensityLevel2,
+      intensityLevel3,
+      intensityLevel4,
+    };
 
     console.log('Calendar modifiers:', newModifiers);
     console.log('Entry days:', entryDays);
@@ -56,10 +63,10 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
     return {
       modifiers: newModifiers,
       modifiersClassNames: {
-        level1: 'intensity-level-1',
-        level2: 'intensity-level-2',
-        level3: 'intensity-level-3',
-        level4: 'intensity-level-4',
+        intensityLevel1: 'intensity-level-1',
+        intensityLevel2: 'intensity-level-2',
+        intensityLevel3: 'intensity-level-3',
+        intensityLevel4: 'intensity-level-4',
       },
       entriesByDate: newEntriesByDate,
     };

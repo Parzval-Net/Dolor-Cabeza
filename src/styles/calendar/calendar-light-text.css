@@ -40,27 +40,30 @@
   }
 
   /* ENHANCED Calendar entry dot styles - MORE VISIBLE */
-  .calendar-light-text .intensity-level-1:not(.rdp-day_selected)::after,
-  .calendar-light-text .intensity-level-2:not(.rdp-day_selected)::after,
-  .calendar-light-text .intensity-level-3:not(.rdp-day_selected)::after,
-  .calendar-light-text .intensity-level-4:not(.rdp-day_selected)::after {
+  .calendar-light-text .intensity-level-1::after {
     content: '';
     @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full shadow-lg border-2 border-slate-800 z-10;
-  }
-  
-  .calendar-light-text .intensity-level-1::after { 
     @apply bg-emerald-400 shadow-emerald-300;
     box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
   }
-  .calendar-light-text .intensity-level-2::after { 
+  
+  .calendar-light-text .intensity-level-2::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full shadow-lg border-2 border-slate-800 z-10;
     @apply bg-orange-400 shadow-orange-300;
     box-shadow: 0 0 10px rgba(251, 146, 60, 0.6);
   }
-  .calendar-light-text .intensity-level-3::after { 
+  
+  .calendar-light-text .intensity-level-3::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full shadow-lg border-2 border-slate-800 z-10;
     @apply bg-red-400 shadow-red-300;
     box-shadow: 0 0 10px rgba(248, 113, 113, 0.6);
   }
-  .calendar-light-text .intensity-level-4::after { 
+  
+  .calendar-light-text .intensity-level-4::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full shadow-lg border-2 border-slate-800 z-10;
     @apply bg-red-600 shadow-red-500;
     box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
   }
@@ -86,5 +89,22 @@
   /* Ensure intensity indicators are always visible */
   .calendar-light-text .rdp-day[class*="intensity-level-"] {
     @apply relative;
+  }
+  
+  /* Make sure the day button itself shows intensity background */
+  .calendar-light-text .intensity-level-1:not(.rdp-day_selected) {
+    @apply bg-emerald-500/20 border-emerald-400;
+  }
+  
+  .calendar-light-text .intensity-level-2:not(.rdp-day_selected) {
+    @apply bg-orange-500/20 border-orange-400;
+  }
+  
+  .calendar-light-text .intensity-level-3:not(.rdp-day_selected) {
+    @apply bg-red-500/20 border-red-400;
+  }
+  
+  .calendar-light-text .intensity-level-4:not(.rdp-day_selected) {
+    @apply bg-red-600/20 border-red-500;
   }
 }

@@ -29,14 +29,59 @@ const getIntensityText = (intensity: number) => {
 };
 
 const getMoodEmoji = (mood: string) => {
+  // Normalizar el estado a minúsculas y manejar diferentes formatos
+  const normalizedMood = mood.toLowerCase().trim();
+  
   const moodMap: Record<string, string> = {
+    // Formatos en español con guión bajo
     'muy_mal': '😰',
-    'mal': '😟',
+    'mal': '😟', 
     'regular': '😐',
     'bien': '🙂',
-    'muy_bien': '😄'
+    'muy_bien': '😄',
+    // Formatos en español con espacios
+    'muy mal': '😰',
+    'muy bien': '😄',
+    // Formatos alternativos
+    'terrible': '😰',
+    'malo': '😟',
+    'normal': '😐',
+    'bueno': '🙂',
+    'excelente': '😄',
+    'genial': '😄',
+    // Formatos en inglés por si acaso
+    'very_bad': '😰',
+    'bad': '😟',
+    'okay': '😐',
+    'good': '🙂',
+    'very_good': '😄',
+    'great': '😄'
   };
-  return moodMap[mood] || '😐';
+  
+  return moodMap[normalizedMood] || '😐';
+};
+
+const getMoodText = (mood: string) => {
+  // Normalizar el estado y convertir a texto legible
+  const normalizedMood = mood.toLowerCase().trim();
+  
+  const moodTextMap: Record<string, string> = {
+    'muy_mal': 'Muy mal',
+    'mal': 'Mal',
+    'regular': 'Regular', 
+    'bien': 'Bien',
+    'muy_bien': 'Muy bien',
+    'muy mal': 'Muy mal',
+    'muy bien': 'Muy bien',
+    'terrible': 'Terrible',
+    'malo': 'Malo',
+    'normal': 'Normal',
+    'bueno': 'Bueno',
+    'excelente': 'Excelente',
+    'genial': 'Genial'
+  };
+  
+  return moodTextMap[normalizedMood] || 'Regular';
 };
 
 const getStressColor = (level: number) => {
@@ -145,8 +190,8 @@ const EpisodesList = ({ entries, onUpdateEntry, onDeleteEntry }: EpisodesListPro
                       <span className="text-lg">{getMoodEmoji(entry.mood)}</span>
                       <span className="text-xs font-medium text-slate-600">Estado</span>
                     </div>
-                    <p className="text-sm font-semibold text-slate-800 capitalize">
-                      {entry.mood.replace('_', ' ')}
+                    <p className="text-sm font-semibold text-slate-800">
+                      {getMoodText(entry.mood)}
                     </p>
                   </div>
                   <div className="bg-white/80 rounded-xl p-3 border border-violet-200/30">

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Brain, Pill, Heart, Plus, Minus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -126,9 +127,13 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
       case 1:
         return (
           <BasicInfoStep 
-            formData={formData}
-            setFormData={setFormData}
-            durationOptions={durationOptions}
+            formData={{
+              date: formData.date,
+              time: formData.time,
+              intensity: formData.intensity,
+              stressLevel: formData.stressLevel
+            }}
+            onFormDataChange={(newData) => setFormData({ ...formData, ...newData })}
           />
         );
       case 2:

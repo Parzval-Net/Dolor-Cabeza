@@ -1,9 +1,46 @@
 
-import { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar } from '@/components/ui/calendar';
-import { HeadacheEntry } from '@/types/headache';
-import { DayModifiers } from 'react-day-picker';
+import { useState, useMemo } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { HeadacheEntry } from "@/types/headache";
+
+// --- Legend Component ---
+const intensityInfo = [
+  { key: "mild", label: "Leve (1-3)", dot: "bg-emerald-500", border: "border-emerald-200" },
+  { key: "moderate", label: "Moderado (4-6)", dot: "bg-orange-500", border: "border-orange-200" },
+  { key: "severe", label: "Severo (7-8)", dot: "bg-red-500", border: "border-red-200" },
+  { key: "extreme", label: "Extremo (9-10)", dot: "bg-red-700", border: "border-red-300" },
+];
+
+function Legend() {
+  return (
+    <Card className="glass-card-dark mb-2">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-bold text-slate-800">Leyenda de Intensidad</CardTitle>
+      </CardHeader>
+      <CardContent className="p-4 space-y-3">
+        {intensityInfo.map(({ key, label, dot, border }) => (
+          <div key={key} className={`flex items-center space-x-3 bg-white/90 px-3 py-2 rounded-lg shadow border ${border}`}>
+            <div className={`w-4 h-4 ${dot} rounded-full shadow-lg border-2 border-white`} />
+            <span className="text-slate-700 font-medium text-sm">{label}</span>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+// --- Helpers ---
+const getIntensityLevel = (value: number) => {
+  if (value <= 3) return "mild";
+  if (value <= 6) return "moderate";
+  if (value <= 8) return "severe";
+  return "extreme";
+};
+const formatDateKey = (date: Date) =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+// --- Calendar View ---
 
 interface CalendarViewProps {
   entries: HeadacheEntry[];
@@ -12,94 +49,52 @@ interface CalendarViewProps {
 const CalendarView = ({ entries }: CalendarViewProps) => {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>();
 
-  // Procesar entradas y crear modificadores de manera más robusta
+  // Agrupa entradas por fecha y determina intensidad máxima por día
   const { modifiers, modifiersClassNames, entriesByDate } = useMemo(() => {
-    console.log('Processing entries for calendar:', entries);
-    
-    const entriesMap: Record<string, HeadacheEntry[]> = {};
-    const intensityDates: Record<string, Date[]> = {
-      mild: [],
-      moderate: [],
-      severe: [],
-      extreme: []
-    };
+    const map: Record<string, HeadacheEntry[]> = {};
+    const intensityDays: Record<string, Date[]> = { mild: [], moderate: [], severe: [], extreme: [] };
 
-    // Agrupar entradas por fecha
-    entries.forEach((entry) => {
-      const dateKey = entry.date;
-      
-      if (!entriesMap[dateKey]) {
-        entriesMap[dateKey] = [];
-      }
-      entriesMap[dateKey].push(entry);
+    entries.forEach((e) => {
+      if (!map[e.date]) map[e.date] = [];
+      map[e.date].push(e);
     });
 
-    // Determinar la intensidad máxima por día y crear fechas para modificadores
-    Object.entries(entriesMap).forEach(([dateKey, dayEntries]) => {
-      const maxIntensity = Math.max(...dayEntries.map(e => e.intensity));
-      const [year, month, day] = dateKey.split('-').map(Number);
-      const dateObj = new Date(year, month - 1, day);
-
-      console.log(`Date: ${dateKey}, Max intensity: ${maxIntensity}`);
-
-      if (maxIntensity >= 1 && maxIntensity <= 3) {
-        intensityDates.mild.push(dateObj);
-      } else if (maxIntensity >= 4 && maxIntensity <= 6) {
-        intensityDates.moderate.push(dateObj);
-      } else if (maxIntensity >= 7 && maxIntensity <= 8) {
-        intensityDates.severe.push(dateObj);
-      } else if (maxIntensity >= 9 && maxIntensity <= 10) {
-        intensityDates.extreme.push(dateObj);
-      }
+    Object.entries(map).forEach(([key, dayEntries]) => {
+      const max = Math.max(...dayEntries.map(e => e.intensity));
+      const level = getIntensityLevel(max);
+      const [y, m, d] = key.split("-").map(Number);
+      const dateObj = new Date(y, m - 1, d);
+      intensityDays[level].push(dateObj);
     });
-
-    console.log('Intensity dates:', intensityDates);
 
     return {
-      modifiers: intensityDates,
+      modifiers: intensityDays,
       modifiersClassNames: {
-        mild: 'calendar-intensity-mild',
-        moderate: 'calendar-intensity-moderate', 
-        severe: 'calendar-intensity-severe',
-        extreme: 'calendar-intensity-extreme'
+        mild: "calendar-intensity-mild",
+        moderate: "calendar-intensity-moderate",
+        severe: "calendar-intensity-severe",
+        extreme: "calendar-intensity-extreme",
       },
-      entriesByDate: entriesMap
+      entriesByDate: map,
     };
   }, [entries]);
 
-  const handleDayClick = (day: Date | undefined, modifiers?: DayModifiers) => {
-    console.log('Day clicked:', day, 'Modifiers:', modifiers);
-    setSelectedDay(day);
+  const selectedEntries = selectedDay ? entriesByDate[formatDateKey(selectedDay)] || [] : [];
+
+  // -- UI helpers para badges/colores episodios seleccionados --
+  const badgeColor = (intensity: number) => {
+    if (intensity <= 3) return "bg-emerald-500";
+    if (intensity <= 6) return "bg-orange-500";
+    if (intensity <= 8) return "bg-red-500";
+    return "bg-red-700";
   };
 
-  const formatDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
-  const selectedDayEntries = selectedDay ? entriesByDate[formatDate(selectedDay)] || [] : [];
-
-  const getIntensityColor = (intensity: number) => {
-    if (intensity <= 3) return 'from-emerald-400 to-emerald-500';
-    if (intensity <= 6) return 'from-orange-400 to-orange-500';
-    if (intensity <= 8) return 'from-red-400 to-red-500';
-    return 'from-red-600 to-red-700';
-  };
-
-  const getIntensityBadgeColor = (intensity: number) => {
-    if (intensity <= 3) return 'bg-emerald-500';
-    if (intensity <= 6) return 'bg-orange-500';
-    if (intensity <= 8) return 'bg-red-500';
-    return 'bg-red-700';
-  };
+  const showDateStr = selectedDay?.toLocaleDateString("es-ES", { day: "numeric", month: "long" });
 
   return (
     <div className="w-full max-w-none animate-fade-in">
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
-        
-        {/* Calendario Principal */}
+        {/* Calendario */}
         <div className="xl:col-span-3">
           <Card className="glass-card-dark h-full">
             <CardHeader className="pb-4">
@@ -112,7 +107,7 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
                 <Calendar
                   mode="single"
                   selected={selectedDay}
-                  onDayClick={handleDayClick}
+                  onDayClick={setSelectedDay}
                   modifiers={modifiers}
                   modifiersClassNames={modifiersClassNames}
                   className="w-full calendar-custom-intensity mx-auto"
@@ -142,82 +137,51 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
             </CardContent>
           </Card>
         </div>
-
-        {/* Panel Lateral */}
+        {/* Panel lateral */}
         <div className="xl:col-span-2 space-y-4">
-          {/* Leyenda */}
-          <Card className="glass-card-dark">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg font-bold text-slate-800">
-                Leyenda de Intensidad
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4 space-y-3">
-              <div className="flex items-center space-x-3 bg-white/90 px-3 py-2 rounded-lg shadow border border-emerald-200">
-                <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-lg border-2 border-white"></div>
-                <span className="text-slate-700 font-medium text-sm">Leve (1-3)</span>
-              </div>
-              <div className="flex items-center space-x-3 bg-white/90 px-3 py-2 rounded-lg shadow border border-orange-200">
-                <div className="w-4 h-4 bg-orange-500 rounded-full shadow-lg border-2 border-white"></div>
-                <span className="text-slate-700 font-medium text-sm">Moderado (4-6)</span>
-              </div>
-              <div className="flex items-center space-x-3 bg-white/90 px-3 py-2 rounded-lg shadow border border-red-200">
-                <div className="w-4 h-4 bg-red-500 rounded-full shadow-lg border-2 border-white"></div>
-                <span className="text-slate-700 font-medium text-sm">Severo (7-8)</span>
-              </div>
-              <div className="flex items-center space-x-3 bg-white/90 px-3 py-2 rounded-lg shadow border border-red-300">
-                <div className="w-4 h-4 bg-red-700 rounded-full shadow-lg border-2 border-white"></div>
-                <span className="text-slate-700 font-medium text-sm">Extremo (9-10)</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Detalles del día seleccionado */}
-          {selectedDayEntries.length > 0 && (
+          <Legend />
+          {selectedDay && (
             <Card className="glass-card-dark">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg font-bold text-slate-800">
-                  {selectedDay?.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+                  {showDateStr}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4">
-                <div className="space-y-3">
-                  {selectedDayEntries.map(entry => (
-                    <div key={entry.id} className="bg-white/90 p-4 rounded-xl border border-slate-200 shadow-sm">
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-10 h-10 rounded-lg ${getIntensityBadgeColor(entry.intensity)} flex items-center justify-center shadow text-white font-bold`}>
-                          {entry.intensity}
+                {selectedEntries.length > 0 ? (
+                  <div className="space-y-3">
+                    {selectedEntries.map((e) => (
+                      <div key={e.id} className="bg-white/90 p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-10 h-10 rounded-lg ${badgeColor(e.intensity)} flex items-center justify-center shadow text-white font-bold`}>
+                            {e.intensity}
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-semibold text-slate-800">{e.time}</p>
+                            <p className="text-slate-600 text-sm">{e.duration}h de duración</p>
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-slate-800">{entry.time}</p>
-                          <p className="text-slate-600 text-sm">{entry.duration}h de duración</p>
-                        </div>
+                        {e.symptoms?.length > 0 && (
+                          <div className="mt-2 pt-2 border-t border-slate-200">
+                            <p className="text-xs text-slate-600">
+                              Síntomas: {e.symptoms.join(", ")}
+                            </p>
+                          </div>
+                        )}
+                        {e.triggers?.length > 0 && (
+                          <div className="mt-1 text-xs text-slate-500">
+                            <span className="font-medium">Desencadenantes: </span>
+                            {e.triggers.join(", ")}
+                          </div>
+                        )}
                       </div>
-                      {entry.symptoms && entry.symptoms.length > 0 && (
-                        <div className="mt-2 pt-2 border-t border-slate-200">
-                          <p className="text-xs text-slate-600">
-                            Síntomas: {entry.symptoms.join(', ')}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {selectedDay && selectedDayEntries.length === 0 && (
-            <Card className="glass-card-dark">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg font-bold text-slate-800">
-                  {selectedDay.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4">
-                <div className="text-center py-6">
-                  <p className="text-slate-600">No hay episodios registrados en esta fecha.</p>
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-6">
+                    <p className="text-slate-600">No hay episodios registrados en esta fecha.</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}
@@ -228,3 +192,4 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
 };
 
 export default CalendarView;
+

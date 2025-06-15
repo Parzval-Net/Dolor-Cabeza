@@ -1,0 +1,105 @@
+
+import { useState, useEffect } from 'react';
+import { MedicationOption } from '@/types/headache';
+import { medicationOptions as defaultMedicationOptions } from '@/data/options';
+
+interface MedicationWithDose {
+  name: string;
+  dosage: string;
+  customDosage?: string;
+  isEditing?: boolean;
+}
+
+interface MedicationWithDoseManagerProps {
+  medications: MedicationWithDose[];
+  onMedicationsChange: (medications: MedicationWithDose[]) => void;
+  children: (props: {
+    medicationOptions: MedicationOption[];
+    medications: MedicationWithDose[];
+    toggleMedication: (med: MedicationOption) => void;
+    toggleEditDosage: (medName: string) => void;
+    updateCustomDosage: (medName: string, dosage: string) => void;
+    saveCustomDosage: (medName: string) => void;
+  }) => React.ReactNode;
+}
+
+const MedicationWithDoseManager = ({ medications, onMedicationsChange, children }: MedicationWithDoseManagerProps) => {
+  const [medicationOptions, setMedicationOptions] = useState(defaultMedicationOptions);
+
+  useEffect(() => {
+    const loadCustomMedications = () => {
+      const customMedications = localStorage.getItem('custom-medications');
+      if (customMedications) {
+        try {
+          const parsed = JSON.parse(customMedications);
+          setMedicationOptions(parsed);
+        } catch (error) {
+          console.error('Error loading custom medications:', error);
+        }
+      }
+    };
+
+    loadCustomMedications();
+    
+    const handleMedicationsUpdate = () => {
+      loadCustomMedications();
+    };
+    
+    window.addEventListener('medications-updated', handleMedicationsUpdate);
+    return () => window.removeEventListener('medications-updated', handleMedicationsUpdate);
+  }, []);
+
+  const toggleMedication = (med: MedicationOption) => {
+    const isSelected = medications.some(m => m.name === med.name);
+    
+    if (isSelected) {
+      onMedicationsChange(medications.filter(m => m.name !== med.name));
+    } else {
+      onMedicationsChange([...medications, {
+        name: med.name,
+        dosage: med.dosage,
+        customDosage: '',
+        isEditing: false
+      }]);
+    }
+  };
+
+  const toggleEditDosage = (medName: string) => {
+    onMedicationsChange(medications.map(med => 
+      med.name === medName 
+        ? { ...med, isEditing: !med.isEditing, customDosage: med.customDosage || med.dosage }
+        : med
+    ));
+  };
+
+  const updateCustomDosage = (medName: string, dosage: string) => {
+    onMedicationsChange(medications.map(med => 
+      med.name === medName 
+        ? { ...med, customDosage: dosage }
+        : med
+    ));
+  };
+
+  const saveCustomDosage = (medName: string) => {
+    onMedicationsChange(medications.map(med => 
+      med.name === medName 
+        ? { ...med, isEditing: false }
+        : med
+    ));
+  };
+
+  return (
+    <>
+      {children({
+        medicationOptions,
+        medications,
+        toggleMedication,
+        toggleEditDosage,
+        updateCustomDosage,
+        saveCustomDosage
+      })}
+    </>
+  );
+};
+
+export default MedicationWithDoseManager;

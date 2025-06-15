@@ -17,7 +17,6 @@ const Dashboard = ({ entries }: DashboardProps) => {
   const [dashboardDescription, setDashboardDescription] = useState('Conoce mejor tus patrones de dolor y toma decisiones informadas para tu bienestar');
 
   useEffect(() => {
-    // Load dashboard description from admin settings
     const loadDashboardDescription = () => {
       const savedSettings = localStorage.getItem('admin-settings');
       if (savedSettings) {
@@ -34,7 +33,6 @@ const Dashboard = ({ entries }: DashboardProps) => {
 
     loadDashboardDescription();
 
-    // Listen for admin settings updates
     const handleSettingsUpdate = (event: CustomEvent) => {
       if (event.detail?.dashboardDescription) {
         setDashboardDescription(event.detail.dashboardDescription);
@@ -70,12 +68,10 @@ const Dashboard = ({ entries }: DashboardProps) => {
   const topMedication = Object.entries(mostUsedMedication)
     .sort(([,a], [,b]) => b - a)[0]?.[0] || 'Ninguno';
 
-  // Limitar a 3 episodios recientes
   const recentEntries = [...entries]
     .sort((a, b) => new Date(b.date + ' ' + b.time).getTime() - new Date(a.date + ' ' + a.time).getTime())
     .slice(0, 3);
 
-  // Unificamos lógica de gradientes para intensidad
   const getIntensityGradient = (intensity: number) => {
     if (intensity <= 3) return 'from-violet-400 to-purple-500';
     if (intensity <= 6) return 'from-fuchsia-400 to-pink-400';
@@ -102,7 +98,7 @@ const Dashboard = ({ entries }: DashboardProps) => {
       {/* Quote Section */}
       <QuoteSection />
 
-      {/* Stats Grid: ahora con 4 cards incluyendo TopDayCard */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <EpisodeCountCard count={monthlyEntries.length} />
         <AverageIntensityCard averageIntensity={averageIntensity} />
@@ -110,7 +106,7 @@ const Dashboard = ({ entries }: DashboardProps) => {
         <TopDayCard entries={entries} />
       </div>
 
-      {/* Main Content Grid - Solo episodios recientes */}
+      {/* Recent Episodes */}
       <div className="grid grid-cols-1 gap-8">
         <RecentEpisodesList entries={recentEntries} getIntensityGradient={getIntensityGradient} />
       </div>

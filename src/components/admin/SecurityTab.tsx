@@ -10,7 +10,7 @@ interface SecurityTabProps {
 const SecurityTab = ({ onChangePassword }: SecurityTabProps) => {
   return (
     <div className="space-y-6">
-      <Card className="bg-white border border-slate-200">
+      <Card className="bg-white border border-slate-200 shadow-sm">
         <CardHeader className="bg-white">
           <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
             <Shield className="w-5 h-5 text-violet-500" />
@@ -20,7 +20,7 @@ const SecurityTab = ({ onChangePassword }: SecurityTabProps) => {
         <CardContent className="space-y-4 bg-white">
           <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <Lock className="w-5 h-5 text-violet-600 mt-0.5" />
+              <Lock className="w-5 h-5 text-violet-600 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
                 <h4 className="text-sm font-bold text-violet-800 mb-2">Contraseña de Administrador</h4>
                 <p className="text-sm text-violet-700 font-medium mb-3">
@@ -40,7 +40,7 @@ const SecurityTab = ({ onChangePassword }: SecurityTabProps) => {
 
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <Shield className="w-5 h-5 text-amber-600 mt-0.5" />
+              <Shield className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
               <div>
                 <h4 className="text-sm font-bold text-amber-800 mb-2">Recomendaciones de Seguridad</h4>
                 <ul className="text-sm text-amber-700 font-medium space-y-1">

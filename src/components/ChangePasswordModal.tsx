@@ -52,7 +52,7 @@ const ChangePasswordModal = ({ onPasswordChanged }: ChangePasswordModalProps) =>
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-md mx-auto bg-white border border-slate-200 shadow-2xl">
         <CardHeader className="text-center bg-white rounded-t-lg">
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-violet-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
@@ -130,7 +130,7 @@ const ChangePasswordModal = ({ onPasswordChanged }: ChangePasswordModalProps) =>
 
             <div className="bg-violet-50 border border-violet-200 rounded-lg p-4 mt-6">
               <div className="flex items-start gap-3">
-                <Lock className="w-5 h-5 text-violet-600 mt-0.5" />
+                <Lock className="w-5 h-5 text-violet-600 mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="text-sm font-bold text-violet-800">Recomendaciones de seguridad:</h4>
                   <ul className="text-xs text-violet-700 font-medium mt-1 space-y-1">

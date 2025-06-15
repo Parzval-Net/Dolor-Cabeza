@@ -164,7 +164,7 @@ const AdminPanel = () => {
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300 w-full sm:w-auto mobile-button bg-white"
+                className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300 w-full sm:w-auto bg-white"
               >
                 <LogOut className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                 Cerrar Sesión
@@ -181,7 +181,7 @@ const AdminPanel = () => {
               <div className="flex justify-end pt-4 sm:pt-6 border-t border-slate-300">
                 <Button
                   onClick={handleSave}
-                  className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg w-full sm:w-auto mobile-button"
+                  className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg w-full sm:w-auto"
                 >
                   <Save className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                   Guardar Configuración

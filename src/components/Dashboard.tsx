@@ -4,7 +4,7 @@ import EpisodeCountCard from './dashboard/EpisodeCountCard';
 import AverageIntensityCard from './dashboard/AverageIntensityCard';
 import TopMedicationCard from './dashboard/TopMedicationCard';
 import RecentEpisodesList from './dashboard/RecentEpisodesList';
-import TopTriggersList from './dashboard/TopTriggersList';
+import TopMedicationsList from './dashboard/TopMedicationsList';
 import { HeadacheEntry } from '@/types/headache';
 
 interface DashboardProps {
@@ -34,14 +34,8 @@ const Dashboard = ({ entries }: DashboardProps) => {
   const topMedication = Object.entries(mostUsedMedication)
     .sort(([,a], [,b]) => b - a)[0]?.[0] || 'Ninguno';
 
-  const commonTriggers = monthlyEntries
-    .flatMap(entry => entry.triggers)
-    .reduce((acc, trigger) => {
-      acc[trigger] = (acc[trigger] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-
-  const topTriggers = Object.entries(commonTriggers)
+  // Nueva lógica para medicamentos más utilizados
+  const topMedications = Object.entries(mostUsedMedication)
     .sort(([,a], [,b]) => b - a)
     .slice(0, 3);
 
@@ -83,7 +77,7 @@ const Dashboard = ({ entries }: DashboardProps) => {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <RecentEpisodesList entries={recentEntries} getIntensityGradient={getIntensityGradient} />
-        <TopTriggersList topTriggers={topTriggers} />
+        <TopMedicationsList topMedications={topMedications} />
       </div>
     </div>
   );

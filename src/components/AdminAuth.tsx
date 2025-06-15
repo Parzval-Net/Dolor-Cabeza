@@ -63,7 +63,7 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
           <CardTitle className="text-2xl font-bold text-slate-800">
             Panel de Administración
           </CardTitle>
-          <p className="text-slate-600">Ingresa tus credenciales para continuar</p>
+          <p className="text-slate-600 font-medium">Ingresa tus credenciales para continuar</p>
         </CardHeader>
 
         <CardContent>
@@ -81,7 +81,7 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
                 required
                 className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
               />
-              <p className="text-xs text-slate-500">Por defecto: admin</p>
+              <p className="text-sm text-slate-600 font-medium">Por defecto: admin</p>
             </div>
 
             <div className="space-y-2">
@@ -106,7 +106,7 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="text-xs text-slate-500">Por defecto: admin123</p>
+              <p className="text-sm text-slate-600 font-medium">Por defecto: admin123</p>
             </div>
 
             <Button

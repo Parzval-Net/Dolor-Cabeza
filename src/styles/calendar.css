@@ -89,9 +89,9 @@
     @apply mb-1;
   }
 
-  /* Calendar with light text for dark background */
+  /* Calendar with light text for dark background - IMPROVED SIZE */
   .calendar-light-text .rdp-day {
-    @apply text-slate-100 font-bold text-lg hover:bg-slate-700 hover:text-white transition-all duration-200 w-20 h-20 rounded-xl border border-transparent bg-slate-700/40;
+    @apply text-slate-100 font-bold text-xl hover:bg-slate-700 hover:text-white transition-all duration-200 w-24 h-24 rounded-xl border border-transparent bg-slate-700/40;
   }
 
   .calendar-light-text .rdp-day:hover {
@@ -114,27 +114,27 @@
     @apply text-slate-600 bg-slate-800/10;
   }
 
-  /* Calendar headers with light text */
+  /* Calendar headers with light text - IMPROVED SIZE */
   .calendar-light-text .rdp-head_cell {
-    @apply text-slate-200 font-bold text-lg w-20 h-12;
+    @apply text-slate-200 font-bold text-xl w-24 h-16;
   }
 
   .calendar-light-text .rdp-caption_label {
-    @apply text-slate-100 font-bold text-2xl;
+    @apply text-slate-100 font-bold text-3xl;
   }
 
-  /* Navigation buttons with light colors */
+  /* Navigation buttons with light colors - IMPROVED SIZE */
   .calendar-light-text .rdp-nav_button {
-    @apply text-slate-200 hover:text-white hover:bg-slate-700 w-12 h-12 rounded-full transition-all duration-200 border border-slate-600 hover:border-slate-500 bg-slate-700/60;
+    @apply text-slate-200 hover:text-white hover:bg-slate-700 w-14 h-14 rounded-full transition-all duration-200 border border-slate-600 hover:border-slate-500 bg-slate-700/60;
   }
 
-  /* Enhanced Calendar entry dot styles with better visibility on dark background */
+  /* Enhanced Calendar entry dot styles with better visibility on dark background - IMPROVED SIZE */
   .calendar-light-text .intensity-level-1:not(.rdp-day_selected)::after,
   .calendar-light-text .intensity-level-2:not(.rdp-day_selected)::after,
   .calendar-light-text .intensity-level-3:not(.rdp-day_selected)::after,
   .calendar-light-text .intensity-level-4:not(.rdp-day_selected)::after {
     content: '';
-    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full shadow-lg border-2 border-slate-700;
+    @apply absolute bottom-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full shadow-lg border-2 border-slate-700;
   }
   
   .calendar-light-text .intensity-level-1::after { @apply bg-emerald-400 shadow-emerald-300; }
@@ -150,13 +150,13 @@
     @apply bg-white shadow-white/80 border-2 border-violet-300;
   }
 
-  /* Calendar table spacing */
+  /* Calendar table spacing - IMPROVED SPACING */
   .calendar-light-text .rdp-table {
-    @apply mx-auto;
+    @apply mx-auto w-full;
   }
 
   .calendar-light-text .rdp-row {
-    @apply mb-3;
+    @apply mb-4;
   }
 
   /* Keep existing dark text calendar styles for backward compatibility */

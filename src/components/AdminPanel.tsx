@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Settings, Save, Palette, Type, Globe, LogOut } from 'lucide-react';
+import { Settings, Save, Palette, Type, Globe, LogOut, Pill } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import AdminAuth from './AdminAuth';
 import IconSelector from './IconSelector';
 import ChangePasswordModal from './ChangePasswordModal';
+import MedicationManager from './MedicationManager';
 
 interface AdminSettings {
   appName: string;
@@ -34,7 +35,7 @@ const AdminPanel = () => {
     timezone: 'America/Santiago',
     exportFormat: 'PDF'
   });
-  const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'data'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'medications' | 'data'>('general');
   const { toast } = useToast();
 
   // Verificar autenticación al cargar
@@ -216,6 +217,15 @@ const AdminPanel = () => {
                 Apariencia
               </Button>
               <Button 
+                variant={activeTab === 'medications' ? 'default' : 'outline'} 
+                onClick={() => setActiveTab('medications')} 
+                size="sm" 
+                className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
+              >
+                <Pill className="w-4 h-4 mr-2" />
+                Medicamentos
+              </Button>
+              <Button 
                 variant={activeTab === 'data' ? 'default' : 'outline'} 
                 onClick={() => setActiveTab('data')} 
                 size="sm" 
@@ -388,6 +398,10 @@ const AdminPanel = () => {
               </div>
             )}
 
+            {activeTab === 'medications' && (
+              <MedicationManager />
+            )}
+
             {activeTab === 'data' && (
               <div className="space-y-6">
                 <div className="space-y-3">
@@ -432,15 +446,17 @@ const AdminPanel = () => {
               </div>
             )}
 
-            <div className="flex justify-end pt-6 border-t border-slate-300">
-              <Button 
-                onClick={handleSave} 
-                className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg"
-              >
-                <Save className="w-4 h-4 mr-2" />
-                Guardar Configuración
-              </Button>
-            </div>
+            {activeTab !== 'medications' && (
+              <div className="flex justify-end pt-6 border-t border-slate-300">
+                <Button 
+                  onClick={handleSave} 
+                  className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg"
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Guardar Configuración
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

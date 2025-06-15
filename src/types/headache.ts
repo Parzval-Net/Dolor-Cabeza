@@ -22,6 +22,7 @@ export interface MedicationOption {
   name: string;
   dosage: string;
   type: 'preventive' | 'acute';
+  isCommon?: boolean; // Para marcar medicamentos comunes en Chile
 }
 
 export interface TriggerOption {

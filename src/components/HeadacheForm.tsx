@@ -1,9 +1,8 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Brain, Pill, Heart, Plus, Minus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { HeadacheEntry } from '@/types/headache';
-import { medicationOptions, triggerOptions, symptomOptions, reliefOptions, moodOptions } from '@/data/options';
+import { medicationOptions as defaultMedicationOptions, triggerOptions, symptomOptions, reliefOptions, moodOptions } from '@/data/options';
 import FormHeader from '@/components/form/FormHeader';
 import ProgressBar from '@/components/form/ProgressBar';
 import FormNavigation from '@/components/form/FormNavigation';
@@ -23,6 +22,7 @@ interface HeadacheFormProps {
 
 const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [medicationOptions, setMedicationOptions] = useState(defaultMedicationOptions);
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
     time: new Date().toTimeString().slice(0, 5),
@@ -45,6 +45,31 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
   const sleepOptions = [4, 5, 6, 7, 8, 9, 10, 11, 12];
   const weatherOptions = ['Soleado', 'Nublado', 'Lluvioso', 'Tormentoso', 'Ventoso'];
   const menstrualOptions = ['Menstruación', 'Ovulación', 'Pre-menstrual', 'Post-menstrual', 'No aplica'];
+
+  // Cargar medicamentos personalizados al montar el componente
+  useEffect(() => {
+    const loadCustomMedications = () => {
+      const customMedications = localStorage.getItem('custom-medications');
+      if (customMedications) {
+        try {
+          const parsed = JSON.parse(customMedications);
+          setMedicationOptions(parsed);
+        } catch (error) {
+          console.error('Error loading custom medications:', error);
+        }
+      }
+    };
+
+    loadCustomMedications();
+
+    // Escuchar cambios en medicamentos
+    const handleMedicationsUpdate = () => {
+      loadCustomMedications();
+    };
+
+    window.addEventListener('medications-updated', handleMedicationsUpdate);
+    return () => window.removeEventListener('medications-updated', handleMedicationsUpdate);
+  }, []);
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
@@ -160,19 +185,22 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
               {/* Medications */}
               <div className="space-y-4">
                 <Label className="block text-lg font-bold text-slate-800 text-center">Medicamentos</Label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {medicationOptions.map((med) => (
                     <InteractiveButton
                       key={med.id}
-                      isSelected={formData.medications.includes(med.name)}
-                      onClick={() =>
-                        toggleArrayItem(formData.medications, med.name, (newMeds) =>
+                      isSelected={formData.medications.includes(`${med.name} (${med.dosage})`)}
+                      onClick={() => {
+                        const medicationWithDose = `${med.name} (${med.dosage})`;
+                        toggleArrayItem(formData.medications, medicationWithDose, (newMeds) =>
                           setFormData({ ...formData, medications: newMeds })
-                        )
-                      }
-                      className="text-xs h-12"
+                        );
+                      }}
+                      className="text-xs h-16 flex flex-col items-center justify-center gap-1"
                     >
-                      {med.name}
+                      <span className="font-bold">{med.name}</span>
+                      <span className="text-xs opacity-75">{med.dosage}</span>
+                      <span className="text-xs opacity-60">{med.type === 'acute' ? 'Crisis' : 'Preventivo'}</span>
                     </InteractiveButton>
                   ))}
                 </div>

@@ -1,12 +1,12 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { HeadacheEntry } from '@/types/headache';
-import { medicationOptions, triggerOptions, symptomOptions } from '@/data/options';
+import { medicationOptions as defaultMedicationOptions, triggerOptions, symptomOptions } from '@/data/options';
 import { useToast } from '@/hooks/use-toast';
 
 interface EditEpisodeDialogProps {
@@ -17,7 +17,21 @@ interface EditEpisodeDialogProps {
 
 const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) => {
   const [formData, setFormData] = useState<HeadacheEntry>(entry);
+  const [medicationOptions, setMedicationOptions] = useState(defaultMedicationOptions);
   const { toast } = useToast();
+
+  // Cargar medicamentos personalizados al montar el componente
+  useEffect(() => {
+    const customMedications = localStorage.getItem('custom-medications');
+    if (customMedications) {
+      try {
+        const parsed = JSON.parse(customMedications);
+        setMedicationOptions(parsed);
+      } catch (error) {
+        console.error('Error loading custom medications:', error);
+      }
+    }
+  }, []);
 
   const handleSave = () => {
     onSave(formData);
@@ -99,18 +113,24 @@ const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) 
 
           <div className="space-y-2">
             <Label>Medicamentos</Label>
-            <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
-              {medicationOptions.map((med) => (
-                <label key={med.id} className="flex items-center space-x-2 text-sm">
-                  <input
-                    type="checkbox"
-                    checked={formData.medications.includes(med.name)}
-                    onChange={(e) => handleCheckboxChange('medications', med.name, e.target.checked)}
-                    className="rounded border-gray-300"
-                  />
-                  <span>{med.name}</span>
-                </label>
-              ))}
+            <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
+              {medicationOptions.map((med) => {
+                const medicationWithDose = `${med.name} (${med.dosage})`;
+                return (
+                  <label key={med.id} className="flex items-center space-x-2 text-sm p-2 hover:bg-gray-50 rounded">
+                    <input
+                      type="checkbox"
+                      checked={formData.medications.includes(medicationWithDose)}
+                      onChange={(e) => handleCheckboxChange('medications', medicationWithDose, e.target.checked)}
+                      className="rounded border-gray-300"
+                    />
+                    <div className="flex-1">
+                      <div className="font-semibold">{med.name}</div>
+                      <div className="text-xs text-gray-600">{med.dosage} • {med.type === 'acute' ? 'Crisis' : 'Preventivo'}</div>
+                    </div>
+                  </label>
+                );
+              })}
             </div>
           </div>
 

@@ -1,10 +1,16 @@
 
 export const medicationOptions = [
-  { id: 'med1', name: 'Paracetamol', dosage: '500mg', type: 'acute' },
-  { id: 'med2', name: 'Ibuprofeno', dosage: '400mg', type: 'acute' },
-  { id: 'med3', name: 'Triptán', dosage: '2.5mg', type: 'acute' },
-  { id: 'med4', name: 'Amitriptilina', dosage: '25mg', type: 'preventive' },
-  { id: 'med5', name: 'Propranolol', dosage: '40mg', type: 'preventive' },
+  // Medicamentos comunes en Chile para migrañas
+  { id: 'med1', name: 'Paracetamol', dosage: '500mg', type: 'acute', isCommon: true },
+  { id: 'med2', name: 'Ibuprofeno', dosage: '400mg', type: 'acute', isCommon: true },
+  { id: 'med3', name: 'Naproxeno', dosage: '220mg', type: 'acute', isCommon: true },
+  { id: 'med4', name: 'Aspirina', dosage: '500mg', type: 'acute', isCommon: true },
+  { id: 'med5', name: 'Ketorolaco', dosage: '10mg', type: 'acute', isCommon: true },
+  { id: 'med6', name: 'Sumatriptán', dosage: '50mg', type: 'acute', isCommon: false },
+  { id: 'med7', name: 'Rizatriptán', dosage: '10mg', type: 'acute', isCommon: false },
+  { id: 'med8', name: 'Amitriptilina', dosage: '25mg', type: 'preventive', isCommon: false },
+  { id: 'med9', name: 'Propranolol', dosage: '40mg', type: 'preventive', isCommon: false },
+  { id: 'med10', name: 'Topiramato', dosage: '25mg', type: 'preventive', isCommon: false },
 ];
 
 export const triggerOptions = [

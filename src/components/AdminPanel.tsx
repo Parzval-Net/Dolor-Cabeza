@@ -1,15 +1,16 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Settings, Save, Palette, Type, Globe, LogOut, Pill } from 'lucide-react';
+import { Settings, Save, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import AdminAuth from './AdminAuth';
-import IconSelector from './IconSelector';
 import ChangePasswordModal from './ChangePasswordModal';
 import MedicationManager from './MedicationManager';
+import AdminTabs from './admin/AdminTabs';
+import GeneralTab from './admin/GeneralTab';
+import AppearanceTab from './admin/AppearanceTab';
+import DataTab from './admin/DataTab';
 
 interface AdminSettings {
   appName: string;
@@ -38,19 +39,18 @@ const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'medications' | 'data'>('general');
   const { toast } = useToast();
 
-  // Verificar autenticación al cargar
+  // Authentication check
   useEffect(() => {
     const authStatus = localStorage.getItem('admin-authenticated');
     const sessionTimestamp = localStorage.getItem('admin-session-timestamp');
     
     if (authStatus === 'true' && sessionTimestamp) {
       const sessionAge = Date.now() - parseInt(sessionTimestamp);
-      const MAX_SESSION_TIME = 24 * 60 * 60 * 1000; // 24 horas
+      const MAX_SESSION_TIME = 24 * 60 * 60 * 1000; // 24 hours
       
       if (sessionAge < MAX_SESSION_TIME) {
         setIsAuthenticated(true);
         
-        // Verificar si debe mostrar el modal de cambio de contraseña
         const passwordChanged = localStorage.getItem('admin-password-changed');
         if (!passwordChanged) {
           setShowChangePassword(true);
@@ -61,7 +61,7 @@ const AdminPanel = () => {
     }
   }, []);
 
-  // Cargar configuración guardada al montar el componente
+  // Load settings
   useEffect(() => {
     if (isAuthenticated) {
       const savedSettings = localStorage.getItem('admin-settings');
@@ -87,18 +87,13 @@ const AdminPanel = () => {
   const handleSave = () => {
     try {
       localStorage.setItem('admin-settings', JSON.stringify(settings));
-      
-      // Actualizar título del documento
       updateDocumentTitle(settings.appName);
-      
-      // Disparar evento personalizado para notificar cambios
       window.dispatchEvent(new CustomEvent('admin-settings-updated'));
       
       toast({
         title: "Configuración guardada",
         description: "Los cambios se han aplicado exitosamente."
       });
-      console.log('Settings saved:', settings);
     } catch (error) {
       console.error('Error saving settings:', error);
       toast({
@@ -119,51 +114,6 @@ const AdminPanel = () => {
     });
   };
 
-  const handleExportData = () => {
-    const entries = localStorage.getItem('headache-entries');
-    if (entries) {
-      const blob = new Blob([entries], {
-        type: 'application/json'
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `migracare-backup-${new Date().toISOString().split('T')[0]}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      toast({
-        title: "Datos exportados",
-        description: "El archivo de respaldo se ha descargado."
-      });
-    }
-  };
-
-  const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        try {
-          const data = JSON.parse(e.target?.result as string);
-          localStorage.setItem('headache-entries', JSON.stringify(data));
-          toast({
-            title: "Datos importados",
-            description: "Los datos se han restaurado exitosamente."
-          });
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: "No se pudo importar el archivo. Verifica el formato.",
-            variant: "destructive"
-          });
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
-
   const handlePasswordChanged = () => {
     setShowChangePassword(false);
   };
@@ -172,287 +122,59 @@ const AdminPanel = () => {
     return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
   }
 
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'general':
+        return <GeneralTab settings={settings} onSettingsChange={setSettings} />;
+      case 'appearance':
+        return <AppearanceTab settings={settings} onSettingsChange={setSettings} />;
+      case 'medications':
+        return <MedicationManager />;
+      case 'data':
+        return <DataTab settings={settings} onSettingsChange={setSettings} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       {showChangePassword && (
         <ChangePasswordModal onPasswordChanged={handlePasswordChanged} />
       )}
       
-      <div className="space-y-6">
-        <Card className="glass-card-dark">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-                <Settings className="w-6 h-6 text-violet-500" />
+      <div className="space-y-4 sm:space-y-6 p-4">
+        <Card className="glass-card-mobile">
+          <CardHeader className="pb-2 sm:pb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+              <CardTitle className="text-lg sm:text-2xl font-bold text-slate-800 flex items-center gap-2 sm:gap-3">
+                <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-violet-500" />
                 Panel de Administración
               </CardTitle>
               <Button
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300"
+                className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300 w-full sm:w-auto mobile-button"
               >
-                <LogOut className="w-4 h-4 mr-2" />
+                <LogOut className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                 Cerrar Sesión
               </Button>
             </div>
             
-            <div className="flex gap-2 mt-4">
-              <Button 
-                variant={activeTab === 'general' ? 'default' : 'outline'} 
-                onClick={() => setActiveTab('general')} 
-                size="sm" 
-                className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
-              >
-                <Globe className="w-4 h-4 mr-2" />
-                General
-              </Button>
-              <Button 
-                variant={activeTab === 'appearance' ? 'default' : 'outline'} 
-                onClick={() => setActiveTab('appearance')} 
-                size="sm" 
-                className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
-              >
-                <Palette className="w-4 h-4 mr-2" />
-                Apariencia
-              </Button>
-              <Button 
-                variant={activeTab === 'medications' ? 'default' : 'outline'} 
-                onClick={() => setActiveTab('medications')} 
-                size="sm" 
-                className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
-              >
-                <Pill className="w-4 h-4 mr-2" />
-                Medicamentos
-              </Button>
-              <Button 
-                variant={activeTab === 'data' ? 'default' : 'outline'} 
-                onClick={() => setActiveTab('data')} 
-                size="sm" 
-                className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
-              >
-                <Type className="w-4 h-4 mr-2" />
-                Datos
-              </Button>
-            </div>
+            <AdminTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </CardHeader>
 
-          <CardContent className="space-y-6">
-            {activeTab === 'general' && (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="appName" className="text-slate-800 font-bold">Nombre de la Aplicación</Label>
-                  <Input 
-                    id="appName" 
-                    value={settings.appName} 
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      appName: e.target.value
-                    }))} 
-                    placeholder="Nombre de tu aplicación" 
-                    className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
-                  />
-                  <p className="text-xs text-slate-600">Este será el título que aparecerá en la pestaña del navegador</p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="appDescription" className="text-slate-800 font-bold">Descripción</Label>
-                  <Textarea 
-                    id="appDescription" 
-                    value={settings.appDescription} 
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      appDescription: e.target.value
-                    }))} 
-                    placeholder="Descripción de tu aplicación" 
-                    rows={3} 
-                    className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="language" className="text-slate-800 font-bold">Idioma</Label>
-                    <select 
-                      id="language" 
-                      value={settings.language} 
-                      onChange={e => setSettings(prev => ({
-                        ...prev,
-                        language: e.target.value
-                      }))} 
-                      className="admin-select-fixed"
-                    >
-                      <option value="es">Español</option>
-                      <option value="en">English</option>
-                      <option value="fr">Français</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="timezone" className="text-slate-800 font-bold">Zona Horaria</Label>
-                    <select 
-                      id="timezone" 
-                      value={settings.timezone} 
-                      onChange={e => setSettings(prev => ({
-                        ...prev,
-                        timezone: e.target.value
-                      }))} 
-                      className="admin-select-fixed"
-                    >
-                      <option value="America/Santiago">Santiago</option>
-                      <option value="America/New_York">New York</option>
-                      <option value="Europe/Madrid">Madrid</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'appearance' && (
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <Label className="text-slate-800 font-bold">Icono de la Aplicación</Label>
-                  <IconSelector
-                    selectedIcon={settings.appIcon}
-                    onIconSelect={(iconName) => setSettings(prev => ({
-                      ...prev,
-                      appIcon: iconName
-                    }))}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="primaryColor" className="text-slate-800 font-bold">Color Primario</Label>
-                    <div className="flex items-center space-x-3">
-                      <input 
-                        type="color" 
-                        id="primaryColor" 
-                        value={settings.primaryColor} 
-                        onChange={e => setSettings(prev => ({
-                          ...prev,
-                          primaryColor: e.target.value
-                        }))} 
-                        className="w-12 h-10 rounded border-2 border-slate-400 cursor-pointer hover:border-violet-500"
-                      />
-                      <Input 
-                        value={settings.primaryColor} 
-                        onChange={e => setSettings(prev => ({
-                          ...prev,
-                          primaryColor: e.target.value
-                        }))} 
-                        placeholder="#8B5CF6" 
-                        className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="secondaryColor" className="text-slate-800 font-bold">Color Secundario</Label>
-                    <div className="flex items-center space-x-3">
-                      <input 
-                        type="color" 
-                        id="secondaryColor" 
-                        value={settings.secondaryColor} 
-                        onChange={e => setSettings(prev => ({
-                          ...prev,
-                          secondaryColor: e.target.value
-                        }))} 
-                        className="w-12 h-10 rounded border-2 border-slate-400 cursor-pointer hover:border-violet-500"
-                      />
-                      <Input 
-                        value={settings.secondaryColor} 
-                        onChange={e => setSettings(prev => ({
-                          ...prev,
-                          secondaryColor: e.target.value
-                        }))} 
-                        placeholder="#EC4899" 
-                        className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="admin-preview-card-fixed">
-                  <h4 className="font-bold text-slate-800 mb-3">Vista Previa</h4>
-                  <div className="flex items-center space-x-4">
-                    <div 
-                      className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold shadow-lg" 
-                      style={{
-                        background: `linear-gradient(to br, ${settings.primaryColor}, ${settings.secondaryColor})`
-                      }}
-                    >
-                      {settings.appName.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="space-y-1">
-                      <h5 
-                        style={{ color: settings.primaryColor }} 
-                        className="font-bold text-lg"
-                      >
-                        {settings.appName}
-                      </h5>
-                      <p className="text-sm text-slate-700 font-semibold">{settings.appDescription}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'medications' && (
-              <MedicationManager />
-            )}
-
-            {activeTab === 'data' && (
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <Label className="text-slate-800 font-bold">Exportar Datos</Label>
-                  <p className="text-sm text-slate-700 font-semibold">Descarga una copia de seguridad de todos tus datos.</p>
-                  <Button 
-                    onClick={handleExportData} 
-                    variant="outline" 
-                    className="bg-white text-slate-800 font-semibold border-slate-400 hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
-                  >
-                    Exportar Datos
-                  </Button>
-                </div>
-
-                <div className="space-y-3">
-                  <Label htmlFor="importData" className="text-slate-800 font-bold">Importar Datos</Label>
-                  <p className="text-sm text-slate-700 font-semibold">Restaura datos desde un archivo de respaldo.</p>
-                  <input 
-                    type="file" 
-                    id="importData" 
-                    accept=".json" 
-                    onChange={handleImportData} 
-                    className="admin-file-input-fixed"
-                  />
-                </div>
-
-                <div className="space-y-3">
-                  <Label className="text-slate-800 font-bold">Formato de Exportación</Label>
-                  <select 
-                    value={settings.exportFormat} 
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      exportFormat: e.target.value
-                    }))} 
-                    className="admin-select-fixed"
-                  >
-                    <option value="JSON">JSON</option>
-                    <option value="CSV">CSV</option>
-                    <option value="PDF">PDF</option>
-                  </select>
-                </div>
-              </div>
-            )}
+          <CardContent className="space-y-4 sm:space-y-6">
+            {renderTabContent()}
 
             {activeTab !== 'medications' && (
-              <div className="flex justify-end pt-6 border-t border-slate-300">
-                <Button 
-                  onClick={handleSave} 
-                  className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg"
+              <div className="flex justify-end pt-4 sm:pt-6 border-t border-slate-300">
+                <Button
+                  onClick={handleSave}
+                  className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg w-full sm:w-auto mobile-button"
                 >
-                  <Save className="w-4 h-4 mr-2" />
+                  <Save className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                   Guardar Configuración
                 </Button>
               </div>

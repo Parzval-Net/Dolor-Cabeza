@@ -1,7 +1,6 @@
-
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { IconSelector } from '@/components/IconSelector';
+import IconSelector from '@/components/IconSelector';
 
 interface AdminSettings {
   appName: string;

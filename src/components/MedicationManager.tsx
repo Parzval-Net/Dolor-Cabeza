@@ -13,10 +13,14 @@ import { Badge } from '@/components/ui/badge';
 
 const MedicationManager = () => {
   const [medications, setMedications] = useState<MedicationOption[]>(defaultMedications);
-  const [newMedication, setNewMedication] = useState({
+  const [newMedication, setNewMedication] = useState<{
+    name: string;
+    dosage: string;
+    type: 'acute' | 'preventive';
+  }>({
     name: '',
     dosage: '',
-    type: 'acute' as const
+    type: 'acute'
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const { toast } = useToast();
@@ -29,7 +33,7 @@ const MedicationManager = () => {
         // Asegurar que todos los medicamentos tengan el tipo correcto
         const validatedMedications = parsed.map(med => ({
           ...med,
-          type: (med.type === 'preventive' || med.type === 'acute') ? med.type : 'acute'
+          type: (med.type === 'preventive' || med.type === 'acute') ? med.type : 'acute' as const
         })) as MedicationOption[];
         setMedications(validatedMedications);
       } catch (error) {

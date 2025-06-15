@@ -52,8 +52,9 @@ export default function CalendarView({ entries }: CalendarViewProps) {
     modifiersClassNames[modName] = intensityClass;
   });
 
-  // Custom Day component that just delegates to default day rendering (props.children) - CSS classes will add dots
+  // Custom Day component with guard for undefined
   function CustomDay(props: any) {
+    if (!props.day) return null;
     return (
       <div className="w-full h-full flex items-center justify-center relative">
         <span className="z-10">{props.day.getDate()}</span>
@@ -101,3 +102,4 @@ export default function CalendarView({ entries }: CalendarViewProps) {
     </div>
   );
 }
+

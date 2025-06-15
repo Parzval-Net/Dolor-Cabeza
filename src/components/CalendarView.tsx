@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
@@ -92,11 +91,11 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/40 w-full max-w-2xl">
+          <div className="bg-slate-50/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-slate-200 w-full max-w-3xl">
             <Calendar
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
-              className="p-0 w-full"
+              className="p-0 w-full calendar-dark-text"
               numberOfMonths={1}
               onDayClick={handleDayClick}
               selected={selectedDay}

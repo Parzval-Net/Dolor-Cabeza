@@ -1,5 +1,7 @@
+
 import { Calendar, Plus, TrendingUp, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
 
 interface HeaderProps {
   onNewEntry: () => void;
@@ -8,19 +10,56 @@ interface HeaderProps {
 }
 
 const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
+  const [appSettings, setAppSettings] = useState({
+    appName: 'MigraCare',
+    appDescription: 'Seguimiento inteligente de migrañas',
+    primaryColor: '#8B5CF6',
+    secondaryColor: '#EC4899'
+  });
+
+  // Cargar configuración del localStorage
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('admin-settings');
+    if (savedSettings) {
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        setAppSettings({
+          appName: parsedSettings.appName || 'MigraCare',
+          appDescription: parsedSettings.appDescription || 'Seguimiento inteligente de migrañas',
+          primaryColor: parsedSettings.primaryColor || '#8B5CF6',
+          secondaryColor: parsedSettings.secondaryColor || '#EC4899'
+        });
+      } catch (error) {
+        console.error('Error loading admin settings in Header:', error);
+      }
+    }
+  }, [currentView]); // Actualizar cuando cambie la vista para refrescar los datos
+
   return (
     <header className="bg-white/80 backdrop-blur-xl border-b border-violet-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-lg">M</span>
+            <div 
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg"
+              style={{
+                background: `linear-gradient(to br, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`
+              }}
+            >
+              <span className="text-white font-bold text-lg">
+                {appSettings.appName.charAt(0).toUpperCase()}
+              </span>
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
-                MigraCare
+              <h1 
+                className="text-2xl font-bold bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: `linear-gradient(to r, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`
+                }}
+              >
+                {appSettings.appName}
               </h1>
-              <p className="text-sm text-slate-500">Seguimiento inteligente de migrañas</p>
+              <p className="text-sm text-slate-500">{appSettings.appDescription}</p>
             </div>
           </div>
 

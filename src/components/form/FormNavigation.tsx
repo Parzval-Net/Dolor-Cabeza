@@ -18,7 +18,7 @@ const FormNavigation = ({ currentStep, totalSteps, onPrevious, onNext, onSubmit 
         variant="outline"
         onClick={onPrevious}
         disabled={currentStep === 1}
-        className="flex items-center gap-2 px-6 py-3 border-2 border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-2xl transition-all duration-300"
+        className="flex items-center gap-2 px-6 py-3 border-2 border-slate-200 text-slate-700 font-medium bg-white/80 hover:bg-violet-50 hover:border-violet-300 hover:text-violet-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/80 disabled:hover:border-slate-200 disabled:hover:text-slate-700 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-violet-500/10"
       >
         <ChevronLeft className="h-4 w-4" />
         Anterior

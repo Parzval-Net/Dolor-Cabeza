@@ -6,12 +6,12 @@ import IntensityLegend from "./IntensityLegend";
 import { EpisodeListForDay } from "./EpisodeListForDay";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Asigna la clase correcta según la intensidad máxima del día
-const getIntensityClass = (maxIntensity: number) => {
-  if (maxIntensity <= 3) return "calendar-intensity-mild";
-  if (maxIntensity <= 6) return "calendar-intensity-moderate";
-  if (maxIntensity <= 8) return "calendar-intensity-severe";
-  return "calendar-intensity-extreme";
+// Returns intensity string for css classes
+const getIntensityKey = (maxIntensity: number) => {
+  if (maxIntensity <= 3) return "intensity-level-1";
+  if (maxIntensity <= 6) return "intensity-level-2";
+  if (maxIntensity <= 8) return "intensity-level-3";
+  return "intensity-level-4";
 };
 
 const formatDateKey = (date: Date) =>
@@ -25,7 +25,7 @@ export default function CalendarView({ entries }: CalendarViewProps) {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>();
 
   // Mapea cada fecha a su clase de intensidad
-  const { entriesByDate, daysWithIntensityClass } = useMemo(() => {
+  const { entriesByDate, daysWithIntensityKey } = useMemo(() => {
     const map: Record<string, HeadacheEntry[]> = {};
     const classMap: Record<string, string> = {};
     entries.forEach(e => {
@@ -34,51 +34,33 @@ export default function CalendarView({ entries }: CalendarViewProps) {
     });
     Object.entries(map).forEach(([date, dayEntries]) => {
       const maxInt = Math.max(...dayEntries.map(e => e.intensity));
-      classMap[date] = getIntensityClass(maxInt);
+      classMap[date] = getIntensityKey(maxInt);
     });
     return {
       entriesByDate: map,
-      daysWithIntensityClass: classMap,
+      daysWithIntensityKey: classMap,
     };
   }, [entries]);
 
-  // DayContent: muestra el número y el dot de intensidad si aplica
+  // Function to render content inside a day cell (shows only the number; the dot is via css using class)
   function renderDayContent(day: Date) {
-    const key = formatDateKey(day);
-    const intensityClass = daysWithIntensityClass[key];
-
     return (
-      <div className={`relative w-full h-full flex items-center justify-center`}>
-        <span
-          className={
-            "z-10 " +
-            (intensityClass
-              ? {
-                  "calendar-intensity-mild": "bg-emerald-500",
-                  "calendar-intensity-moderate": "bg-orange-500",
-                  "calendar-intensity-severe": "bg-red-500",
-                  "calendar-intensity-extreme": "bg-red-700",
-                }[intensityClass] ?? ""
-              : "")
-          }
-        >
-          {day.getDate()}
-        </span>
-        {intensityClass && (
-          <span
-            className={`absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full shadow border-2 border-white pointer-events-none
-              ${{
-                "calendar-intensity-mild": "bg-emerald-500",
-                "calendar-intensity-moderate": "bg-orange-500",
-                "calendar-intensity-severe": "bg-red-500",
-                "calendar-intensity-extreme": "bg-red-700",
-              }[intensityClass]}`}
-            aria-label="Indicador de intensidad"
-          />
-        )}
+      <div className="w-full h-full flex items-center justify-center relative">
+        <span className="z-10">{day.getDate()}</span>
+        {/* The visual indication is now handled by className */}
       </div>
     );
   }
+
+  // Map date to modifiers for highlighting
+  const modifiers: Record<string, (date: Date) => boolean> = {};
+  const modifiersClassNames: Record<string, string> = {};
+
+  Object.entries(daysWithIntensityKey).forEach(([dateStr, intensityClass]) => {
+    const modName = intensityClass;
+    modifiers[modName] = (date: Date) => formatDateKey(date) === dateStr;
+    modifiersClassNames[modName] = intensityClass;
+  });
 
   const selectedEntries = selectedDay
     ? entriesByDate[formatDateKey(selectedDay)] || []
@@ -99,13 +81,12 @@ export default function CalendarView({ entries }: CalendarViewProps) {
                 <Calendar
                   mode="single"
                   selected={selectedDay}
-                  onDayClick={setSelectedDay}
+                  onSelect={setSelectedDay}
                   className="w-full calendar-custom-intensity mx-auto min-w-[320px] max-w-full"
                   numberOfMonths={1}
-                  modifiersClassNames={{
-                    // Estas clases no afectan visualmente, solo son fallback si no hay renderDay de contenido personalizado
-                  }}
-                  renderDay={renderDayContent}
+                  modifiers={modifiers}
+                  modifiersClassNames={modifiersClassNames}
+                  dayContent={renderDayContent}
                 />
               </div>
             </CardContent>

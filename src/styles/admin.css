@@ -1,0 +1,38 @@
+
+@layer components {
+  .admin-select-fixed {
+    @apply w-full px-3 py-2 border-2 border-slate-400 rounded-md 
+           bg-white text-slate-800 font-semibold
+           focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500
+           hover:border-slate-500 transition-colors;
+  }
+
+  .admin-select-fixed:focus {
+    @apply border-violet-500 ring-2 ring-violet-200;
+  }
+
+  .admin-preview-card-fixed {
+    @apply bg-slate-100 border-2 border-slate-300 rounded-lg p-4;
+  }
+
+  .admin-file-input-fixed {
+    @apply block w-full text-sm text-slate-800 font-semibold
+           file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 
+           file:text-sm file:font-bold file:bg-violet-100 file:text-violet-800 
+           hover:file:bg-violet-200 file:transition-colors
+           border-2 border-slate-400 rounded-md p-2 bg-white
+           hover:border-slate-500 focus:border-violet-500;
+  }
+
+  .admin-select {
+    display: none;
+  }
+
+  .admin-preview-card {
+    display: none;
+  }
+
+  .admin-file-input {
+    display: none;
+  }
+}

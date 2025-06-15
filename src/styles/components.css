@@ -1,0 +1,39 @@
+
+@layer components {
+  .glass-card {
+    @apply bg-white/60 backdrop-blur-xl border border-white/20 shadow-xl shadow-purple-100/20;
+  }
+  
+  .glass-card-dark {
+    @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-2xl shadow-purple-200/30;
+  }
+  
+  .gradient-button {
+    @apply bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 
+           hover:from-violet-600 hover:via-purple-600 hover:to-fuchsia-600
+           shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30
+           transition-all duration-300;
+  }
+  
+  .soft-shadow {
+    box-shadow: 
+      0 1px 3px 0 rgba(139, 92, 246, 0.1),
+      0 1px 2px -1px rgba(139, 92, 246, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  
+  .intensity-dot {
+    @apply w-4 h-4 rounded-full transition-all duration-300 shadow-lg;
+  }
+  
+  .intensity-1 { @apply bg-emerald-400 shadow-emerald-200; }
+  .intensity-2 { @apply bg-emerald-500 shadow-emerald-300; }
+  .intensity-3 { @apply bg-orange-300 shadow-orange-200; }
+  .intensity-4 { @apply bg-orange-400 shadow-orange-200; }
+  .intensity-5 { @apply bg-orange-500 shadow-orange-300; }
+  .intensity-6 { @apply bg-red-400 shadow-red-200; }
+  .intensity-7 { @apply bg-red-500 shadow-red-300; }
+  .intensity-8 { @apply bg-red-600 shadow-red-400; }
+  .intensity-9 { @apply bg-red-700 shadow-red-500; }
+  .intensity-10 { @apply bg-red-800 shadow-red-600; }
+}

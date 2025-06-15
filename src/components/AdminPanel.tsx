@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -146,8 +145,8 @@ const AdminPanel = () => {
       )}
       
       <div className="space-y-4 sm:space-y-6 p-4">
-        <Card className="glass-card-mobile">
-          <CardHeader className="pb-2 sm:pb-6">
+        <Card className="admin-panel-card">
+          <CardHeader className="pb-2 sm:pb-6 admin-panel-content">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
               <CardTitle className="text-lg sm:text-2xl font-bold text-slate-800 flex items-center gap-2 sm:gap-3">
                 <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-violet-500" />
@@ -157,7 +156,7 @@ const AdminPanel = () => {
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300 w-full sm:w-auto mobile-button"
+                className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300 w-full sm:w-auto mobile-button bg-white"
               >
                 <LogOut className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                 Cerrar Sesión
@@ -167,7 +166,7 @@ const AdminPanel = () => {
             <AdminTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </CardHeader>
 
-          <CardContent className="space-y-4 sm:space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6 admin-panel-content">
             {renderTabContent()}
 
             {activeTab !== 'medications' && (

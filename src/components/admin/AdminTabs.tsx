@@ -23,7 +23,9 @@ const AdminTabs = ({ activeTab, onTabChange }: AdminTabsProps) => {
           variant={activeTab === id ? 'default' : 'outline'}
           onClick={() => onTabChange(id)}
           size="sm"
-          className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300 text-xs sm:text-sm"
+          className={`text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300 text-xs sm:text-sm admin-tab-button ${
+            activeTab === id ? 'active' : ''
+          }`}
         >
           <Icon className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
           <span className="hidden sm:inline">{label}</span>

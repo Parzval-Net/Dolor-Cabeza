@@ -1,0 +1,82 @@
+
+@layer base {
+  :root {
+    --background: 252 252 255;
+    --foreground: 71 67 94;
+
+    --card: 255 255 255;
+    --card-foreground: 71 67 94;
+
+    --popover: 255 255 255;
+    --popover-foreground: 71 67 94;
+
+    --primary: 161 113 255;
+    --primary-foreground: 255 255 255;
+
+    --secondary: 248 246 255;
+    --secondary-foreground: 139 71 255;
+
+    --muted: 248 246 255;
+    --muted-foreground: 140 130 169;
+
+    --accent: 255 203 226;
+    --accent-foreground: 134 25 143;
+
+    --destructive: 239 68 68;
+    --destructive-foreground: 254 242 242;
+
+    --border: 231 224 255;
+    --input: 231 224 255;
+    --ring: 161 113 255;
+
+    --radius: 1rem;
+
+    --sidebar-background: 252 252 255;
+    --sidebar-foreground: 71 67 94;
+    --sidebar-primary: 161 113 255;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 248 246 255;
+    --sidebar-accent-foreground: 71 67 94;
+    --sidebar-border: 231 224 255;
+    --sidebar-ring: 161 113 255;
+  }
+
+  .dark {
+    --background: 30 24 54;
+    --foreground: 248 246 255;
+
+    --card: 41 35 65;
+    --card-foreground: 248 246 255;
+
+    --popover: 41 35 65;
+    --popover-foreground: 248 246 255;
+
+    --primary: 161 113 255;
+    --primary-foreground: 255 255 255;
+
+    --secondary: 52 46 76;
+    --secondary-foreground: 207 194 255;
+
+    --muted: 52 46 76;
+    --muted-foreground: 140 130 169;
+
+    --accent: 139 71 255;
+    --accent-foreground: 248 246 255;
+
+    --destructive: 220 38 127;
+    --destructive-foreground: 253 244 255;
+
+    --border: 52 46 76;
+    --input: 52 46 76;
+    --ring: 161 113 255;
+
+    --sidebar-background: 30 24 54;
+    --sidebar-foreground: 248 246 255;
+    --sidebar-primary: 161 113 255;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 52 46 76;
+    --sidebar-accent-foreground: 248 246 255;
+    --sidebar-border: 52 46 76;
+    --sidebar-ring: 161 113 255;
+  }
+}

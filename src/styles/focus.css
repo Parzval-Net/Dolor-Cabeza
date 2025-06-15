@@ -1,0 +1,35 @@
+
+@layer base {
+  /* Mejoras de contraste y eliminación de bordes amarillos */
+  button:focus,
+  input:focus,
+  textarea:focus,
+  select:focus,
+  [role="button"]:focus {
+    outline: 2px solid rgb(139, 92, 246) !important;
+    outline-offset: 2px !important;
+    -webkit-focus-ring-color: transparent !important;
+    border-color: rgb(139, 92, 246) !important;
+  }
+
+  /* Focus states - improved accessibility */
+  *:focus {
+    outline: none !important;
+  }
+
+  *:focus-visible {
+    outline: 2px solid rgb(139 92 246) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Remove any remaining yellow focus rings */
+  button:focus,
+  input:focus,
+  textarea:focus,
+  select:focus,
+  [role="button"]:focus {
+    outline: 2px solid rgb(139, 92, 246) !important;
+    outline-offset: 2px !important;
+    -webkit-focus-ring-color: transparent !important;
+  }
+}

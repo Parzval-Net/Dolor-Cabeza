@@ -1,0 +1,53 @@
+
+@layer base {
+  /* Mejoras de accesibilidad táctil */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  @media (max-width: 640px) {
+    .mobile-touch-target {
+      min-height: 48px;
+      min-width: 48px;
+    }
+  }
+
+  /* Optimización para formularios en Safari */
+  .safari-form-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .safari-button-fix {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0.75rem;
+  }
+
+  .safari-interactive-button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Clases auxiliares mejoradas */
+  .mobile-input {
+    @apply h-12 text-base border-2 border-violet-200 rounded-xl focus:border-violet-500 focus:ring-0 bg-white/90;
+  }
+
+  .mobile-button {
+    @apply h-12 px-6 text-base font-semibold rounded-xl transition-all duration-200 touch-manipulation;
+  }
+
+  @media (max-width: 640px) {
+    .mobile-input {
+      @apply h-14 text-lg;
+    }
+    
+    .mobile-button {
+      @apply h-14 px-8 text-lg;
+    }
+  }
+}

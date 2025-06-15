@@ -1,0 +1,53 @@
+
+@layer base {
+  /* Mejoras específicas para Safari */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      background: linear-gradient(to bottom right, #f8fafc, #f3f4f6, #faf5ff) !important;
+    }
+    
+    .glass-card,
+    .glass-card-dark,
+    .glass-card-mobile {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 1px solid rgba(167, 139, 250, 0.3) !important;
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    /* Eliminar bordes amarillos en Safari */
+    button,
+    input,
+    textarea,
+    select,
+    [role="button"] {
+      -webkit-tap-highlight-color: transparent !important;
+      -webkit-appearance: none !important;
+      touch-action: manipulation;
+    }
+
+    button:hover,
+    [role="button"]:hover {
+      background-color: rgba(139, 92, 246, 0.1) !important;
+      border-color: rgb(139, 92, 246) !important;
+      color: rgb(71, 85, 105) !important;
+    }
+
+    /* Arreglar problemas de contraste en texto */
+    .text-white {
+      color: rgb(255, 255, 255) !important;
+    }
+
+    .text-slate-800 {
+      color: rgb(30, 41, 59) !important;
+    }
+
+    .text-slate-700 {
+      color: rgb(51, 65, 85) !important;
+    }
+
+    .text-slate-600 {
+      color: rgb(71, 85, 105) !important;
+    }
+  }
+}

@@ -1,6 +1,25 @@
+
 import { Calendar, Plus, TrendingUp, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+import { 
+  Heart, 
+  Activity, 
+  Brain, 
+  Zap, 
+  Shield, 
+  Star, 
+  Moon, 
+  Sun, 
+  Flame,
+  Eye,
+  Target,
+  BarChart3,
+  HeartHandshake,
+  Stethoscope,
+  Pill,
+  Clock
+} from 'lucide-react';
 
 interface HeaderProps {
   onNewEntry: () => void;
@@ -13,8 +32,33 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
     appName: 'MigraCare',
     appDescription: 'Seguimiento inteligente de migrañas',
     primaryColor: '#8B5CF6',
-    secondaryColor: '#EC4899'
+    secondaryColor: '#EC4899',
+    appIcon: 'Heart'
   });
+
+  // Mapeo de iconos
+  const iconMap: { [key: string]: React.ComponentType<any> } = {
+    Heart,
+    Activity,
+    Brain,
+    Zap,
+    Shield,
+    Star,
+    Moon,
+    Sun,
+    Sparkles,
+    Flame,
+    Eye,
+    Target,
+    Plus,
+    Calendar,
+    TrendingUp,
+    BarChart3,
+    HeartHandshake,
+    Stethoscope,
+    Pill,
+    Clock,
+  };
 
   // Función para cargar configuración desde localStorage
   const loadSettings = () => {
@@ -26,7 +70,8 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
           appName: parsedSettings.appName || 'MigraCare',
           appDescription: parsedSettings.appDescription || 'Seguimiento inteligente de migrañas',
           primaryColor: parsedSettings.primaryColor || '#8B5CF6',
-          secondaryColor: parsedSettings.secondaryColor || '#EC4899'
+          secondaryColor: parsedSettings.secondaryColor || '#EC4899',
+          appIcon: parsedSettings.appIcon || 'Heart'
         });
       } catch (error) {
         console.error('Error loading admin settings in Header:', error);
@@ -63,6 +108,9 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
     };
   }, []);
 
+  // Obtener el componente de icono seleccionado
+  const SelectedIcon = iconMap[appSettings.appIcon] || Heart;
+
   return (
     <header className="bg-white/80 backdrop-blur-xl border-b border-violet-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 py-4">
@@ -74,9 +122,7 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
                 background: `linear-gradient(to br, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`
               }}
             >
-              <span className="text-white font-bold text-lg">
-                {appSettings.appName.charAt(0).toUpperCase()}
-              </span>
+              <SelectedIcon className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 

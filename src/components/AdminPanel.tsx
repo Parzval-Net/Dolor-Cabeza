@@ -1,28 +1,34 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Settings, Save, Palette, Type, Globe } from 'lucide-react';
+import { Settings, Save, Palette, Type, Globe, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import AdminAuth from './AdminAuth';
+import IconSelector from './IconSelector';
 
 interface AdminSettings {
   appName: string;
   appDescription: string;
   primaryColor: string;
   secondaryColor: string;
+  appIcon: string;
   language: string;
   timezone: string;
   exportFormat: string;
 }
 
 const AdminPanel = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [settings, setSettings] = useState<AdminSettings>({
     appName: 'MigraCare',
     appDescription: 'Tu aplicación para el seguimiento de migrañas',
     primaryColor: '#8B5CF6',
     secondaryColor: '#EC4899',
+    appIcon: 'Heart',
     language: 'es',
     timezone: 'America/Santiago',
     exportFormat: 'PDF'
@@ -30,22 +36,52 @@ const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'data'>('general');
   const { toast } = useToast();
 
-  // Cargar configuración guardada al montar el componente
+  // Verificar autenticación al cargar
   useEffect(() => {
-    const savedSettings = localStorage.getItem('admin-settings');
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        setSettings(parsedSettings);
-      } catch (error) {
-        console.error('Error loading admin settings:', error);
+    const authStatus = localStorage.getItem('admin-authenticated');
+    const sessionTimestamp = localStorage.getItem('admin-session-timestamp');
+    
+    if (authStatus === 'true' && sessionTimestamp) {
+      const sessionAge = Date.now() - parseInt(sessionTimestamp);
+      const MAX_SESSION_TIME = 24 * 60 * 60 * 1000; // 24 horas
+      
+      if (sessionAge < MAX_SESSION_TIME) {
+        setIsAuthenticated(true);
+      } else {
+        handleLogout();
       }
     }
   }, []);
 
+  // Cargar configuración guardada al montar el componente
+  useEffect(() => {
+    if (isAuthenticated) {
+      const savedSettings = localStorage.getItem('admin-settings');
+      if (savedSettings) {
+        try {
+          const parsedSettings = JSON.parse(savedSettings);
+          setSettings(parsedSettings);
+        } catch (error) {
+          console.error('Error loading admin settings:', error);
+        }
+      }
+    }
+  }, [isAuthenticated]);
+
+  const updateDocumentTitle = (appName: string) => {
+    document.title = `${appName} - Seguimiento inteligente de migrañas`;
+    const titleElement = document.getElementById('dynamic-title');
+    if (titleElement) {
+      titleElement.textContent = `${appName} - Seguimiento inteligente de migrañas`;
+    }
+  };
+
   const handleSave = () => {
     try {
       localStorage.setItem('admin-settings', JSON.stringify(settings));
+      
+      // Actualizar título del documento
+      updateDocumentTitle(settings.appName);
       
       // Disparar evento personalizado para notificar cambios
       window.dispatchEvent(new CustomEvent('admin-settings-updated'));
@@ -63,6 +99,16 @@ const AdminPanel = () => {
         variant: "destructive"
       });
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin-authenticated');
+    localStorage.removeItem('admin-session-timestamp');
+    setIsAuthenticated(false);
+    toast({
+      title: "Sesión cerrada",
+      description: "Has cerrado sesión exitosamente."
+    });
   };
 
   const handleExportData = () => {
@@ -110,14 +156,29 @@ const AdminPanel = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
+
   return (
     <div className="space-y-6">
       <Card className="glass-card-dark">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-            <Settings className="w-6 h-6 text-violet-500" />
-            Panel de Administración
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-2xl font-bold text-slate-800 flex items-center gap-3">
+              <Settings className="w-6 h-6 text-violet-500" />
+              Panel de Administración
+            </CardTitle>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              size="sm"
+              className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Cerrar Sesión
+            </Button>
+          </div>
           
           <div className="flex gap-2 mt-4">
             <Button 
@@ -165,6 +226,7 @@ const AdminPanel = () => {
                   placeholder="Nombre de tu aplicación" 
                   className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
                 />
+                <p className="text-xs text-slate-600">Este será el título que aparecerá en la pestaña del navegador</p>
               </div>
 
               <div className="space-y-2">
@@ -221,7 +283,18 @@ const AdminPanel = () => {
           )}
 
           {activeTab === 'appearance' && (
-            <div className="space-y-4">
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <Label className="text-slate-800 font-bold">Icono de la Aplicación</Label>
+                <IconSelector
+                  selectedIcon={settings.appIcon}
+                  onIconSelect={(iconName) => setSettings(prev => ({
+                    ...prev,
+                    appIcon: iconName
+                  }))}
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="primaryColor" className="text-slate-800 font-bold">Color Primario</Label>
@@ -283,7 +356,7 @@ const AdminPanel = () => {
                       background: `linear-gradient(to br, ${settings.primaryColor}, ${settings.secondaryColor})`
                     }}
                   >
-                    8
+                    {settings.appName.charAt(0).toUpperCase()}
                   </div>
                   <div className="space-y-1">
                     <h5 

@@ -65,7 +65,17 @@
     @apply shadow-xl shadow-purple-500/10 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300;
   }
 
-  /* Safari mobile specific fixes for all interactive elements */
+  /* Eliminar marcos amarillos de focus */
+  *:focus {
+    outline: none !important;
+  }
+
+  *:focus-visible {
+    outline: 2px solid rgb(139 92 246) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Safari mobile specific fixes */
   @supports (-webkit-touch-callout: none) {
     .glass-card,
     .glass-card-dark,
@@ -77,43 +87,15 @@
       border: 1px solid rgba(167, 139, 250, 0.4) !important;
     }
 
-    .safari-button-fix,
-    .safari-select-fix,
-    .safari-pagination-fix,
-    .safari-toggle-fix,
-    .safari-badge-fix,
-    .safari-interactive-button,
-    .safari-form-button,
-    .safari-calendar-fix,
-    .safari-nav-button-fix,
-    .safari-day-button-fix {
-      background-color: rgba(255, 255, 255, 0.95) !important;
-      border-color: rgba(167, 139, 250, 0.6) !important;
+    /* Eliminar marcos amarillos en Safari iOS */
+    * {
+      -webkit-tap-highlight-color: transparent !important;
+      -webkit-touch-callout: none !important;
+      -webkit-user-select: none !important;
     }
 
-    .safari-button-fix[data-state="checked"],
-    .safari-toggle-fix[data-state="on"],
-    .safari-interactive-button.selected {
-      background: linear-gradient(to right, rgb(139, 92, 246), rgb(147, 51, 234)) !important;
-      color: white !important;
-      border-color: rgb(139, 92, 246) !important;
-    }
-
-    .safari-popover-fix,
-    .safari-select-item-fix {
-      background-color: rgba(255, 255, 255, 0.98) !important;
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-    }
-
-    .safari-calendar-fix .rdp-day {
-      background-color: rgba(255, 255, 255, 0.95) !important;
-      border: 1px solid rgba(167, 139, 250, 0.3) !important;
-    }
-
-    .safari-calendar-fix .rdp-day_selected {
-      background-color: rgb(139, 92, 246) !important;
-      color: white !important;
+    input, textarea, [contenteditable] {
+      -webkit-user-select: text !important;
     }
   }
 

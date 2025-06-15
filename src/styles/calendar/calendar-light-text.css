@@ -1,8 +1,8 @@
 
 @layer components {
-  /* Calendar with light text for dark background - IMPROVED SIZE */
+  /* Calendar with light text for dark background - IMPROVED SIZE AND VISIBILITY */
   .calendar-light-text .rdp-day {
-    @apply text-slate-100 font-bold text-xl hover:bg-slate-700 hover:text-white transition-all duration-200 w-24 h-24 rounded-xl border border-transparent bg-slate-700/40;
+    @apply text-slate-100 font-bold text-xl hover:bg-slate-700 hover:text-white transition-all duration-200 w-20 h-20 rounded-xl border border-transparent bg-slate-700/40 relative;
   }
 
   .calendar-light-text .rdp-day:hover {
@@ -27,38 +27,51 @@
 
   /* Calendar headers with light text - IMPROVED SIZE */
   .calendar-light-text .rdp-head_cell {
-    @apply text-slate-200 font-bold text-xl w-24 h-16;
+    @apply text-slate-200 font-bold text-lg w-20 h-12;
   }
 
   .calendar-light-text .rdp-caption_label {
-    @apply text-slate-100 font-bold text-3xl;
+    @apply text-slate-100 font-bold text-2xl;
   }
 
   /* Navigation buttons with light colors - IMPROVED SIZE */
   .calendar-light-text .rdp-nav_button {
-    @apply text-slate-200 hover:text-white hover:bg-slate-700 w-14 h-14 rounded-full transition-all duration-200 border border-slate-600 hover:border-slate-500 bg-slate-700/60;
+    @apply text-slate-200 hover:text-white hover:bg-slate-700 w-12 h-12 rounded-full transition-all duration-200 border border-slate-600 hover:border-slate-500 bg-slate-700/60;
   }
 
-  /* Enhanced Calendar entry dot styles with better visibility on dark background - IMPROVED SIZE */
+  /* ENHANCED Calendar entry dot styles - MORE VISIBLE */
   .calendar-light-text .intensity-level-1:not(.rdp-day_selected)::after,
   .calendar-light-text .intensity-level-2:not(.rdp-day_selected)::after,
   .calendar-light-text .intensity-level-3:not(.rdp-day_selected)::after,
   .calendar-light-text .intensity-level-4:not(.rdp-day_selected)::after {
     content: '';
-    @apply absolute bottom-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full shadow-lg border-2 border-slate-700;
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full shadow-lg border-2 border-slate-800 z-10;
   }
   
-  .calendar-light-text .intensity-level-1::after { @apply bg-emerald-400 shadow-emerald-300; }
-  .calendar-light-text .intensity-level-2::after { @apply bg-orange-400 shadow-orange-300; }
-  .calendar-light-text .intensity-level-3::after { @apply bg-red-400 shadow-red-300; }
-  .calendar-light-text .intensity-level-4::after { @apply bg-red-600 shadow-red-500; }
+  .calendar-light-text .intensity-level-1::after { 
+    @apply bg-emerald-400 shadow-emerald-300;
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
+  }
+  .calendar-light-text .intensity-level-2::after { 
+    @apply bg-orange-400 shadow-orange-300;
+    box-shadow: 0 0 10px rgba(251, 146, 60, 0.6);
+  }
+  .calendar-light-text .intensity-level-3::after { 
+    @apply bg-red-400 shadow-red-300;
+    box-shadow: 0 0 10px rgba(248, 113, 113, 0.6);
+  }
+  .calendar-light-text .intensity-level-4::after { 
+    @apply bg-red-600 shadow-red-500;
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+  }
 
-  /* Selected day with intensity dots */
+  /* Selected day with intensity dots - MORE VISIBLE */
   .calendar-light-text .rdp-day_selected.intensity-level-1::after,
   .calendar-light-text .rdp-day_selected.intensity-level-2::after,
   .calendar-light-text .rdp-day_selected.intensity-level-3::after,
   .calendar-light-text .rdp-day_selected.intensity-level-4::after {
     @apply bg-white shadow-white/80 border-2 border-violet-300;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
   }
 
   /* Calendar table spacing - IMPROVED SPACING */
@@ -67,6 +80,11 @@
   }
 
   .calendar-light-text .rdp-row {
-    @apply mb-4;
+    @apply mb-2;
+  }
+
+  /* Ensure intensity indicators are always visible */
+  .calendar-light-text .rdp-day[class*="intensity-level-"] {
+    @apply relative;
   }
 }

@@ -2,7 +2,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { HeadacheEntry } from "@/types/headache";
-import { Clock, Zap, Pill, AlertTriangle } from "lucide-react";
+import { Clock, Zap, Pill, AlertTriangle, Calendar } from "lucide-react";
 
 interface Props {
   date?: Date;

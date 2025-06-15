@@ -1,4 +1,3 @@
-
 import { Calendar, Plus, TrendingUp, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
@@ -126,18 +125,10 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
               <SelectedIcon className="w-6 h-6 text-white drop-shadow-sm" />
             </div>
             <div>
-              <h1 
-                className="text-2xl font-bold text-slate-800"
-                style={{
-                  background: `linear-gradient(to r, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
+              <h1 className="text-2xl font-bold text-slate-900">
                 {appSettings.appName}
               </h1>
-              <p className="text-sm text-slate-500">{appSettings.appDescription}</p>
+              <p className="text-sm text-slate-600 font-medium">{appSettings.appDescription}</p>
             </div>
           </div>
 

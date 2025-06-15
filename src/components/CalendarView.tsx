@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { HeadacheEntry } from '@/types/headache';
 import { DayModifiers } from 'react-day-picker';
-import { Clock } from 'lucide-react';
 
 interface CalendarViewProps {
   entries: HeadacheEntry[];
@@ -17,56 +16,59 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
     const entryDays: Record<string, number> = {};
     const newEntriesByDate: Record<string, HeadacheEntry[]> = {};
 
+    // Procesar entradas y agrupar por fecha
     entries.forEach((entry) => {
       const date = entry.date;
       const intensity = entry.intensity;
       
+      // Guardar la intensidad máxima por día
       if (!entryDays[date] || intensity > entryDays[date]) {
         entryDays[date] = intensity;
       }
+      
+      // Agrupar entradas por fecha
       if (!newEntriesByDate[date]) {
         newEntriesByDate[date] = [];
       }
       newEntriesByDate[date].push(entry);
     });
 
-    const intensityLevel1: Date[] = [];
-    const intensityLevel2: Date[] = [];
-    const intensityLevel3: Date[] = [];
-    const intensityLevel4: Date[] = [];
+    // Crear arrays de fechas por nivel de intensidad
+    const mild: Date[] = [];
+    const moderate: Date[] = [];
+    const severe: Date[] = [];
+    const extreme: Date[] = [];
 
     Object.entries(entryDays).forEach(([date, intensity]) => {
-      const parts = date.split('-').map(Number);
-      const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+      const [year, month, day] = date.split('-').map(Number);
+      const dateObj = new Date(year, month - 1, day);
 
       if (intensity <= 3) {
-        intensityLevel1.push(dateObj);
+        mild.push(dateObj);
       } else if (intensity <= 6) {
-        intensityLevel2.push(dateObj);
+        moderate.push(dateObj);
       } else if (intensity <= 8) {
-        intensityLevel3.push(dateObj);
+        severe.push(dateObj);
       } else {
-        intensityLevel4.push(dateObj);
+        extreme.push(dateObj);
       }
     });
 
-    const newModifiers = {
-      intensityLevel1,
-      intensityLevel2,
-      intensityLevel3,
-      intensityLevel4,
-    };
-
-    console.log('Calendar modifiers:', newModifiers);
-    console.log('Entry days:', entryDays);
+    console.log('Processed entry days:', entryDays);
+    console.log('Calendar modifiers:', { mild, moderate, severe, extreme });
 
     return {
-      modifiers: newModifiers,
+      modifiers: {
+        mild,
+        moderate,
+        severe,
+        extreme,
+      },
       modifiersClassNames: {
-        intensityLevel1: 'intensity-level-1',
-        intensityLevel2: 'intensity-level-2',
-        intensityLevel3: 'intensity-level-3',
-        intensityLevel4: 'intensity-level-4',
+        mild: 'intensity-mild',
+        moderate: 'intensity-moderate',
+        severe: 'intensity-severe',
+        extreme: 'intensity-extreme',
       },
       entriesByDate: newEntriesByDate,
     };
@@ -80,25 +82,26 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
   };
 
   const formatDate = (date: Date) => {
-    return date.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   const selectedDayEntries = selectedDay ? entriesByDate[formatDate(selectedDay)] || [] : [];
-  console.log('Selected day entries:', selectedDayEntries);
 
-  const getIntensityGradient = (intensity: number) => {
+  const getIntensityColor = (intensity: number) => {
     if (intensity <= 3) return 'from-emerald-400 to-emerald-500';
     if (intensity <= 6) return 'from-orange-400 to-orange-500';
     if (intensity <= 8) return 'from-red-400 to-red-500';
-    return 'from-red-500 to-red-600';
+    return 'from-red-600 to-red-700';
   };
 
   return (
     <div className="w-full max-w-none animate-fade-in">
-      {/* Contenedor principal con mejor distribución del espacio */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Columna del calendario - ocupa 2/3 en desktop */}
+        {/* Calendario */}
         <div className="lg:col-span-2">
           <Card className="glass-card-dark h-full">
             <CardHeader className="pb-4">
@@ -107,12 +110,11 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              {/* Calendario con fondo oscuro y tamaño ajustado */}
               <div className="bg-slate-800 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-slate-600 w-full">
                 <Calendar
                   modifiers={modifiers}
                   modifiersClassNames={modifiersClassNames}
-                  className="w-full calendar-light-text mx-auto scale-90 lg:scale-100"
+                  className="w-full calendar-with-intensity mx-auto"
                   numberOfMonths={1}
                   onDayClick={handleDayClick}
                   selected={selectedDay}
@@ -123,7 +125,7 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           </Card>
         </div>
 
-        {/* Columna lateral - leyenda y detalles */}
+        {/* Panel lateral */}
         <div className="lg:col-span-1 space-y-4">
           {/* Leyenda */}
           <Card className="glass-card-dark">
@@ -134,19 +136,19 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
             </CardHeader>
             <CardContent className="p-4 space-y-3">
               <div className="flex items-center space-x-3 bg-white/80 px-3 py-2 rounded-lg shadow border border-emerald-200">
-                <div className="w-4 h-4 bg-emerald-500 rounded-full"></div>
+                <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-lg"></div>
                 <span className="text-slate-700 font-medium text-sm">Leve (1-3)</span>
               </div>
               <div className="flex items-center space-x-3 bg-white/80 px-3 py-2 rounded-lg shadow border border-orange-200">
-                <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
+                <div className="w-4 h-4 bg-orange-500 rounded-full shadow-lg"></div>
                 <span className="text-slate-700 font-medium text-sm">Moderado (4-6)</span>
               </div>
               <div className="flex items-center space-x-3 bg-white/80 px-3 py-2 rounded-lg shadow border border-red-200">
-                <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                <div className="w-4 h-4 bg-red-500 rounded-full shadow-lg"></div>
                 <span className="text-slate-700 font-medium text-sm">Severo (7-8)</span>
               </div>
               <div className="flex items-center space-x-3 bg-white/80 px-3 py-2 rounded-lg shadow border border-red-300">
-                <div className="w-4 h-4 bg-red-700 rounded-full"></div>
+                <div className="w-4 h-4 bg-red-700 rounded-full shadow-lg"></div>
                 <span className="text-slate-700 font-medium text-sm">Extremo (9-10)</span>
               </div>
             </CardContent>
@@ -165,7 +167,7 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
                   {selectedDayEntries.map(entry => (
                     <div key={entry.id} className="bg-white/90 p-4 rounded-xl border border-slate-200 shadow-sm">
                       <div className="flex items-center space-x-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow text-white font-bold`}>
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getIntensityColor(entry.intensity)} flex items-center justify-center shadow text-white font-bold`}>
                           {entry.intensity}
                         </div>
                         <div className="flex-1">

@@ -1,0 +1,124 @@
+
+@layer components {
+  /* Calendario con indicadores de intensidad - COMPLETAMENTE NUEVO */
+  .calendar-with-intensity {
+    --rdp-cell-size: 80px;
+  }
+
+  /* Estilos base para los días */
+  .calendar-with-intensity .rdp-day {
+    @apply text-slate-100 font-bold text-lg hover:bg-slate-700 hover:text-white transition-all duration-200 w-20 h-20 rounded-xl border border-transparent bg-slate-700/40 relative overflow-visible;
+  }
+
+  .calendar-with-intensity .rdp-day:hover {
+    @apply bg-slate-700 text-white scale-105 shadow-md border-slate-600;
+  }
+
+  .calendar-with-intensity .rdp-day_selected {
+    @apply bg-violet-600 text-white font-bold shadow-lg scale-105 border-violet-500;
+  }
+
+  .calendar-with-intensity .rdp-day_today {
+    @apply bg-violet-500 text-white font-bold ring-2 ring-violet-400 shadow-lg border-violet-400;
+  }
+
+  .calendar-with-intensity .rdp-day_outside {
+    @apply text-slate-500 font-medium bg-slate-800/20;
+  }
+
+  .calendar-with-intensity .rdp-day_disabled {
+    @apply text-slate-600 bg-slate-800/10;
+  }
+
+  /* Headers del calendario */
+  .calendar-with-intensity .rdp-head_cell {
+    @apply text-slate-200 font-bold text-lg w-20 h-12;
+  }
+
+  .calendar-with-intensity .rdp-caption_label {
+    @apply text-slate-100 font-bold text-2xl;
+  }
+
+  /* Botones de navegación */
+  .calendar-with-intensity .rdp-nav_button {
+    @apply text-slate-200 hover:text-white hover:bg-slate-700 w-12 h-12 rounded-full transition-all duration-200 border border-slate-600 hover:border-slate-500 bg-slate-700/60;
+  }
+
+  /* INDICADORES DE INTENSIDAD - NUEVOS NOMBRES Y ESTILOS */
+  
+  /* Intensidad LEVE (1-3) - Verde */
+  .calendar-with-intensity .intensity-mild {
+    @apply bg-emerald-500/30 border-emerald-400 relative;
+  }
+  
+  .calendar-with-intensity .intensity-mild::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
+    background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+  }
+
+  /* Intensidad MODERADA (4-6) - Naranja */
+  .calendar-with-intensity .intensity-moderate {
+    @apply bg-orange-500/30 border-orange-400 relative;
+  }
+  
+  .calendar-with-intensity .intensity-moderate::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
+    background: #f97316;
+    box-shadow: 0 0 8px rgba(249, 115, 22, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+  }
+
+  /* Intensidad SEVERA (7-8) - Rojo claro */
+  .calendar-with-intensity .intensity-severe {
+    @apply bg-red-500/30 border-red-400 relative;
+  }
+  
+  .calendar-with-intensity .intensity-severe::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
+    background: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+  }
+
+  /* Intensidad EXTREMA (9-10) - Rojo oscuro */
+  .calendar-with-intensity .intensity-extreme {
+    @apply bg-red-700/30 border-red-600 relative;
+  }
+  
+  .calendar-with-intensity .intensity-extreme::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-20;
+    background: #dc2626;
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+  }
+
+  /* Días seleccionados con indicadores */
+  .calendar-with-intensity .rdp-day_selected.intensity-mild::after,
+  .calendar-with-intensity .rdp-day_selected.intensity-moderate::after,
+  .calendar-with-intensity .rdp-day_selected.intensity-severe::after,
+  .calendar-with-intensity .rdp-day_selected.intensity-extreme::after {
+    @apply bg-white;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(139, 92, 246, 0.8);
+  }
+
+  /* Espaciado de la tabla */
+  .calendar-with-intensity .rdp-table {
+    @apply mx-auto w-full;
+  }
+
+  .calendar-with-intensity .rdp-row {
+    @apply mb-2;
+  }
+
+  /* Asegurar que los indicadores estén siempre visibles */
+  .calendar-with-intensity .rdp-day[class*="intensity-"] {
+    @apply relative overflow-visible;
+  }
+}

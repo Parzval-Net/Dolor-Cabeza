@@ -62,11 +62,10 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
     };
   }, [entries]);
 
-  const handleDayClick = (day: Date, modifiers: DayModifiers) => {
-    if (modifiers.level1 || modifiers.level2 || modifiers.level3 || modifiers.level4) {
+  const handleDayClick = (day: Date | undefined, modifiers?: DayModifiers) => {
+    console.log('Day clicked:', day, 'Modifiers:', modifiers);
+    if (day) {
       setSelectedDay(day);
-    } else {
-      setSelectedDay(undefined);
     }
   };
 
@@ -75,6 +74,7 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
   };
 
   const selectedDayEntries = selectedDay ? entriesByDate[formatDate(selectedDay)] || [] : [];
+  console.log('Selected day entries:', selectedDayEntries);
 
   const getIntensityGradient = (intensity: number) => {
     if (intensity <= 3) return 'from-emerald-400 to-emerald-500';
@@ -87,12 +87,12 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
     <div className="space-y-6 animate-fade-in">
       <Card className="glass-card-dark">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
+          <CardTitle className="text-2xl font-bold text-slate-800">
             Calendario de Migrañas
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/40 w-full max-w-md">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/40 w-full max-w-2xl">
             <Calendar
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
@@ -100,22 +100,23 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
               numberOfMonths={1}
               onDayClick={handleDayClick}
               selected={selectedDay}
+              mode="single"
             />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Leve (1-3)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-orange-500 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Moderado (4-6)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-red-500 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Severo (7-8)</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/20">
+            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-xl shadow-lg border border-white/30">
               <div className="w-4 h-4 bg-red-700 rounded-full shadow-lg"></div>
               <span className="text-slate-800 font-semibold">Extremo (9-10)</span>
             </div>
@@ -126,14 +127,14 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
       {selectedDayEntries.length > 0 && (
         <Card className="glass-card-dark">
           <CardHeader>
-            <CardTitle className="text-xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
+            <CardTitle className="text-xl font-bold text-slate-800">
               Detalles del {selectedDay?.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {selectedDayEntries.map(entry => (
-                <div key={entry.id} className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl border border-white/30 shadow-lg">
+                <div key={entry.id} className="bg-white/90 backdrop-blur-sm p-5 rounded-2xl border border-white/40 shadow-lg">
                   <div className="flex items-center space-x-4">
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-xl text-white font-bold text-lg`}>
                       {entry.intensity}
@@ -153,13 +154,13 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
       {selectedDay && selectedDayEntries.length === 0 && (
         <Card className="glass-card-dark">
           <CardHeader>
-            <CardTitle className="text-xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
+            <CardTitle className="text-xl font-bold text-slate-800">
               {selectedDay.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8 text-slate-600">
-              <p className="text-lg">No hay episodios registrados en esta fecha.</p>
+            <div className="text-center py-8">
+              <p className="text-lg text-slate-700 font-medium">No hay episodios registrados en esta fecha.</p>
             </div>
           </CardContent>
         </Card>

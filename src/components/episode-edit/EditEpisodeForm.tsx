@@ -4,7 +4,6 @@ import { HeadacheEntry } from '@/types/headache';
 import { medicationOptions as defaultMedicationOptions } from '@/data/options';
 import EpisodeBasicFields from './EpisodeBasicFields';
 import EpisodeMedicationSelector from './EpisodeMedicationSelector';
-import EpisodeTriggerSelector from './EpisodeTriggerSelector';
 import EpisodeSymptomSelector from './EpisodeSymptomSelector';
 import EpisodeNotesField from './EpisodeNotesField';
 
@@ -55,7 +54,7 @@ const EditEpisodeForm = ({ entry, onFormDataChange }: EditEpisodeFormProps) => {
   };
 
   const handleCheckboxChange = (
-    field: 'medications' | 'triggers' | 'symptoms',
+    field: 'medications' | 'symptoms',
     value: string,
     checked: boolean
   ) => {
@@ -87,13 +86,6 @@ const EditEpisodeForm = ({ entry, onFormDataChange }: EditEpisodeFormProps) => {
         </div>
 
         <div className="space-y-4 sm:space-y-6">
-          <EpisodeTriggerSelector
-            selectedTriggers={formData.triggers}
-            onToggleTrigger={(trigger, checked) => 
-              handleCheckboxChange('triggers', trigger, checked)
-            }
-          />
-
           <EpisodeSymptomSelector
             selectedSymptoms={formData.symptoms}
             onToggleSymptom={(symptom, checked) => 

@@ -1,5 +1,5 @@
 
-import { Calendar, Clock, Pill, Activity, Brain, TrendingUp, Sparkles } from 'lucide-react';
+import { Calendar, Pill, Activity, Brain, TrendingUp, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HeadacheEntry } from '@/types/headache';
 
@@ -19,8 +19,6 @@ const Dashboard = ({ entries }: DashboardProps) => {
   const averageIntensity = monthlyEntries.length > 0 
     ? monthlyEntries.reduce((sum, entry) => sum + entry.intensity, 0) / monthlyEntries.length
     : 0;
-
-  const totalDuration = monthlyEntries.reduce((sum, entry) => sum + entry.duration, 0);
 
   const mostUsedMedication = monthlyEntries
     .flatMap(entry => entry.medications)
@@ -70,8 +68,8 @@ const Dashboard = ({ entries }: DashboardProps) => {
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Grid, SOLO 3 columnas ahora */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Episodes Count */}
         <Card className="glass-card-dark glow-effect group hover:scale-105 transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
@@ -102,23 +100,6 @@ const Dashboard = ({ entries }: DashboardProps) => {
             <p className="text-sm text-slate-600">promedio de 10</p>
             <div className="w-full bg-slate-200 rounded-full h-2">
               <div className={`bg-gradient-to-r ${getIntensityGradient(averageIntensity)} h-2 rounded-full`} style={{width: `${averageIntensity * 10}%`}}></div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Total Duration */}
-        <Card className="glass-card-dark glow-effect group hover:scale-105 transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-semibold text-slate-700">Duración</CardTitle>
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/25 group-hover:shadow-xl group-hover:shadow-cyan-500/30 transition-all duration-300">
-              <Clock className="h-6 w-6 text-white" />
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-3xl font-bold text-slate-800">{totalDuration}h</div>
-            <p className="text-sm text-slate-600">total este mes</p>
-            <div className="w-full bg-slate-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full" style={{width: `${Math.min(totalDuration * 2, 100)}%`}}></div>
             </div>
           </CardContent>
         </Card>
@@ -181,8 +162,13 @@ const Dashboard = ({ entries }: DashboardProps) => {
                           })}
                         </p>
                         <p className="text-sm text-slate-500 flex items-center gap-2">
-                          <Clock className="w-3 h-3" />
-                          {entry.time} • {entry.duration}h duración
+                          {/* Solo mostramos hora */}
+                          {entry.time && (
+                            <>
+                              <span><Activity className="w-3 h-3" /></span>
+                              {entry.time}
+                            </>
+                          )}
                         </p>
                       </div>
                     </div>
@@ -255,3 +241,4 @@ const Dashboard = ({ entries }: DashboardProps) => {
 };
 
 export default Dashboard;
+

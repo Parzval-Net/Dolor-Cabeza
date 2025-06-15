@@ -208,19 +208,19 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
   if (isExpress) {
     return (
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 safe-area-pt safe-area-pb">
-        <Card className="w-full max-w-sm glass-card-mobile shadow-2xl border-0 rounded-3xl overflow-hidden">
-          <CardContent className="p-6 space-y-6">
+        <Card className="w-full max-w-sm glass-card-mobile shadow-2xl border-0 rounded-3xl overflow-hidden mx-4">
+          <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             <div className="text-center space-y-3">
-              <div className="w-16 h-16 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-rose-500/25">
-                <Zap className="h-8 w-8 text-white" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-rose-500/25">
+                <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-slate-800">Registro Express</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-800">Registro Express</h2>
                 <p className="text-sm text-slate-600 font-medium">Solo lo esencial, en segundos</p>
               </div>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label className="text-sm font-bold text-slate-700">Fecha</Label>
@@ -228,7 +228,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="border-violet-200 rounded-xl bg-white/90 text-sm safari-form-button"
+                    className="border-violet-200 rounded-xl bg-white/90 text-base h-12 safari-form-button mobile-touch-target"
                   />
                 </div>
                 <div className="space-y-2">
@@ -237,16 +237,16 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                     type="time"
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="border-violet-200 rounded-xl bg-white/90 text-sm safari-form-button"
+                    className="border-violet-200 rounded-xl bg-white/90 text-base h-12 safari-form-button mobile-touch-target"
                   />
                 </div>
               </div>
 
-              <div className="glass-card rounded-2xl p-5 bg-gradient-to-br from-violet-50/80 to-purple-50/80 border border-violet-200/50">
+              <div className="glass-card rounded-2xl p-4 sm:p-5 bg-gradient-to-br from-violet-50/80 to-purple-50/80 border border-violet-200/50">
                 <Label className="text-sm font-bold text-slate-700 mb-3 block text-center">Intensidad del dolor</Label>
                 <div className="space-y-4">
                   <div className="text-center">
-                    <div className={`text-4xl font-bold mb-2 ${getIntensityColor(formData.intensity[0])}`}>
+                    <div className={`text-3xl sm:text-4xl font-bold mb-2 ${getIntensityColor(formData.intensity[0])}`}>
                       {formData.intensity[0]}
                     </div>
                     <Badge 
@@ -269,10 +269,17 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
             </div>
 
             <div className="flex space-x-3">
-              <Button variant="outline" onClick={onCancel} className="flex-1 text-sm rounded-xl safari-button-fix">
+              <Button 
+                variant="outline" 
+                onClick={onCancel} 
+                className="flex-1 text-sm rounded-xl h-12 safari-button-fix mobile-touch-target"
+              >
                 Cancelar
               </Button>
-              <Button onClick={handleExpressSubmit} className="flex-1 bg-rose-500 hover:bg-rose-600 text-sm rounded-xl safari-button-fix">
+              <Button 
+                onClick={handleExpressSubmit} 
+                className="flex-1 bg-rose-500 hover:bg-rose-600 text-sm rounded-xl h-12 safari-button-fix mobile-touch-target"
+              >
                 <Save className="w-4 h-4 mr-2" />
                 Guardar
               </Button>
@@ -282,7 +289,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
               <Button 
                 variant="ghost" 
                 onClick={() => setIsExpress(false)}
-                className="text-sm text-violet-600 hover:text-violet-700 safari-button-fix"
+                className="text-sm text-violet-600 hover:text-violet-700 h-12 safari-button-fix mobile-touch-target"
               >
                 ¿Quieres agregar más detalles?
               </Button>
@@ -294,12 +301,15 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto safe-area-pt safe-area-pb">
-      <Card className="w-full max-w-2xl my-6 glass-card-mobile shadow-2xl border-0 rounded-3xl overflow-hidden">
-        <CardContent className="p-6 space-y-6">
+    <div 
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto safe-area-pt safe-area-pb"
+      style={{ minHeight: 'calc(var(--vh, 1vh) * 100)' }}
+    >
+      <Card className="w-full max-w-2xl my-4 sm:my-6 glass-card-mobile shadow-2xl border-0 rounded-3xl overflow-hidden mx-2 sm:mx-4">
+        <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
-              <h2 className="text-2xl font-bold text-slate-800">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-800">
                 {currentStep === 1 ? 'Información básica' : 'Detalles adicionales'}
               </h2>
               <p className="text-sm text-slate-600 font-medium">
@@ -309,7 +319,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
             <Button 
               variant="ghost" 
               onClick={() => setIsExpress(true)} 
-              className="text-violet-600 text-sm px-3 py-2 rounded-xl safari-button-fix"
+              className="text-violet-600 text-sm px-3 py-2 rounded-xl h-10 safari-button-fix mobile-touch-target"
             >
               <Clock className="w-4 h-4 mr-2" />
               Express
@@ -324,8 +334,8 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
           </div>
 
           {currentStep === 1 && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <Label className="flex items-center gap-2 text-sm font-bold text-slate-700">
                     <Clock className="h-4 w-4 text-violet-500" />
@@ -335,7 +345,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="border-violet-200 rounded-xl p-3 text-base bg-white/90 safari-form-button"
+                    className="border-violet-200 rounded-xl text-base bg-white/90 h-12 safari-form-button mobile-touch-target"
                   />
                 </div>
                 <div className="space-y-3">
@@ -347,19 +357,19 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                     type="time"
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="border-violet-200 rounded-xl p-3 text-base bg-white/90 safari-form-button"
+                    className="border-violet-200 rounded-xl text-base bg-white/90 h-12 safari-form-button mobile-touch-target"
                   />
                 </div>
               </div>
 
-              <div className="glass-card rounded-3xl p-6 bg-gradient-to-br from-violet-50/70 to-purple-50/70 border border-violet-200/50">
-                <Label className="text-lg font-bold text-slate-800 mb-5 block text-center flex items-center justify-center gap-2">
+              <div className="glass-card rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-violet-50/70 to-purple-50/70 border border-violet-200/50">
+                <Label className="text-base sm:text-lg font-bold text-slate-800 mb-4 sm:mb-5 block text-center flex items-center justify-center gap-2">
                   <Activity className="h-5 w-5 text-violet-500" />
                   Intensidad del dolor
                 </Label>
-                <div className="space-y-5">
+                <div className="space-y-4 sm:space-y-5">
                   <div className="text-center">
-                    <div className={`text-5xl font-bold mb-3 ${getIntensityColor(formData.intensity[0])}`}>
+                    <div className={`text-4xl sm:text-5xl font-bold mb-3 ${getIntensityColor(formData.intensity[0])}`}>
                       {formData.intensity[0]}
                     </div>
                     <Badge 
@@ -380,14 +390,14 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                 </div>
               </div>
 
-              <div className="glass-card rounded-3xl p-6 bg-gradient-to-br from-rose-50/70 to-pink-50/70 border border-rose-200/50">
-                <Label className="text-lg font-bold text-slate-800 mb-5 block text-center flex items-center justify-center gap-2">
+              <div className="glass-card rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-rose-50/70 to-pink-50/70 border border-rose-200/50">
+                <Label className="text-base sm:text-lg font-bold text-slate-800 mb-4 sm:mb-5 block text-center flex items-center justify-center gap-2">
                   <Sparkles className="h-5 w-5 text-rose-500" />
                   Nivel de estrés
                 </Label>
-                <div className="space-y-5">
+                <div className="space-y-4 sm:space-y-5">
                   <div className="text-center">
-                    <div className="text-4xl font-bold mb-2 text-slate-800">
+                    <div className="text-3xl sm:text-4xl font-bold mb-2 text-slate-800">
                       {formData.stressLevel[0]}
                     </div>
                     <div className="text-sm text-slate-600 font-medium">
@@ -410,16 +420,16 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
           )}
 
           {currentStep === 2 && (
-            <div className="space-y-6">
-              <div className="glass-card rounded-3xl p-6 bg-gradient-to-br from-blue-50/70 to-indigo-50/70 border border-blue-200/50">
-                <Label className="text-lg font-bold text-slate-800 mb-5 block text-center flex items-center justify-center gap-2">
+            <div className="space-y-4 sm:space-y-6">
+              <div className="glass-card rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-blue-50/70 to-indigo-50/70 border border-blue-200/50">
+                <Label className="text-base sm:text-lg font-bold text-slate-800 mb-4 sm:mb-5 block text-center flex items-center justify-center gap-2">
                   <Pill className="h-5 w-5 text-blue-500" />
                   Medicamentos tomados
                 </Label>
                 
                 {/* Medicamentos seleccionados con animación */}
                 {formData.medications.length > 0 && (
-                  <div className="space-y-3 mb-6 p-4 bg-white/60 rounded-2xl border border-blue-200/40">
+                  <div className="space-y-3 mb-4 sm:mb-6 p-3 sm:p-4 bg-white/60 rounded-2xl border border-blue-200/40">
                     <h4 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
                       <Check className="w-4 h-4 text-green-500" />
                       Medicamentos seleccionados ({formData.medications.length})
@@ -439,13 +449,13 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                                 value={med.customDosage}
                                 onChange={(e) => updateCustomDosage(med.name, e.target.value)}
                                 placeholder={med.dosage}
-                                className="h-8 w-24 text-xs rounded-lg safari-form-button"
+                                className="h-10 w-20 sm:w-24 text-xs rounded-lg safari-form-button"
                               />
                               <Button
                                 onClick={() => saveCustomDosage(med.name)}
                                 variant="ghost"
                                 size="sm"
-                                className="h-8 w-8 p-0 text-green-600 hover:bg-green-100 rounded-lg safari-button-fix"
+                                className="h-10 w-10 p-0 text-green-600 hover:bg-green-100 rounded-lg safari-button-fix mobile-touch-target"
                               >
                                 <Check className="w-3 h-3" />
                               </Button>
@@ -453,7 +463,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                                 onClick={() => toggleEditDosage(med.name)}
                                 variant="ghost"
                                 size="sm"
-                                className="h-8 w-8 p-0 text-red-600 hover:bg-red-100 rounded-lg safari-button-fix"
+                                className="h-10 w-10 p-0 text-red-600 hover:bg-red-100 rounded-lg safari-button-fix mobile-touch-target"
                               >
                                 <X className="w-3 h-3" />
                               </Button>
@@ -467,7 +477,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                                 onClick={() => toggleEditDosage(med.name)}
                                 variant="ghost"
                                 size="sm"
-                                className="h-8 w-8 p-0 text-blue-600 hover:bg-blue-100 rounded-lg safari-button-fix"
+                                className="h-10 w-10 p-0 text-blue-600 hover:bg-blue-100 rounded-lg safari-button-fix mobile-touch-target"
                               >
                                 <Edit3 className="w-3 h-3" />
                               </Button>
@@ -479,7 +489,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                   {medicationOptions.filter(med => med.isCommon).slice(0, 9).map((med, index) => (
                     <div
                       key={med.id}
@@ -489,9 +499,9 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                       <InteractiveButton
                         isSelected={formData.medications.some(m => m.name === med.name)}
                         onClick={() => toggleMedication(med)}
-                        className="h-16 flex flex-col gap-1 p-3 text-xs rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg safari-interactive-button"
+                        className="h-16 sm:h-18 flex flex-col gap-1 p-2 sm:p-3 text-xs rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg safari-interactive-button mobile-touch-target w-full"
                       >
-                        <span className="font-bold leading-tight text-center">{med.name}</span>
+                        <span className="font-bold leading-tight text-center text-xs sm:text-sm">{med.name}</span>
                         <span className="text-xs opacity-75 leading-tight text-center">{med.dosage}</span>
                         {med.type === 'preventive' && (
                           <Badge variant="secondary" className="text-xs mt-1">Preventivo</Badge>
@@ -502,12 +512,12 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                 </div>
               </div>
 
-              <div className="glass-card rounded-3xl p-6 bg-gradient-to-br from-orange-50/70 to-red-50/70 border border-orange-200/50">
-                <Label className="text-lg font-bold text-slate-800 mb-5 block text-center flex items-center justify-center gap-2">
+              <div className="glass-card rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-orange-50/70 to-red-50/70 border border-orange-200/50">
+                <Label className="text-base sm:text-lg font-bold text-slate-800 mb-4 sm:mb-5 block text-center flex items-center justify-center gap-2">
                   <Activity className="h-5 w-5 text-orange-500" />
                   Síntomas principales
                 </Label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                   {commonSymptoms.map((symptom, index) => (
                     <div
                       key={symptom}
@@ -522,9 +532,9 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
                           )
                         }
                         variant="secondary"
-                        className="h-12 p-3 text-xs rounded-xl border-2 transition-all duration-300 hover:scale-105 safari-interactive-button"
+                        className="h-12 sm:h-14 p-2 sm:p-3 text-xs rounded-xl border-2 transition-all duration-300 hover:scale-105 safari-interactive-button mobile-touch-target w-full"
                       >
-                        {symptom}
+                        <span className="text-xs sm:text-sm leading-tight">{symptom}</span>
                       </InteractiveButton>
                     </div>
                   ))}
@@ -532,7 +542,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
               </div>
 
               <div className="space-y-3">
-                <Label className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <Label className="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
                   <Edit3 className="h-5 w-5 text-violet-500" />
                   Notas adicionales
                 </Label>
@@ -547,13 +557,13 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
             </div>
           )}
 
-          <div className="flex justify-between items-center pt-4 border-t border-violet-200/50">
-            <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row justify-between items-center pt-4 border-t border-violet-200/50 gap-3">
+            <div className="flex gap-3 w-full sm:w-auto">
               {currentStep > 1 && (
                 <Button 
                   variant="outline" 
                   onClick={() => setCurrentStep(1)} 
-                  className="text-sm rounded-xl safari-button-fix"
+                  className="text-sm rounded-xl h-12 safari-button-fix mobile-touch-target flex-1 sm:flex-none"
                 >
                   Anterior
                 </Button>
@@ -561,25 +571,25 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
               <Button 
                 variant="outline" 
                 onClick={onCancel} 
-                className="text-sm rounded-xl safari-button-fix"
+                className="text-sm rounded-xl h-12 safari-button-fix mobile-touch-target flex-1 sm:flex-none"
               >
                 Cancelar
               </Button>
             </div>
             
-            <div className="flex gap-3">
+            <div className="flex gap-3 w-full sm:w-auto">
               {currentStep === 1 && (
                 <>
                   <Button 
                     onClick={() => handleCompleteSubmit()} 
                     variant="outline" 
-                    className="bg-gray-100 text-sm rounded-xl safari-button-fix"
+                    className="bg-gray-100 text-sm rounded-xl h-12 safari-button-fix mobile-touch-target flex-1 sm:flex-none"
                   >
                     Guardar básico
                   </Button>
                   <Button 
                     onClick={() => setCurrentStep(2)} 
-                    className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-sm rounded-xl shadow-lg safari-button-fix"
+                    className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-sm rounded-xl shadow-lg h-12 safari-button-fix mobile-touch-target flex-1 sm:flex-none"
                   >
                     Continuar
                   </Button>
@@ -588,7 +598,7 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
               {currentStep === 2 && (
                 <Button 
                   onClick={handleCompleteSubmit} 
-                  className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-sm rounded-xl shadow-lg safari-button-fix"
+                  className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-sm rounded-xl shadow-lg h-12 safari-button-fix mobile-touch-target w-full sm:w-auto"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   Guardar completo

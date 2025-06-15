@@ -68,6 +68,9 @@ const Header = ({ onNewEntry }: HeaderProps) => {
           secondaryColor: parsedSettings.secondaryColor || '#EC4899',
           appIcon: parsedSettings.appIcon || 'Heart'
         });
+        
+        // Actualizar el título del documento también
+        document.title = `${parsedSettings.appName || 'MigraCare'} - ${parsedSettings.appDescription || 'Seguimiento inteligente de migrañas'}`;
       } catch (error) {
         console.error('Error loading admin settings in Header:', error);
       }

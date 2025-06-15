@@ -1,10 +1,11 @@
-
 import { Sparkles } from 'lucide-react';
 import EpisodeCountCard from './dashboard/EpisodeCountCard';
 import AverageIntensityCard from './dashboard/AverageIntensityCard';
 import TopMedicationCard from './dashboard/TopMedicationCard';
 import RecentEpisodesList from './dashboard/RecentEpisodesList';
 import WeeklyPatternsList from './dashboard/WeeklyPatternsList';
+import TopDayCard from './dashboard/TopDayCard';
+import QuoteSection from './dashboard/QuoteSection';
 import { HeadacheEntry } from '@/types/headache';
 
 interface DashboardProps {
@@ -34,14 +35,10 @@ const Dashboard = ({ entries }: DashboardProps) => {
   const topMedication = Object.entries(mostUsedMedication)
     .sort(([,a], [,b]) => b - a)[0]?.[0] || 'Ninguno';
 
-  // Nueva lógica para medicamentos más utilizados
-  const topMedications = Object.entries(mostUsedMedication)
-    .sort(([,a], [,b]) => b - a)
-    .slice(0, 3);
-
+  // Limitar a 3 episodios recientes
   const recentEntries = [...entries]
     .sort((a, b) => new Date(b.date + ' ' + b.time).getTime() - new Date(a.date + ' ' + a.time).getTime())
-    .slice(0, 5);
+    .slice(0, 3);
 
   // Unificamos lógica de gradientes para intensidad
   const getIntensityGradient = (intensity: number) => {
@@ -67,17 +64,20 @@ const Dashboard = ({ entries }: DashboardProps) => {
         </p>
       </div>
 
-      {/* Stats Grid: solo 3 cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Quote Section */}
+      <QuoteSection />
+
+      {/* Stats Grid: ahora con 4 cards incluyendo TopDayCard */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <EpisodeCountCard count={monthlyEntries.length} />
         <AverageIntensityCard averageIntensity={averageIntensity} />
         <TopMedicationCard medication={topMedication} />
+        <TopDayCard entries={entries} />
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Main Content Grid - Solo episodios recientes */}
+      <div className="grid grid-cols-1 gap-8">
         <RecentEpisodesList entries={recentEntries} getIntensityGradient={getIntensityGradient} />
-        <WeeklyPatternsList entries={monthlyEntries} />
       </div>
     </div>
   );

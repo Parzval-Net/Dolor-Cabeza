@@ -1,4 +1,3 @@
-
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Brain, Activity, Calendar } from 'lucide-react';
 import { HeadacheEntry } from '@/types/headache';
@@ -15,7 +14,7 @@ const RecentEpisodesList = ({ entries, getIntensityGradient }: RecentEpisodesLis
         <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl flex items-center justify-center">
           <Brain className="h-4 w-4 text-white" />
         </div>
-        Episodios Recientes
+        Últimos 3 Episodios
       </CardTitle>
     </CardHeader>
     <CardContent className="p-6 space-y-4">
@@ -34,7 +33,6 @@ const RecentEpisodesList = ({ entries, getIntensityGradient }: RecentEpisodesLis
           <div key={entry.id} className="glass-card rounded-2xl p-5 hover:shadow-lg transition-all duration-300 group">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                {/* Eliminar colores naranjas, solo uso violetas / rosas */}
                 <div
                   className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-lg`}
                 >

@@ -224,26 +224,41 @@
     @apply absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-2xl opacity-20 blur-sm -z-10;
   }
 
-  /* Admin Panel specific styles */
-  .admin-select {
-    @apply w-full px-3 py-2 border border-slate-300 rounded-md 
-           bg-white text-slate-800 font-medium
+  /* Admin Panel specific styles - FIXED VERSION */
+  .admin-select-fixed {
+    @apply w-full px-3 py-2 border-2 border-slate-400 rounded-md 
+           bg-white text-slate-800 font-semibold
            focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500
-           hover:border-slate-400 transition-colors;
+           hover:border-slate-500 transition-colors;
   }
 
-  .admin-select:focus {
+  .admin-select-fixed:focus {
     @apply border-violet-500 ring-2 ring-violet-200;
   }
 
+  .admin-preview-card-fixed {
+    @apply bg-slate-100 border-2 border-slate-300 rounded-lg p-4;
+  }
+
+  .admin-file-input-fixed {
+    @apply block w-full text-sm text-slate-800 font-semibold
+           file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 
+           file:text-sm file:font-bold file:bg-violet-100 file:text-violet-800 
+           hover:file:bg-violet-200 file:transition-colors
+           border-2 border-slate-400 rounded-md p-2 bg-white
+           hover:border-slate-500 focus:border-violet-500;
+  }
+
+  /* Remove old admin styles that had yellow hover states */
+  .admin-select {
+    display: none;
+  }
+
   .admin-preview-card {
-    @apply bg-slate-50 border border-slate-200 rounded-lg p-4;
+    display: none;
   }
 
   .admin-file-input {
-    @apply block w-full text-sm text-slate-600 font-medium
-           file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 
-           file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 
-           hover:file:bg-violet-100 file:transition-colors;
+    display: none;
   }
 }

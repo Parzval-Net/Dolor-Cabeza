@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Settings, Save, Palette, Type, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+
 interface AdminSettings {
   appName: string;
   appDescription: string;
@@ -15,6 +17,7 @@ interface AdminSettings {
   timezone: string;
   exportFormat: string;
 }
+
 const AdminPanel = () => {
   const [settings, setSettings] = useState<AdminSettings>({
     appName: 'MigraCare',
@@ -26,16 +29,39 @@ const AdminPanel = () => {
     exportFormat: 'PDF'
   });
   const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'data'>('general');
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+
+  // Cargar configuración guardada al montar el componente
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('admin-settings');
+    if (savedSettings) {
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        setSettings(parsedSettings);
+      } catch (error) {
+        console.error('Error loading admin settings:', error);
+      }
+    }
+  }, []);
+
   const handleSave = () => {
-    localStorage.setItem('admin-settings', JSON.stringify(settings));
-    toast({
-      title: "Configuración guardada",
-      description: "Los cambios se han aplicado exitosamente."
-    });
+    try {
+      localStorage.setItem('admin-settings', JSON.stringify(settings));
+      toast({
+        title: "Configuración guardada",
+        description: "Los cambios se han aplicado exitosamente."
+      });
+      console.log('Settings saved:', settings);
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo guardar la configuración.",
+        variant: "destructive"
+      });
+    }
   };
+
   const handleExportData = () => {
     const entries = localStorage.getItem('headache-entries');
     if (entries) {
@@ -56,6 +82,7 @@ const AdminPanel = () => {
       });
     }
   };
+
   const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -79,7 +106,9 @@ const AdminPanel = () => {
       reader.readAsText(file);
     }
   };
-  return <div className="space-y-6">
+
+  return (
+    <div className="space-y-6">
       <Card className="glass-card-dark">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-slate-800 flex items-center gap-3">
@@ -88,15 +117,30 @@ const AdminPanel = () => {
           </CardTitle>
           
           <div className="flex gap-2 mt-4">
-            <Button variant={activeTab === 'general' ? 'default' : 'outline'} onClick={() => setActiveTab('general')} size="sm" className="text-slate-900">
+            <Button 
+              variant={activeTab === 'general' ? 'default' : 'outline'} 
+              onClick={() => setActiveTab('general')} 
+              size="sm" 
+              className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
+            >
               <Globe className="w-4 h-4 mr-2" />
               General
             </Button>
-            <Button variant={activeTab === 'appearance' ? 'default' : 'outline'} onClick={() => setActiveTab('appearance')} size="sm" className="font-normal text-slate-900">
+            <Button 
+              variant={activeTab === 'appearance' ? 'default' : 'outline'} 
+              onClick={() => setActiveTab('appearance')} 
+              size="sm" 
+              className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
+            >
               <Palette className="w-4 h-4 mr-2" />
               Apariencia
             </Button>
-            <Button variant={activeTab === 'data' ? 'default' : 'outline'} onClick={() => setActiveTab('data')} size="sm" className="text-slate-900">
+            <Button 
+              variant={activeTab === 'data' ? 'default' : 'outline'} 
+              onClick={() => setActiveTab('data')} 
+              size="sm" 
+              className="text-slate-800 font-semibold hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
+            >
               <Type className="w-4 h-4 mr-2" />
               Datos
             </Button>
@@ -104,30 +148,49 @@ const AdminPanel = () => {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {activeTab === 'general' && <div className="space-y-4">
+          {activeTab === 'general' && (
+            <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="appName" className="text-slate-700 font-semibold">Nombre de la Aplicación</Label>
-                <Input id="appName" value={settings.appName} onChange={e => setSettings(prev => ({
-              ...prev,
-              appName: e.target.value
-            }))} placeholder="Nombre de tu aplicación" className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500" />
+                <Label htmlFor="appName" className="text-slate-800 font-bold">Nombre de la Aplicación</Label>
+                <Input 
+                  id="appName" 
+                  value={settings.appName} 
+                  onChange={e => setSettings(prev => ({
+                    ...prev,
+                    appName: e.target.value
+                  }))} 
+                  placeholder="Nombre de tu aplicación" 
+                  className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="appDescription" className="text-slate-700 font-semibold">Descripción</Label>
-                <Textarea id="appDescription" value={settings.appDescription} onChange={e => setSettings(prev => ({
-              ...prev,
-              appDescription: e.target.value
-            }))} placeholder="Descripción de tu aplicación" rows={3} className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500" />
+                <Label htmlFor="appDescription" className="text-slate-800 font-bold">Descripción</Label>
+                <Textarea 
+                  id="appDescription" 
+                  value={settings.appDescription} 
+                  onChange={e => setSettings(prev => ({
+                    ...prev,
+                    appDescription: e.target.value
+                  }))} 
+                  placeholder="Descripción de tu aplicación" 
+                  rows={3} 
+                  className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="language" className="text-slate-700 font-semibold">Idioma</Label>
-                  <select id="language" value={settings.language} onChange={e => setSettings(prev => ({
-                ...prev,
-                language: e.target.value
-              }))} className="admin-select">
+                  <Label htmlFor="language" className="text-slate-800 font-bold">Idioma</Label>
+                  <select 
+                    id="language" 
+                    value={settings.language} 
+                    onChange={e => setSettings(prev => ({
+                      ...prev,
+                      language: e.target.value
+                    }))} 
+                    className="admin-select-fixed"
+                  >
                     <option value="es">Español</option>
                     <option value="en">English</option>
                     <option value="fr">Français</option>
@@ -135,106 +198,161 @@ const AdminPanel = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="timezone" className="text-slate-700 font-semibold">Zona Horaria</Label>
-                  <select id="timezone" value={settings.timezone} onChange={e => setSettings(prev => ({
-                ...prev,
-                timezone: e.target.value
-              }))} className="admin-select">
+                  <Label htmlFor="timezone" className="text-slate-800 font-bold">Zona Horaria</Label>
+                  <select 
+                    id="timezone" 
+                    value={settings.timezone} 
+                    onChange={e => setSettings(prev => ({
+                      ...prev,
+                      timezone: e.target.value
+                    }))} 
+                    className="admin-select-fixed"
+                  >
                     <option value="America/Santiago">Santiago</option>
                     <option value="America/New_York">New York</option>
                     <option value="Europe/Madrid">Madrid</option>
                   </select>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
 
-          {activeTab === 'appearance' && <div className="space-y-4">
+          {activeTab === 'appearance' && (
+            <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="primaryColor" className="text-slate-700 font-semibold">Color Primario</Label>
+                  <Label htmlFor="primaryColor" className="text-slate-800 font-bold">Color Primario</Label>
                   <div className="flex items-center space-x-3">
-                    <input type="color" id="primaryColor" value={settings.primaryColor} onChange={e => setSettings(prev => ({
-                  ...prev,
-                  primaryColor: e.target.value
-                }))} className="w-12 h-10 rounded border border-slate-300 cursor-pointer" />
-                    <Input value={settings.primaryColor} onChange={e => setSettings(prev => ({
-                  ...prev,
-                  primaryColor: e.target.value
-                }))} placeholder="#8B5CF6" className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500" />
+                    <input 
+                      type="color" 
+                      id="primaryColor" 
+                      value={settings.primaryColor} 
+                      onChange={e => setSettings(prev => ({
+                        ...prev,
+                        primaryColor: e.target.value
+                      }))} 
+                      className="w-12 h-10 rounded border-2 border-slate-400 cursor-pointer hover:border-violet-500"
+                    />
+                    <Input 
+                      value={settings.primaryColor} 
+                      onChange={e => setSettings(prev => ({
+                        ...prev,
+                        primaryColor: e.target.value
+                      }))} 
+                      placeholder="#8B5CF6" 
+                      className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
+                    />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="secondaryColor" className="text-slate-700 font-semibold">Color Secundario</Label>
+                  <Label htmlFor="secondaryColor" className="text-slate-800 font-bold">Color Secundario</Label>
                   <div className="flex items-center space-x-3">
-                    <input type="color" id="secondaryColor" value={settings.secondaryColor} onChange={e => setSettings(prev => ({
-                  ...prev,
-                  secondaryColor: e.target.value
-                }))} className="w-12 h-10 rounded border border-slate-300 cursor-pointer" />
-                    <Input value={settings.secondaryColor} onChange={e => setSettings(prev => ({
-                  ...prev,
-                  secondaryColor: e.target.value
-                }))} placeholder="#EC4899" className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500" />
+                    <input 
+                      type="color" 
+                      id="secondaryColor" 
+                      value={settings.secondaryColor} 
+                      onChange={e => setSettings(prev => ({
+                        ...prev,
+                        secondaryColor: e.target.value
+                      }))} 
+                      className="w-12 h-10 rounded border-2 border-slate-400 cursor-pointer hover:border-violet-500"
+                    />
+                    <Input 
+                      value={settings.secondaryColor} 
+                      onChange={e => setSettings(prev => ({
+                        ...prev,
+                        secondaryColor: e.target.value
+                      }))} 
+                      placeholder="#EC4899" 
+                      className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
+                    />
                   </div>
                 </div>
               </div>
 
-              <div className="admin-preview-card">
-                <h4 className="font-semibold text-slate-800 mb-3">Vista Previa</h4>
+              <div className="admin-preview-card-fixed">
+                <h4 className="font-bold text-slate-800 mb-3">Vista Previa</h4>
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold shadow-lg" style={{
-                background: `linear-gradient(to br, ${settings.primaryColor}, ${settings.secondaryColor})`
-              }}>
+                  <div 
+                    className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold shadow-lg" 
+                    style={{
+                      background: `linear-gradient(to br, ${settings.primaryColor}, ${settings.secondaryColor})`
+                    }}
+                  >
                     8
                   </div>
                   <div className="space-y-1">
-                    <h5 style={{
-                  color: settings.primaryColor
-                }} className="font-semibold text-lg">
+                    <h5 
+                      style={{ color: settings.primaryColor }} 
+                      className="font-bold text-lg"
+                    >
                       {settings.appName}
                     </h5>
-                    <p className="text-sm text-slate-600 font-medium">{settings.appDescription}</p>
+                    <p className="text-sm text-slate-700 font-semibold">{settings.appDescription}</p>
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
 
-          {activeTab === 'data' && <div className="space-y-6">
+          {activeTab === 'data' && (
+            <div className="space-y-6">
               <div className="space-y-3">
-                <Label className="text-slate-700 font-semibold">Exportar Datos</Label>
-                <p className="text-sm text-slate-600 font-medium">Descarga una copia de seguridad de todos tus datos.</p>
-                <Button onClick={handleExportData} variant="outline" className="bg-white">
+                <Label className="text-slate-800 font-bold">Exportar Datos</Label>
+                <p className="text-sm text-slate-700 font-semibold">Descarga una copia de seguridad de todos tus datos.</p>
+                <Button 
+                  onClick={handleExportData} 
+                  variant="outline" 
+                  className="bg-white text-slate-800 font-semibold border-slate-400 hover:bg-violet-100 hover:text-violet-800 hover:border-violet-300"
+                >
                   Exportar Datos
                 </Button>
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="importData" className="text-slate-700 font-semibold">Importar Datos</Label>
-                <p className="text-sm text-slate-600 font-medium">Restaura datos desde un archivo de respaldo.</p>
-                <input type="file" id="importData" accept=".json" onChange={handleImportData} className="admin-file-input" />
+                <Label htmlFor="importData" className="text-slate-800 font-bold">Importar Datos</Label>
+                <p className="text-sm text-slate-700 font-semibold">Restaura datos desde un archivo de respaldo.</p>
+                <input 
+                  type="file" 
+                  id="importData" 
+                  accept=".json" 
+                  onChange={handleImportData} 
+                  className="admin-file-input-fixed"
+                />
               </div>
 
               <div className="space-y-3">
-                <Label className="text-slate-700 font-semibold">Formato de Exportación</Label>
-                <select value={settings.exportFormat} onChange={e => setSettings(prev => ({
-              ...prev,
-              exportFormat: e.target.value
-            }))} className="admin-select">
+                <Label className="text-slate-800 font-bold">Formato de Exportación</Label>
+                <select 
+                  value={settings.exportFormat} 
+                  onChange={e => setSettings(prev => ({
+                    ...prev,
+                    exportFormat: e.target.value
+                  }))} 
+                  className="admin-select-fixed"
+                >
                   <option value="JSON">JSON</option>
                   <option value="CSV">CSV</option>
                   <option value="PDF">PDF</option>
                 </select>
               </div>
-            </div>}
+            </div>
+          )}
 
-          <div className="flex justify-end pt-6 border-t border-slate-200">
-            <Button onClick={handleSave} className="bg-violet-500 hover:bg-violet-600 text-white font-semibold">
+          <div className="flex justify-end pt-6 border-t border-slate-300">
+            <Button 
+              onClick={handleSave} 
+              className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg"
+            >
               <Save className="w-4 h-4 mr-2" />
               Guardar Configuración
             </Button>
           </div>
         </CardContent>
       </Card>
-    </div>;
+    </div>
+  );
 };
+
 export default AdminPanel;

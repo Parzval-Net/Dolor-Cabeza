@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Brain, Pill, Heart, Plus, Minus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -158,7 +159,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
             <div className="space-y-8">
               {/* Medications */}
               <div className="space-y-4">
-                <Label className="block text-lg font-semibold text-slate-700 text-center">Medicamentos</Label>
+                <Label className="block text-lg font-bold text-slate-800 text-center">Medicamentos</Label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {medicationOptions.map((med) => (
                     <InteractiveButton
@@ -179,7 +180,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
               
               {/* Relief Methods */}
               <div className="space-y-4">
-                <Label className="block text-lg font-semibold text-slate-700 text-center">Métodos de alivio</Label>
+                <Label className="block text-lg font-bold text-slate-800 text-center">Métodos de alivio</Label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {reliefOptions.map((relief) => (
                     <InteractiveButton
@@ -216,7 +217,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
             <div className="space-y-8">
               {/* Triggers */}
               <div className="space-y-4">
-                <Label className="block text-lg font-semibold text-slate-700 text-center">Posibles desencadenantes</Label>
+                <Label className="block text-lg font-bold text-slate-800 text-center">Posibles desencadenantes</Label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {triggerOptions.map((trigger) => (
                     <InteractiveButton
@@ -239,40 +240,40 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
               {/* Context Information */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-sm font-semibold text-slate-700">Estado de ánimo</Label>
+                  <Label className="text-sm font-bold text-slate-800">Estado de ánimo</Label>
                   <Select onValueChange={(value) => setFormData({ ...formData, mood: value })}>
-                    <SelectTrigger className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl h-12">
-                      <SelectValue placeholder="Selecciona..." />
+                    <SelectTrigger className="border-2 border-slate-300 focus:border-violet-500 rounded-2xl h-12 bg-white text-slate-800 font-semibold">
+                      <SelectValue placeholder="Selecciona..." className="text-slate-800" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border-2 border-slate-300">
                       {moodOptions.map((mood) => (
-                        <SelectItem key={mood} value={mood}>{mood}</SelectItem>
+                        <SelectItem key={mood} value={mood} className="text-slate-800 font-semibold hover:bg-violet-50">{mood}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-sm font-semibold text-slate-700">Clima</Label>
+                  <Label className="text-sm font-bold text-slate-800">Clima</Label>
                   <Select onValueChange={(value) => setFormData({ ...formData, weather: value })}>
-                    <SelectTrigger className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl h-12">
-                      <SelectValue placeholder="Selecciona..." />
+                    <SelectTrigger className="border-2 border-slate-300 focus:border-violet-500 rounded-2xl h-12 bg-white text-slate-800 font-semibold">
+                      <SelectValue placeholder="Selecciona..." className="text-slate-800" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border-2 border-slate-300">
                       {weatherOptions.map((weather) => (
-                        <SelectItem key={weather} value={weather}>{weather}</SelectItem>
+                        <SelectItem key={weather} value={weather} className="text-slate-800 font-semibold hover:bg-violet-50">{weather}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-sm font-semibold text-slate-700">Ciclo menstrual</Label>
+                  <Label className="text-sm font-bold text-slate-800">Ciclo menstrual</Label>
                   <Select onValueChange={(value) => setFormData({ ...formData, menstrualCycle: value })}>
-                    <SelectTrigger className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl h-12">
-                      <SelectValue placeholder="Selecciona..." />
+                    <SelectTrigger className="border-2 border-slate-300 focus:border-violet-500 rounded-2xl h-12 bg-white text-slate-800 font-semibold">
+                      <SelectValue placeholder="Selecciona..." className="text-slate-800" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border-2 border-slate-300">
                       {menstrualOptions.map((cycle) => (
-                        <SelectItem key={cycle} value={cycle}>{cycle}</SelectItem>
+                        <SelectItem key={cycle} value={cycle} className="text-slate-800 font-semibold hover:bg-violet-50">{cycle}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -281,7 +282,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
               
               {/* Sleep Hours */}
               <div className="glass-card rounded-3xl p-6 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border border-indigo-100">
-                <Label className="block text-sm font-semibold text-slate-700 mb-4 text-center">Horas de sueño la noche anterior</Label>
+                <Label className="block text-sm font-bold text-slate-800 mb-4 text-center">Horas de sueño la noche anterior</Label>
                 <div className="flex items-center gap-6 justify-center">
                   <Button
                     type="button"
@@ -295,7 +296,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
                   </Button>
                   <div className="text-center space-y-2 min-w-[100px]">
                     <div className="text-3xl font-bold text-slate-800">{formData.sleepHours}</div>
-                    <span className="text-sm text-slate-600 font-medium">horas</span>
+                    <span className="text-sm text-slate-700 font-semibold">horas</span>
                   </div>
                   <Button
                     type="button"
@@ -312,13 +313,13 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
               
               {/* Notes */}
               <div className="space-y-3">
-                <Label htmlFor="notes" className="text-sm font-semibold text-slate-700">Notas adicionales</Label>
+                <Label htmlFor="notes" className="text-sm font-bold text-slate-800">Notas adicionales</Label>
                 <Textarea
                   id="notes"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder="¿Hay algo más que te gustaría agregar sobre este episodio?"
-                  className="border-2 border-slate-200 focus:border-violet-400 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10 resize-none"
+                  className="border-2 border-slate-300 focus:border-violet-500 rounded-2xl bg-white shadow-sm transition-all duration-300 focus:shadow-lg focus:shadow-violet-500/10 resize-none text-slate-800 font-medium placeholder:text-slate-500"
                   rows={4}
                 />
               </div>

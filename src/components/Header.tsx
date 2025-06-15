@@ -125,14 +125,23 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
               <SelectedIcon className="w-6 h-6 text-white drop-shadow-sm" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">
+              <h1 
+                className="text-2xl font-bold"
+                style={{
+                  background: `linear-gradient(135deg, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
                 {appSettings.appName}
               </h1>
               <p className="text-sm text-slate-600 font-medium">{appSettings.appDescription}</p>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-1 bg-white/60 backdrop-blur-sm rounded-2xl p-1 shadow-sm">
+          {/* Desktop Navigation - Hidden on mobile */}
+          <nav className="hidden lg:flex items-center space-x-1 bg-white/60 backdrop-blur-sm rounded-2xl p-1 shadow-sm">
             {[
               { id: 'dashboard', label: 'Dashboard', icon: '📊' },
               { id: 'episodes', label: 'Episodios', icon: '📋' },
@@ -155,9 +164,10 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
             ))}
           </nav>
 
+          {/* Add Entry Button - Optimized for mobile */}
           <Button
             onClick={onNewEntry}
-            className="bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 hover:from-violet-600 hover:via-purple-600 hover:to-fuchsia-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 rounded-2xl px-6"
+            className="bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 hover:from-violet-600 hover:via-purple-600 hover:to-fuchsia-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 rounded-2xl px-4 md:px-6 active:scale-95"
           >
             <span className="hidden sm:inline mr-2">Nuevo</span>
             <span className="text-lg">+</span>

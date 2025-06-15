@@ -6,16 +6,15 @@ import IntensityLegend from "./IntensityLegend";
 import { EpisodeListForDay } from "./EpisodeListForDay";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Get correct intensity key for day classes
-const getIntensityKey = (maxIntensity: number) => {
-  if (maxIntensity <= 3) return "intensity-level-1";
-  if (maxIntensity <= 6) return "intensity-level-2";
-  if (maxIntensity <= 8) return "intensity-level-3";
-  return "intensity-level-4";
-};
-
 const formatDateKey = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+const getIntensityColor = (intensity: number) => {
+  if (intensity <= 3) return "bg-emerald-500";
+  if (intensity <= 6) return "bg-orange-500";
+  if (intensity <= 8) return "bg-red-500";
+  return "bg-red-700";
+};
 
 interface CalendarViewProps {
   entries: HeadacheEntry[];
@@ -24,82 +23,146 @@ interface CalendarViewProps {
 export default function CalendarView({ entries }: CalendarViewProps) {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>();
 
-  // Map (string date) => entries & map (string date) => className
-  const { entriesByDate, daysWithIntensityKey } = useMemo(() => {
+  // Procesar entradas por fecha
+  const entriesByDate = useMemo(() => {
     const map: Record<string, HeadacheEntry[]> = {};
-    const classMap: Record<string, string> = {};
-    entries.forEach(e => {
-      if (!map[e.date]) map[e.date] = [];
-      map[e.date].push(e);
+    entries.forEach(entry => {
+      if (!map[entry.date]) map[entry.date] = [];
+      map[entry.date].push(entry);
     });
-    Object.entries(map).forEach(([date, dayEntries]) => {
-      const maxInt = Math.max(...dayEntries.map(e => e.intensity));
-      classMap[date] = getIntensityKey(maxInt);
-    });
-    return {
-      entriesByDate: map,
-      daysWithIntensityKey: classMap,
-    };
+    return map;
   }, [entries]);
 
-  // Prepare modifiers and their classNames for DayPicker
-  const modifiers: Record<string, (date: Date) => boolean> = {};
-  const modifiersClassNames: Record<string, string> = {};
+  // Obtener fechas que tienen episodios
+  const datesWithEpisodes = useMemo(() => {
+    return Object.keys(entriesByDate).map(dateStr => {
+      const [year, month, day] = dateStr.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    });
+  }, [entriesByDate]);
 
-  Object.entries(daysWithIntensityKey).forEach(([dateStr, intensityClass]) => {
-    const modName = intensityClass;
-    modifiers[modName] = (date: Date) => formatDateKey(date) === dateStr;
-    modifiersClassNames[modName] = intensityClass;
-  });
+  // Función para renderizar contenido personalizado de día
+  const renderDayContent = (day: Date) => {
+    const dateKey = formatDateKey(day);
+    const dayEntries = entriesByDate[dateKey];
+    
+    if (!dayEntries || dayEntries.length === 0) {
+      return <span>{day.getDate()}</span>;
+    }
 
-  // Custom Day component with guard for undefined
-  function CustomDay(props: any) {
-    if (!props.day) return null;
+    const maxIntensity = Math.max(...dayEntries.map(e => e.intensity));
+    const colorClass = getIntensityColor(maxIntensity);
+
     return (
       <div className="w-full h-full flex items-center justify-center relative">
-        <span className="z-10">{props.day.getDate()}</span>
+        <span className="z-10 font-semibold">{day.getDate()}</span>
+        <div 
+          className={`absolute bottom-1 right-1 w-2 h-2 rounded-full ${colorClass} border border-white shadow-sm`}
+        />
       </div>
     );
-  }
+  };
 
   const selectedEntries = selectedDay
     ? entriesByDate[formatDateKey(selectedDay)] || []
     : [];
 
   return (
-    <div className="w-full animate-fade-in">
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
-        <div className="xl:col-span-3">
-          <Card className="glass-card-dark h-full">
+    <div className="w-full space-y-6">
+      {/* Header */}
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">
+          Calendario de Migrañas
+        </h2>
+        <p className="text-slate-600">
+          Haz clic en una fecha para ver los detalles de tus episodios
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Calendario */}
+        <div className="lg:col-span-2">
+          <Card className="glass-card-dark">
             <CardHeader className="pb-4">
-              <CardTitle className="text-base md:text-xl font-bold text-slate-800">
-                Calendario de Migrañas
+              <CardTitle className="text-lg font-semibold text-slate-800">
+                Vista Mensual
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-2 sm:p-4">
-              <div className="bg-slate-900 rounded-2xl p-2 sm:p-4 shadow-xl border border-slate-700 max-w-full overflow-x-auto">
+            <CardContent className="p-4">
+              <div className="bg-white rounded-xl p-4 shadow-inner border">
                 <Calendar
                   mode="single"
                   selected={selectedDay}
                   onSelect={setSelectedDay}
-                  className="w-full calendar-custom-intensity mx-auto min-w-[320px] max-w-full"
+                  className="w-full"
                   numberOfMonths={1}
-                  modifiers={modifiers}
-                  modifiersClassNames={modifiersClassNames}
+                  modifiers={{
+                    hasEpisodes: datesWithEpisodes
+                  }}
+                  modifiersClassNames={{
+                    hasEpisodes: "bg-blue-50 border-blue-200"
+                  }}
                   components={{
-                    Day: CustomDay,
+                    DayContent: ({ date }) => renderDayContent(date)
                   }}
                 />
               </div>
             </CardContent>
           </Card>
         </div>
-        <div className="xl:col-span-2 space-y-4 mt-4 xl:mt-0">
+
+        {/* Panel lateral */}
+        <div className="space-y-4">
           <IntensityLegend />
-          <EpisodeListForDay date={selectedDay} entries={selectedEntries} />
+          
+          {selectedDay ? (
+            <EpisodeListForDay 
+              date={selectedDay} 
+              entries={selectedEntries} 
+            />
+          ) : (
+            <Card className="glass-card-dark">
+              <CardContent className="p-6 text-center">
+                <div className="text-slate-500">
+                  <p className="mb-2">📅</p>
+                  <p className="text-sm">
+                    Selecciona una fecha en el calendario para ver los episodios registrados
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Resumen rápido */}
+          <Card className="glass-card-dark">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold text-slate-800">
+                Resumen
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-4">
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-600">Total episodios:</span>
+                  <span className="font-semibold text-slate-800">{entries.length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-600">Días con episodios:</span>
+                  <span className="font-semibold text-slate-800">{Object.keys(entriesByDate).length}</span>
+                </div>
+                {entries.length > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-600">Intensidad promedio:</span>
+                    <span className="font-semibold text-slate-800">
+                      {(entries.reduce((sum, e) => sum + e.intensity, 0) / entries.length).toFixed(1)}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
   );
 }
-

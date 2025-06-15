@@ -1,4 +1,3 @@
-
 import { Calendar, Plus, TrendingUp, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
@@ -17,8 +16,8 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
     secondaryColor: '#EC4899'
   });
 
-  // Cargar configuración del localStorage
-  useEffect(() => {
+  // Función para cargar configuración desde localStorage
+  const loadSettings = () => {
     const savedSettings = localStorage.getItem('admin-settings');
     if (savedSettings) {
       try {
@@ -33,7 +32,36 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
         console.error('Error loading admin settings in Header:', error);
       }
     }
-  }, [currentView]); // Actualizar cuando cambie la vista para refrescar los datos
+  };
+
+  // Cargar configuración al montar el componente
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  // Escuchar cambios en localStorage
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'admin-settings') {
+        loadSettings();
+      }
+    };
+
+    // Escuchar cambios desde otras pestañas/ventanas
+    window.addEventListener('storage', handleStorageChange);
+
+    // También escuchar un evento personalizado para cambios en la misma pestaña
+    const handleCustomStorageChange = () => {
+      loadSettings();
+    };
+
+    window.addEventListener('admin-settings-updated', handleCustomStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('admin-settings-updated', handleCustomStorageChange);
+    };
+  }, []);
 
   return (
     <header className="bg-white/80 backdrop-blur-xl border-b border-violet-100 sticky top-0 z-50 shadow-sm">

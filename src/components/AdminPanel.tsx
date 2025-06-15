@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -47,6 +46,10 @@ const AdminPanel = () => {
   const handleSave = () => {
     try {
       localStorage.setItem('admin-settings', JSON.stringify(settings));
+      
+      // Disparar evento personalizado para notificar cambios
+      window.dispatchEvent(new CustomEvent('admin-settings-updated'));
+      
       toast({
         title: "Configuración guardada",
         description: "Los cambios se han aplicado exitosamente."

@@ -1,214 +1,223 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HeadacheEntry } from '@/types/headache';
-import { Clock, Edit, Trash2, Calendar, Pill, Brain } from 'lucide-react';
 import EditEpisodeDialog from './EditEpisodeDialog';
+import { Calendar, Clock, Zap, Pill, AlertTriangle, Edit3, Trash2, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface EpisodesListProps {
   entries: HeadacheEntry[];
-  onUpdateEntry: (updatedEntry: HeadacheEntry) => void;
+  onUpdateEntry: (entry: HeadacheEntry) => void;
   onDeleteEntry: (entryId: string) => void;
 }
 
+const getIntensityColor = (intensity: number) => {
+  if (intensity <= 3) return "bg-emerald-500 text-white border-emerald-600";
+  if (intensity <= 6) return "bg-orange-500 text-white border-orange-600";
+  if (intensity <= 8) return "bg-red-500 text-white border-red-600";
+  return "bg-red-700 text-white border-red-800";
+};
+
+const getIntensityText = (intensity: number) => {
+  if (intensity <= 3) return "Leve";
+  if (intensity <= 6) return "Moderado";
+  if (intensity <= 8) return "Severo";
+  return "Extremo";
+};
+
 const EpisodesList = ({ entries, onUpdateEntry, onDeleteEntry }: EpisodesListProps) => {
   const [editingEntry, setEditingEntry] = useState<HeadacheEntry | null>(null);
-  const [filter, setFilter] = useState<'all' | 'thisMonth' | 'thisYear'>('thisMonth');
   const { toast } = useToast();
 
-  const getIntensityGradient = (intensity: number) => {
-    if (intensity <= 3) return 'from-emerald-400 to-emerald-500';
-    if (intensity <= 6) return 'from-orange-400 to-orange-500';
-    if (intensity <= 8) return 'from-red-400 to-red-500';
-    return 'from-red-500 to-red-600';
-  };
-
-  const getFilteredEntries = () => {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-
-    return entries.filter(entry => {
-      const entryDate = new Date(entry.date);
-      
-      switch (filter) {
-        case 'thisMonth':
-          return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear;
-        case 'thisYear':
-          return entryDate.getFullYear() === currentYear;
-        default:
-          return true;
-      }
-    }).sort((a, b) => new Date(b.date + ' ' + b.time).getTime() - new Date(a.date + ' ' + a.time).getTime());
-  };
-
   const handleDelete = (entryId: string) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este episodio?')) {
-      onDeleteEntry(entryId);
-      toast({
-        title: "Episodio eliminado",
-        description: "El episodio ha sido eliminado exitosamente.",
-      });
-    }
+    onDeleteEntry(entryId);
+    toast({
+      title: "Episodio eliminado",
+      description: "El episodio ha sido eliminado exitosamente.",
+    });
   };
 
-  const filteredEntries = getFilteredEntries();
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
 
   return (
-    <div className="space-y-6">
-      <Card className="glass-card-dark">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-            <Brain className="w-6 h-6 text-violet-500" />
-            Historial de Episodios
-          </CardTitle>
-          <div className="flex gap-2 mt-4">
-            <Button
-              variant={filter === 'thisMonth' ? 'default' : 'outline'}
-              onClick={() => setFilter('thisMonth')}
-              size="sm"
-            >
-              Este Mes
-            </Button>
-            <Button
-              variant={filter === 'thisYear' ? 'default' : 'outline'}
-              onClick={() => setFilter('thisYear')}
-              size="sm"
-            >
-              Este Año
-            </Button>
-            <Button
-              variant={filter === 'all' ? 'default' : 'outline'}
-              onClick={() => setFilter('all')}
-              size="sm"
-            >
-              Todos
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {filteredEntries.length === 0 ? (
-            <div className="text-center py-12 space-y-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-violet-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto">
-                <Calendar className="h-10 w-10 text-violet-400" />
-              </div>
-              <div className="space-y-2">
-                <p className="text-slate-600 font-medium">No hay episodios para mostrar</p>
-                <p className="text-sm text-slate-400">Cambia el filtro para ver más episodios</p>
-              </div>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center space-y-2">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-800 flex items-center justify-center gap-2">
+          <User className="w-6 h-6 text-violet-600" />
+          Historial de Episodios
+        </h2>
+        <p className="text-sm sm:text-base text-slate-600">
+          {entries.length} episodio{entries.length !== 1 ? 's' : ''} registrado{entries.length !== 1 ? 's' : ''}
+        </p>
+      </div>
+
+      {entries.length === 0 ? (
+        <Card className="glass-card-mobile border border-violet-200/50 shadow-lg">
+          <CardContent className="p-8 sm:p-12 text-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8 sm:w-10 sm:h-10 text-violet-500" />
             </div>
-          ) : (
-            filteredEntries.map((entry) => (
-              <Card key={entry.id} className="glass-card p-6 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4 flex-1">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-lg`}>
-                      <span className="text-white font-bold text-lg">{entry.intensity}</span>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-2">
+              Sin episodios registrados
+            </h3>
+            <p className="text-sm sm:text-base text-slate-600">
+              Comienza a registrar tus migrañas para hacer seguimiento de patrones y síntomas.
+            </p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-3 sm:gap-4">
+          {entries.map((entry) => (
+            <Card key={entry.id} className="glass-card-mobile border border-violet-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-violet-300">
+              <CardHeader className="pb-2 sm:pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center gap-3">
+                    <div className={`px-3 py-1 rounded-full text-sm font-bold border-2 ${getIntensityColor(entry.intensity)}`}>
+                      {entry.intensity}/10
                     </div>
-                    <div className="flex-1 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-slate-800">
-                          {new Date(entry.date).toLocaleDateString('es-ES', { 
-                            weekday: 'long', 
-                            year: 'numeric',
-                            month: 'long', 
-                            day: 'numeric' 
-                          })}
-                        </h3>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setEditingEntry(entry)}
-                            className="hover:bg-violet-50 hover:border-violet-300 hover:text-violet-700"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDelete(entry.id)}
-                            className="hover:bg-red-50 hover:border-red-300 hover:text-red-700"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                        <div className="flex items-center gap-2 text-slate-600">
-                          <Clock className="w-4 h-4" />
-                          <span>{entry.time} • {entry.duration}h de duración</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-slate-600">
-                          <Brain className="w-4 h-4" />
-                          <span>Estrés: {entry.stressLevel}/5</span>
-                        </div>
-                      </div>
+                    <span className="text-sm font-semibold text-slate-700">
+                      {getIntensityText(entry.intensity)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      onClick={() => setEditingEntry(entry)}
+                      variant="ghost"
+                      size="sm"
+                      className="h-9 w-9 p-0 hover:bg-violet-100 hover:text-violet-700 transition-colors rounded-lg mobile-touch-target"
+                    >
+                      <Edit3 className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(entry.id)}
+                      variant="ghost"
+                      size="sm"
+                      className="h-9 w-9 p-0 hover:bg-red-100 hover:text-red-700 transition-colors rounded-lg mobile-touch-target"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <CardTitle className="text-base sm:text-lg font-bold text-slate-800 capitalize">
+                  {formatDate(entry.date)}
+                </CardTitle>
+              </CardHeader>
+              
+              <CardContent className="space-y-4">
+                {/* Información básica */}
+                <div className="grid grid-cols-2 gap-3 p-3 bg-white/80 rounded-xl border border-violet-200/30">
+                  <div className="flex items-center gap-2 text-sm text-slate-700">
+                    <Clock className="w-4 h-4 text-violet-500" />
+                    <span className="font-medium">{entry.time}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-slate-700">
+                    <Zap className="w-4 h-4 text-orange-500" />
+                    <span className="font-medium">{entry.duration}h duración</span>
+                  </div>
+                </div>
 
-                      {entry.medications.length > 0 && (
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 text-slate-700 font-medium">
-                            <Pill className="w-4 h-4" />
-                            Medicamentos:
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {entry.medications.map((med, index) => (
-                              <span key={index} className="px-3 py-1 bg-violet-100 text-violet-700 rounded-full text-sm">
-                                {med}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {entry.triggers.length > 0 && (
-                        <div className="space-y-2">
-                          <div className="text-slate-700 font-medium">Desencadenantes:</div>
-                          <div className="flex flex-wrap gap-2">
-                            {entry.triggers.map((trigger, index) => (
-                              <span key={index} className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm">
-                                {trigger}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {entry.symptoms.length > 0 && (
-                        <div className="space-y-2">
-                          <div className="text-slate-700 font-medium">Síntomas:</div>
-                          <div className="flex flex-wrap gap-2">
-                            {entry.symptoms.map((symptom, index) => (
-                              <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                                {symptom}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {entry.notes && (
-                        <div className="space-y-2">
-                          <div className="text-slate-700 font-medium">Notas:</div>
-                          <p className="text-slate-600 bg-slate-50 p-3 rounded-lg">{entry.notes}</p>
-                        </div>
+                {/* Síntomas */}
+                {entry.symptoms && entry.symptoms.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
+                      <AlertTriangle className="w-4 h-4 text-orange-600" />
+                      Síntomas
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {entry.symptoms.slice(0, 4).map((symptom, index) => (
+                        <Badge 
+                          key={index} 
+                          variant="secondary" 
+                          className="text-xs bg-orange-100 text-orange-800 border border-orange-200 hover:bg-orange-200 transition-colors"
+                        >
+                          {symptom}
+                        </Badge>
+                      ))}
+                      {entry.symptoms.length > 4 && (
+                        <Badge 
+                          variant="outline" 
+                          className="text-xs text-slate-700 border-slate-400 bg-slate-50"
+                        >
+                          +{entry.symptoms.length - 4} más
+                        </Badge>
                       )}
                     </div>
                   </div>
-                </div>
-              </Card>
-            ))
-          )}
-        </CardContent>
-      </Card>
+                )}
+
+                {/* Medicamentos */}
+                {entry.medications && entry.medications.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
+                      <Pill className="w-4 h-4 text-blue-600" />
+                      Medicamentos
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {entry.medications.slice(0, 3).map((med, index) => (
+                        <Badge 
+                          key={index} 
+                          variant="outline" 
+                          className="text-xs text-blue-800 border-blue-300 bg-blue-50 hover:bg-blue-100 transition-colors"
+                        >
+                          {med}
+                        </Badge>
+                      ))}
+                      {entry.medications.length > 3 && (
+                        <Badge 
+                          variant="outline" 
+                          className="text-xs text-slate-700 border-slate-400 bg-slate-50"
+                        >
+                          +{entry.medications.length - 3} más
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Desencadenantes */}
+                {entry.triggers && entry.triggers.length > 0 && (
+                  <div className="pt-3 border-t border-violet-200/50">
+                    <p className="text-xs sm:text-sm text-slate-700">
+                      <span className="font-bold text-slate-800">Desencadenantes:</span>{' '}
+                      {entry.triggers.slice(0, 3).join(", ")}
+                      {entry.triggers.length > 3 && ` (+${entry.triggers.length - 3} más)`}
+                    </p>
+                  </div>
+                )}
+
+                {/* Notas */}
+                {entry.notes && (
+                  <div className="pt-3 border-t border-violet-200/50">
+                    <p className="text-xs sm:text-sm text-slate-700 italic bg-violet-50 p-3 rounded-lg border border-violet-200/50">
+                      "{entry.notes}"
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {editingEntry && (
         <EditEpisodeDialog
           entry={editingEntry}
-          onSave={onUpdateEntry}
+          onSave={(updatedEntry) => {
+            onUpdateEntry(updatedEntry);
+            setEditingEntry(null);
+          }}
           onCancel={() => setEditingEntry(null)}
         />
       )}

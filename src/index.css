@@ -127,7 +127,19 @@
     padding-right: env(safe-area-inset-right);
   }
 
-  /* Optimizaciones mejoradas para Safari mobile */
+  /* Mejoras de contraste y eliminación de bordes amarillos */
+  button:focus,
+  input:focus,
+  textarea:focus,
+  select:focus,
+  [role="button"]:focus {
+    outline: 2px solid rgb(139, 92, 246) !important;
+    outline-offset: 2px !important;
+    -webkit-focus-ring-color: transparent !important;
+    border-color: rgb(139, 92, 246) !important;
+  }
+
+  /* Mejoras específicas para Safari */
   @supports (-webkit-touch-callout: none) {
     body {
       background: linear-gradient(to bottom right, #f8fafc, #f3f4f6, #faf5ff) !important;
@@ -142,19 +154,39 @@
       -webkit-backdrop-filter: saturate(180%) blur(20px);
     }
 
-    /* Mejora el tap highlighting en iOS */
-    button, .touch-manipulation {
-      -webkit-tap-highlight-color: transparent;
+    /* Eliminar bordes amarillos en Safari */
+    button,
+    input,
+    textarea,
+    select,
+    [role="button"] {
+      -webkit-tap-highlight-color: transparent !important;
+      -webkit-appearance: none !important;
       touch-action: manipulation;
     }
 
-    /* Arregla el problema del borde amarillo fosforescente */
-    button:focus,
-    input:focus,
-    textarea:focus,
-    select:focus {
-      outline: none !important;
-      -webkit-focus-ring-color: transparent !important;
+    button:hover,
+    [role="button"]:hover {
+      background-color: rgba(139, 92, 246, 0.1) !important;
+      border-color: rgb(139, 92, 246) !important;
+      color: rgb(71, 85, 105) !important;
+    }
+
+    /* Arreglar problemas de contraste en texto */
+    .text-white {
+      color: rgb(255, 255, 255) !important;
+    }
+
+    .text-slate-800 {
+      color: rgb(30, 41, 59) !important;
+    }
+
+    .text-slate-700 {
+      color: rgb(51, 65, 85) !important;
+    }
+
+    .text-slate-600 {
+      color: rgb(71, 85, 105) !important;
     }
   }
 
@@ -194,5 +226,24 @@
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
+  }
+
+  /* Clases auxiliares mejoradas */
+  .mobile-input {
+    @apply h-12 text-base border-2 border-violet-200 rounded-xl focus:border-violet-500 focus:ring-0 bg-white/90;
+  }
+
+  .mobile-button {
+    @apply h-12 px-6 text-base font-semibold rounded-xl transition-all duration-200 touch-manipulation;
+  }
+
+  @media (max-width: 640px) {
+    .mobile-input {
+      @apply h-14 text-lg;
+    }
+    
+    .mobile-button {
+      @apply h-14 px-8 text-lg;
+    }
   }
 }

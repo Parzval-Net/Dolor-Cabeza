@@ -68,9 +68,10 @@ const EditEpisodeForm = ({ entry, onFormDataChange }: EditEpisodeFormProps) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Layout adaptativo - stacked en móvil, grid en desktop */}
+      <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-6">
+        <div className="space-y-4 sm:space-y-6">
           <EpisodeBasicFields 
             formData={formData} 
             onUpdate={updateFormData} 
@@ -85,7 +86,7 @@ const EditEpisodeForm = ({ entry, onFormDataChange }: EditEpisodeFormProps) => {
           />
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <EpisodeTriggerSelector
             selectedTriggers={formData.triggers}
             onToggleTrigger={(trigger, checked) => 

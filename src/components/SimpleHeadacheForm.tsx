@@ -99,55 +99,56 @@ const SimpleHeadacheForm = ({ onSave, onCancel }: SimpleHeadacheFormProps) => {
   }
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto safe-area-pt safe-area-pb"
-      style={{ minHeight: 'calc(var(--vh, 1vh) * 100)' }}
-    >
-      <Card className="w-full max-w-2xl my-4 sm:my-6 glass-card-mobile shadow-2xl border-0 rounded-3xl overflow-hidden mx-2 sm:mx-4">
-        <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-          <div className="flex justify-between items-start">
-            <FormStepIndicator currentStep={currentStep} />
-          </div>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
+      <div className="w-full max-w-4xl max-h-[95vh] overflow-y-auto">
+        <Card className="glass-card-mobile shadow-2xl border-0 rounded-3xl overflow-hidden mx-2 sm:mx-4 my-4">
+          <CardContent className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+            <div className="flex justify-between items-start">
+              <FormStepIndicator currentStep={currentStep} />
+            </div>
 
-          <FormProgressBar currentStep={currentStep} totalSteps={2} />
+            <FormProgressBar currentStep={currentStep} totalSteps={2} />
 
-          {currentStep === 1 && (
-            <BasicInfoStep
-              formData={formData}
-              onFormDataChange={setFormData}
-            />
-          )}
-
-          {currentStep === 2 && (
-            <MedicationWithDoseManager
-              medications={formData.medications}
-              onMedicationsChange={(medications) => setFormData(prev => ({ ...prev, medications }))}
-            >
-              {({ medicationOptions, medications, toggleMedication, toggleEditDosage, updateCustomDosage, saveCustomDosage }) => (
-                <DetailsStep
+            <div className="min-h-[400px]">
+              {currentStep === 1 && (
+                <BasicInfoStep
                   formData={formData}
-                  medicationOptions={medicationOptions}
                   onFormDataChange={setFormData}
-                  onToggleMedication={toggleMedication}
-                  onToggleEditDosage={toggleEditDosage}
-                  onUpdateCustomDosage={updateCustomDosage}
-                  onSaveCustomDosage={saveCustomDosage}
                 />
               )}
-            </MedicationWithDoseManager>
-          )}
 
-          <FormActionButtons
-            currentStep={currentStep}
-            onCancel={onCancel}
-            onSwitchToExpress={() => setIsExpress(true)}
-            onPrevious={() => setCurrentStep(1)}
-            onContinue={() => setCurrentStep(2)}
-            onSaveBasic={handleCompleteSubmit}
-            onSaveComplete={handleCompleteSubmit}
-          />
-        </CardContent>
-      </Card>
+              {currentStep === 2 && (
+                <MedicationWithDoseManager
+                  medications={formData.medications}
+                  onMedicationsChange={(medications) => setFormData(prev => ({ ...prev, medications }))}
+                >
+                  {({ medicationOptions, medications, toggleMedication, toggleEditDosage, updateCustomDosage, saveCustomDosage }) => (
+                    <DetailsStep
+                      formData={formData}
+                      medicationOptions={medicationOptions}
+                      onFormDataChange={setFormData}
+                      onToggleMedication={toggleMedication}
+                      onToggleEditDosage={toggleEditDosage}
+                      onUpdateCustomDosage={updateCustomDosage}
+                      onSaveCustomDosage={saveCustomDosage}
+                    />
+                  )}
+                </MedicationWithDoseManager>
+              )}
+            </div>
+
+            <FormActionButtons
+              currentStep={currentStep}
+              onCancel={onCancel}
+              onSwitchToExpress={() => setIsExpress(true)}
+              onPrevious={() => setCurrentStep(1)}
+              onContinue={() => setCurrentStep(2)}
+              onSaveBasic={handleCompleteSubmit}
+              onSaveComplete={handleCompleteSubmit}
+            />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

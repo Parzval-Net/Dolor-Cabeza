@@ -46,7 +46,7 @@ const DetailsStep = ({
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-6 lg:space-y-8">
       <MedicationSelection
         medications={formData.medications}
         medicationOptions={medicationOptions}
@@ -70,8 +70,8 @@ const DetailsStep = ({
           value={formData.notes}
           onChange={(e) => onFormDataChange({ ...formData, notes: e.target.value })}
           placeholder="¿Algo más que quieras recordar sobre este episodio?"
-          className="border-violet-200 rounded-xl resize-none text-base p-4 bg-white/95 min-h-[80px] text-slate-800 font-medium placeholder:text-slate-500 focus:border-violet-500 focus:ring-2 focus:ring-violet-200"
-          rows={3}
+          className="border-violet-200 rounded-xl resize-none text-base p-4 bg-white/95 min-h-[100px] text-slate-800 font-medium placeholder:text-slate-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-200 mobile-input"
+          rows={4}
         />
       </div>
     </div>

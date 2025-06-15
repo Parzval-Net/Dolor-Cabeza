@@ -14,56 +14,81 @@ export const getIntensityText = (intensity: number) => {
 };
 
 export const getMoodEmoji = (mood: string) => {
-  // Normalizar el estado a minúsculas y manejar diferentes formatos
-  const normalizedMood = mood.toLowerCase().trim();
+  // Añadir console.log para debuggear qué valores estamos recibiendo
+  console.log('Mood received:', mood, 'Type:', typeof mood);
+  
+  // Normalizar el estado a minúsculas y eliminar espacios/guiones
+  const normalizedMood = mood.toLowerCase().trim().replace(/[-_\s]/g, '');
+  
+  console.log('Normalized mood:', normalizedMood);
   
   const moodMap: Record<string, string> = {
-    // Formatos en español con guión bajo
-    'muy_mal': '😰',
-    'mal': '😟', 
-    'regular': '😐',
-    'bien': '🙂',
-    'muy_bien': '😄',
-    // Formatos en español con espacios
-    'muy mal': '😰',
-    'muy bien': '😄',
-    // Formatos alternativos
+    // Valores posibles sin espacios ni guiones
+    'muymal': '😰',
     'terrible': '😰',
+    'mal': '😟',
     'malo': '😟',
+    'regular': '😐',
     'normal': '😐',
+    'neutro': '😐',
+    'bien': '🙂',
     'bueno': '🙂',
+    'muybueno': '😄',
+    'muybien': '😄',
     'excelente': '😄',
     'genial': '😄',
-    // Formatos en inglés por si acaso
-    'very_bad': '😰',
-    'bad': '😟',
-    'okay': '😐',
-    'good': '🙂',
-    'very_good': '😄',
-    'great': '😄'
+    'feliz': '😄',
+    'contento': '🙂',
+    'triste': '😟',
+    'ansioso': '😰',
+    'calmado': '🙂',
+    'estresado': '😟',
+    'relajado': '🙂',
+    // Valores numéricos como string
+    '1': '😰',
+    '2': '😟',
+    '3': '😐',
+    '4': '🙂',
+    '5': '😄'
   };
   
-  return moodMap[normalizedMood] || '😐';
+  const emoji = moodMap[normalizedMood] || '😐';
+  console.log('Selected emoji:', emoji);
+  
+  return emoji;
 };
 
 export const getMoodText = (mood: string) => {
   // Normalizar el estado y convertir a texto legible
-  const normalizedMood = mood.toLowerCase().trim();
+  const normalizedMood = mood.toLowerCase().trim().replace(/[-_\s]/g, '');
   
   const moodTextMap: Record<string, string> = {
-    'muy_mal': 'Muy mal',
-    'mal': 'Mal',
-    'regular': 'Regular', 
-    'bien': 'Bien',
-    'muy_bien': 'Muy bien',
-    'muy mal': 'Muy mal',
-    'muy bien': 'Muy bien',
+    'muymal': 'Muy mal',
     'terrible': 'Terrible',
+    'mal': 'Mal',
     'malo': 'Malo',
+    'regular': 'Regular',
     'normal': 'Normal',
+    'neutro': 'Neutro',
+    'bien': 'Bien',
     'bueno': 'Bueno',
+    'muybueno': 'Muy bueno',
+    'muybien': 'Muy bien',
     'excelente': 'Excelente',
-    'genial': 'Genial'
+    'genial': 'Genial',
+    'feliz': 'Feliz',
+    'contento': 'Contento',
+    'triste': 'Triste',
+    'ansioso': 'Ansioso',
+    'calmado': 'Calmado',
+    'estresado': 'Estresado',
+    'relajado': 'Relajado',
+    // Valores numéricos como string
+    '1': 'Muy mal',
+    '2': 'Mal',
+    '3': 'Regular',
+    '4': 'Bien',
+    '5': 'Muy bien'
   };
   
   return moodTextMap[normalizedMood] || 'Regular';

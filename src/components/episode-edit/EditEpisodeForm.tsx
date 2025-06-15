@@ -68,33 +68,39 @@ const EditEpisodeForm = ({ entry, onFormDataChange }: EditEpisodeFormProps) => {
   };
 
   return (
-    <div className="space-y-4 md:space-y-6 py-4">
-      <EpisodeBasicFields 
-        formData={formData} 
-        onUpdate={updateFormData} 
-      />
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          <EpisodeBasicFields 
+            formData={formData} 
+            onUpdate={updateFormData} 
+          />
 
-      <EpisodeMedicationSelector
-        selectedMedications={formData.medications}
-        medicationOptions={medicationOptions}
-        onToggleMedication={(medication, checked) => 
-          handleCheckboxChange('medications', medication, checked)
-        }
-      />
+          <EpisodeMedicationSelector
+            selectedMedications={formData.medications}
+            medicationOptions={medicationOptions}
+            onToggleMedication={(medication, checked) => 
+              handleCheckboxChange('medications', medication, checked)
+            }
+          />
+        </div>
 
-      <EpisodeTriggerSelector
-        selectedTriggers={formData.triggers}
-        onToggleTrigger={(trigger, checked) => 
-          handleCheckboxChange('triggers', trigger, checked)
-        }
-      />
+        <div className="space-y-6">
+          <EpisodeTriggerSelector
+            selectedTriggers={formData.triggers}
+            onToggleTrigger={(trigger, checked) => 
+              handleCheckboxChange('triggers', trigger, checked)
+            }
+          />
 
-      <EpisodeSymptomSelector
-        selectedSymptoms={formData.symptoms}
-        onToggleSymptom={(symptom, checked) => 
-          handleCheckboxChange('symptoms', symptom, checked)
-        }
-      />
+          <EpisodeSymptomSelector
+            selectedSymptoms={formData.symptoms}
+            onToggleSymptom={(symptom, checked) => 
+              handleCheckboxChange('symptoms', symptom, checked)
+            }
+          />
+        </div>
+      </div>
 
       <EpisodeNotesField
         notes={formData.notes || ''}

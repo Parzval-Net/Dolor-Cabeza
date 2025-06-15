@@ -6,7 +6,7 @@ import { medicationOptions as defaultMedicationOptions, triggerOptions, symptomO
 import FormHeader from '@/components/form/FormHeader';
 import ProgressBar from '@/components/form/ProgressBar';
 import FormNavigation from '@/components/form/FormNavigation';
-import BasicInfoStep from '@/components/form/steps/BasicInfoStep';
+import BasicInfoStep from '@/components/form/BasicInfoStep';
 import IntensityStressStep from '@/components/form/steps/IntensityStressStep';
 import StepCard from '@/components/form/StepCard';
 import InteractiveButton from '@/components/form/InteractiveButton';
@@ -42,7 +42,7 @@ const HeadacheForm = ({ onSave, onCancel }: HeadacheFormProps) => {
 
   const totalSteps = 5;
   const durationOptions = [0.5, 1, 1.5, 2, 3, 4, 6, 8, 12, 24];
-  const sleepOptions = [4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const sleepOptions = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const weatherOptions = ['Soleado', 'Nublado', 'Lluvioso', 'Tormentoso', 'Ventoso'];
   const menstrualOptions = ['Menstruación', 'Ovulación', 'Pre-menstrual', 'Post-menstrual', 'No aplica'];
 

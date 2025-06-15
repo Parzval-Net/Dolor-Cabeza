@@ -13,7 +13,7 @@ export interface HeadacheEntry {
   mood: string;
   weather?: string;
   menstrualCycle?: string;
-  sleepHours?: number;
+  sleepHours?: number; // 3-12 hours range
   stressLevel: number; // 1-5 scale
 }
 

@@ -1,33 +1,33 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/85 backdrop-blur-xl border border-white/40 shadow-xl shadow-slate-200/30;
-    /* Safari fallback */
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-  
-  .glass-card-dark {
-    @apply bg-white/90 backdrop-blur-xl border border-white/50 shadow-2xl shadow-slate-300/25;
+    @apply bg-white/90 backdrop-blur-xl border border-white/50 shadow-xl shadow-slate-200/30;
     /* Safari fallback */
     background: rgba(255, 255, 255, 0.90);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
+  
+  .glass-card-dark {
+    @apply bg-white/95 backdrop-blur-xl border border-white/60 shadow-2xl shadow-slate-300/25;
+    /* Safari fallback */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
 
   .glass-card-mobile {
-    @apply bg-white/92 backdrop-blur-xl border border-violet-200/60 shadow-2xl shadow-violet-200/20;
+    @apply bg-white/95 backdrop-blur-xl border border-violet-200/60 shadow-2xl shadow-violet-200/20;
     /* Safari fallback */
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
   
   .gradient-card {
-    @apply bg-white/90 backdrop-blur-xl border border-violet-200/50 shadow-2xl shadow-violet-200/25;
+    @apply bg-white/95 backdrop-blur-xl border border-violet-200/50 shadow-2xl shadow-violet-200/25;
     /* Safari fallback */
-    background: rgba(255, 255, 255, 0.90) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
@@ -71,7 +71,7 @@
     .glass-card-dark,
     .glass-card-mobile,
     .gradient-card {
-      background: rgba(255, 255, 255, 0.92) !important;
+      background: rgba(255, 255, 255, 0.95) !important;
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
       border: 1px solid rgba(167, 139, 250, 0.4) !important;
@@ -87,7 +87,7 @@
     .safari-calendar-fix,
     .safari-nav-button-fix,
     .safari-day-button-fix {
-      background-color: rgba(255, 255, 255, 0.92) !important;
+      background-color: rgba(255, 255, 255, 0.95) !important;
       border-color: rgba(167, 139, 250, 0.6) !important;
     }
 
@@ -101,13 +101,13 @@
 
     .safari-popover-fix,
     .safari-select-item-fix {
-      background-color: rgba(255, 255, 255, 0.95) !important;
+      background-color: rgba(255, 255, 255, 0.98) !important;
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
     }
 
     .safari-calendar-fix .rdp-day {
-      background-color: rgba(255, 255, 255, 0.9) !important;
+      background-color: rgba(255, 255, 255, 0.95) !important;
       border: 1px solid rgba(167, 139, 250, 0.3) !important;
     }
 
@@ -139,6 +139,19 @@
 
     .mobile-input {
       @apply px-4 py-3 text-base rounded-xl;
+    }
+  }
+
+  /* Touch improvements for iOS */
+  @media (hover: none) and (pointer: coarse) {
+    button, .button, [role="button"] {
+      @apply min-h-[44px] min-w-[44px];
+    }
+    
+    input, select, textarea {
+      @apply text-base;
+      /* Prevent zoom on iOS Safari */
+      font-size: 16px !important;
     }
   }
 }

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
@@ -7,7 +8,6 @@ import CalendarView from '@/components/CalendarView';
 import TrendsView from '@/components/TrendsView';
 import EpisodesList from '@/components/EpisodesList';
 import AdminPanel from '@/components/AdminPanel';
-import HeadacheForm from '@/components/HeadacheForm';
 import SimpleHeadacheForm from '@/components/SimpleHeadacheForm';
 import { HeadacheEntry } from '@/types/headache';
 
@@ -35,7 +35,7 @@ const Index = () => {
     localStorage.setItem('headache-entries', JSON.stringify(entries));
   }, [entries]);
 
-  // PWA Installation
+  // PWA Installation and mobile optimizations
   useEffect(() => {
     // Registrar Service Worker
     if ('serviceWorker' in navigator) {
@@ -54,7 +54,6 @@ const Index = () => {
     let deferredPrompt: any;
     window.addEventListener('beforeinstallprompt', (e) => {
       deferredPrompt = e;
-      // Show install button or notification
       console.log('PWA install prompt available');
     });
 
@@ -65,7 +64,7 @@ const Index = () => {
     }
   }, []);
 
-  // Add viewport height handling for mobile
+  // Enhanced viewport height handling for mobile (especially Safari)
   useEffect(() => {
     const setVH = () => {
       const vh = window.innerHeight * 0.01;
@@ -74,13 +73,23 @@ const Index = () => {
 
     setVH();
     window.addEventListener('resize', setVH);
-    window.addEventListener('orientationchange', setVH);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(setVH, 100); // Delay for Safari
+    });
+
+    // Prevent body scroll when modal is open
+    if (showForm) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
 
     return () => {
       window.removeEventListener('resize', setVH);
       window.removeEventListener('orientationchange', setVH);
+      document.body.style.overflow = 'unset';
     };
-  }, []);
+  }, [showForm]);
 
   const handleSaveEntry = (entry: HeadacheEntry) => {
     setEntries(prev => [entry, ...prev]);
@@ -126,14 +135,20 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-lavender-50 to-coral-50" style={{ minHeight: 'calc(var(--vh, 1vh) * 100)' }}>
+    <div 
+      className="min-h-screen bg-gradient-to-br from-rose-50 via-lavender-50 to-coral-50 overflow-x-hidden" 
+      style={{ 
+        minHeight: 'calc(var(--vh, 1vh) * 100)',
+        paddingBottom: 'env(safe-area-inset-bottom)'
+      }}
+    >
       <Header 
         onNewEntry={() => setShowForm(true)}
         currentView={currentView}
         onViewChange={setCurrentView}
       />
       
-      <main className="max-w-6xl mx-auto p-4 pb-20 lg:pb-8">
+      <main className="max-w-6xl mx-auto p-3 lg:p-4 pb-20 lg:pb-8">
         <div className="animate-fade-in">
           {renderCurrentView()}
         </div>

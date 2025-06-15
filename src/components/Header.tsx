@@ -1,6 +1,6 @@
-import { Calendar, Plus, TrendingUp, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import { 
   Heart, 
   Activity, 
@@ -17,7 +17,8 @@ import {
   HeartHandshake,
   Stethoscope,
   Pill,
-  Clock
+  Clock,
+  Sparkles
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -26,7 +27,7 @@ interface HeaderProps {
   onViewChange: (view: 'dashboard' | 'calendar' | 'trends' | 'episodes' | 'admin') => void;
 }
 
-const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
+const Header = ({ onNewEntry }: HeaderProps) => {
   const [appSettings, setAppSettings] = useState({
     appName: 'MigraCare',
     appDescription: 'Seguimiento inteligente de migrañas',
@@ -49,9 +50,6 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
     Flame,
     Eye,
     Target,
-    Plus,
-    Calendar,
-    TrendingUp,
     BarChart3,
     HeartHandshake,
     Stethoscope,
@@ -72,7 +70,6 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
           secondaryColor: parsedSettings.secondaryColor || '#EC4899',
           appIcon: parsedSettings.appIcon || 'Heart'
         });
-        console.log('Settings loaded in Header:', parsedSettings);
       } catch (error) {
         console.error('Error loading admin settings in Header:', error);
       }
@@ -92,14 +89,11 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
       }
     };
 
-    // Escuchar cambios desde otras pestañas/ventanas
-    window.addEventListener('storage', handleStorageChange);
-
-    // También escuchar un evento personalizado para cambios en la misma pestaña
     const handleCustomStorageChange = () => {
       loadSettings();
     };
 
+    window.addEventListener('storage', handleStorageChange);
     window.addEventListener('admin-settings-updated', handleCustomStorageChange);
 
     return () => {
@@ -112,21 +106,21 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
   const SelectedIcon = iconMap[appSettings.appIcon] || Heart;
 
   return (
-    <header className="bg-white/80 backdrop-blur-xl border-b border-violet-100 sticky top-0 z-50 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 py-4">
+    <header className="bg-white/95 backdrop-blur-xl border-b border-violet-100 sticky top-0 z-50 shadow-sm safe-area-pt">
+      <div className="max-w-6xl mx-auto px-4 py-3 lg:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div 
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300"
+              className="w-9 h-9 lg:w-10 lg:h-10 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300"
               style={{
                 background: `linear-gradient(135deg, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`
               }}
             >
-              <SelectedIcon className="w-6 h-6 text-white drop-shadow-sm" />
+              <SelectedIcon className="w-5 h-5 lg:w-6 lg:h-6 text-white drop-shadow-sm" />
             </div>
             <div>
               <h1 
-                className="text-2xl font-bold"
+                className="text-xl lg:text-2xl font-bold"
                 style={{
                   background: `linear-gradient(135deg, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`,
                   WebkitBackgroundClip: 'text',
@@ -136,68 +130,18 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
               >
                 {appSettings.appName}
               </h1>
-              <p className="text-sm text-slate-600 font-medium">{appSettings.appDescription}</p>
+              <p className="text-xs lg:text-sm text-slate-600 font-medium hidden sm:block">{appSettings.appDescription}</p>
             </div>
           </div>
 
-          {/* Desktop Navigation - Hidden on mobile */}
-          <nav className="hidden lg:flex items-center space-x-1 bg-white/60 backdrop-blur-sm rounded-2xl p-1 shadow-sm">
-            {[
-              { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-              { id: 'episodes', label: 'Episodios', icon: '📋' },
-              { id: 'calendar', label: 'Calendario', icon: '📅' },
-              { id: 'trends', label: 'Tendencias', icon: '📈' },
-              { id: 'admin', label: 'Admin', icon: '⚙️' },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => onViewChange(item.id as any)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  currentView === item.id
-                    ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-500/25'
-                    : 'text-slate-600 hover:bg-violet-50 hover:text-violet-700'
-                }`}
-              >
-                <span className="mr-2">{item.icon}</span>
-                {item.label}
-              </button>
-            ))}
-          </nav>
-
-          {/* Add Entry Button - Optimized for mobile */}
+          {/* Botón de nueva entrada - optimizado para móviles */}
           <Button
             onClick={onNewEntry}
-            className="bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 hover:from-violet-600 hover:via-purple-600 hover:to-fuchsia-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 rounded-2xl px-4 md:px-6 active:scale-95"
+            className="bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 hover:from-violet-600 hover:via-purple-600 hover:to-fuchsia-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 rounded-2xl px-3 py-2 lg:px-6 lg:py-3 active:scale-95 text-sm lg:text-base"
           >
             <span className="hidden sm:inline mr-2">Nuevo</span>
             <span className="text-lg">+</span>
           </Button>
-        </div>
-
-        {/* Mobile Navigation */}
-        <div className="md:hidden mt-4">
-          <div className="flex space-x-1 bg-white/60 backdrop-blur-sm rounded-2xl p-1 shadow-sm overflow-x-auto">
-            {[
-              { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-              { id: 'episodes', label: 'Episodios', icon: '📋' },
-              { id: 'calendar', label: 'Calendario', icon: '📅' },
-              { id: 'trends', label: 'Tendencias', icon: '📈' },
-              { id: 'admin', label: 'Admin', icon: '⚙️' },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => onViewChange(item.id as any)}
-                className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 whitespace-nowrap ${
-                  currentView === item.id
-                    ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-500/25'
-                    : 'text-slate-600 hover:bg-violet-50 hover:text-violet-700'
-                }`}
-              >
-                <span className="block">{item.icon}</span>
-                <span className="block">{item.label}</span>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </header>

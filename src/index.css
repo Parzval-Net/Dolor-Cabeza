@@ -104,6 +104,27 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    
+    /* Prevent zoom on iOS Safari */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  /* Safe area support for iPhone */
+  .safe-area-pt {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-pl {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-area-pr {
+    padding-right: env(safe-area-inset-right);
   }
 
   /* Safari mobile specific fixes */
@@ -113,9 +134,18 @@
     }
     
     .glass-card,
-    .glass-card-dark {
+    .glass-card-dark,
+    .glass-card-mobile {
       background: rgba(255, 255, 255, 0.95) !important;
-      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border: 1px solid rgba(167, 139, 250, 0.4) !important;
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
     }
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
   }
 }

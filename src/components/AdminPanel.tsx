@@ -125,34 +125,36 @@ const AdminPanel = () => {
           {activeTab === 'general' && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="appName">Nombre de la Aplicación</Label>
+                <Label htmlFor="appName" className="text-slate-700 font-semibold">Nombre de la Aplicación</Label>
                 <Input
                   id="appName"
                   value={settings.appName}
                   onChange={(e) => setSettings(prev => ({ ...prev, appName: e.target.value }))}
                   placeholder="Nombre de tu aplicación"
+                  className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="appDescription">Descripción</Label>
+                <Label htmlFor="appDescription" className="text-slate-700 font-semibold">Descripción</Label>
                 <Textarea
                   id="appDescription"
                   value={settings.appDescription}
                   onChange={(e) => setSettings(prev => ({ ...prev, appDescription: e.target.value }))}
                   placeholder="Descripción de tu aplicación"
                   rows={3}
+                  className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="language">Idioma</Label>
+                  <Label htmlFor="language" className="text-slate-700 font-semibold">Idioma</Label>
                   <select
                     id="language"
                     value={settings.language}
                     onChange={(e) => setSettings(prev => ({ ...prev, language: e.target.value }))}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    className="admin-select"
                   >
                     <option value="es">Español</option>
                     <option value="en">English</option>
@@ -161,12 +163,12 @@ const AdminPanel = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="timezone">Zona Horaria</Label>
+                  <Label htmlFor="timezone" className="text-slate-700 font-semibold">Zona Horaria</Label>
                   <select
                     id="timezone"
                     value={settings.timezone}
                     onChange={(e) => setSettings(prev => ({ ...prev, timezone: e.target.value }))}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    className="admin-select"
                   >
                     <option value="America/Santiago">Santiago</option>
                     <option value="America/New_York">New York</option>
@@ -181,56 +183,58 @@ const AdminPanel = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="primaryColor">Color Primario</Label>
+                  <Label htmlFor="primaryColor" className="text-slate-700 font-semibold">Color Primario</Label>
                   <div className="flex items-center space-x-3">
                     <input
                       type="color"
                       id="primaryColor"
                       value={settings.primaryColor}
                       onChange={(e) => setSettings(prev => ({ ...prev, primaryColor: e.target.value }))}
-                      className="w-12 h-10 rounded border border-slate-300"
+                      className="w-12 h-10 rounded border border-slate-300 cursor-pointer"
                     />
                     <Input
                       value={settings.primaryColor}
                       onChange={(e) => setSettings(prev => ({ ...prev, primaryColor: e.target.value }))}
                       placeholder="#8B5CF6"
+                      className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="secondaryColor">Color Secundario</Label>
+                  <Label htmlFor="secondaryColor" className="text-slate-700 font-semibold">Color Secundario</Label>
                   <div className="flex items-center space-x-3">
                     <input
                       type="color"
                       id="secondaryColor"
                       value={settings.secondaryColor}
                       onChange={(e) => setSettings(prev => ({ ...prev, secondaryColor: e.target.value }))}
-                      className="w-12 h-10 rounded border border-slate-300"
+                      className="w-12 h-10 rounded border border-slate-300 cursor-pointer"
                     />
                     <Input
                       value={settings.secondaryColor}
                       onChange={(e) => setSettings(prev => ({ ...prev, secondaryColor: e.target.value }))}
                       placeholder="#EC4899"
+                      className="text-slate-800 font-medium bg-white border-slate-300 focus:border-violet-500"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <h4 className="font-medium text-slate-700 mb-2">Vista Previa</h4>
+              <div className="admin-preview-card">
+                <h4 className="font-semibold text-slate-800 mb-3">Vista Previa</h4>
                 <div className="flex items-center space-x-4">
                   <div 
-                    className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold"
+                    className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold shadow-lg"
                     style={{ background: `linear-gradient(to br, ${settings.primaryColor}, ${settings.secondaryColor})` }}
                   >
                     8
                   </div>
                   <div className="space-y-1">
-                    <h5 style={{ color: settings.primaryColor }} className="font-semibold">
+                    <h5 style={{ color: settings.primaryColor }} className="font-semibold text-lg">
                       {settings.appName}
                     </h5>
-                    <p className="text-sm text-slate-600">{settings.appDescription}</p>
+                    <p className="text-sm text-slate-600 font-medium">{settings.appDescription}</p>
                   </div>
                 </div>
               </div>
@@ -238,33 +242,33 @@ const AdminPanel = () => {
           )}
 
           {activeTab === 'data' && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Exportar Datos</Label>
-                <p className="text-sm text-slate-600">Descarga una copia de seguridad de todos tus datos.</p>
-                <Button onClick={handleExportData} variant="outline">
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <Label className="text-slate-700 font-semibold">Exportar Datos</Label>
+                <p className="text-sm text-slate-600 font-medium">Descarga una copia de seguridad de todos tus datos.</p>
+                <Button onClick={handleExportData} variant="outline" className="bg-white">
                   Exportar Datos
                 </Button>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="importData">Importar Datos</Label>
-                <p className="text-sm text-slate-600">Restaura datos desde un archivo de respaldo.</p>
+              <div className="space-y-3">
+                <Label htmlFor="importData" className="text-slate-700 font-semibold">Importar Datos</Label>
+                <p className="text-sm text-slate-600 font-medium">Restaura datos desde un archivo de respaldo.</p>
                 <input
                   type="file"
                   id="importData"
                   accept=".json"
                   onChange={handleImportData}
-                  className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                  className="admin-file-input"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label>Formato de Exportación</Label>
+              <div className="space-y-3">
+                <Label className="text-slate-700 font-semibold">Formato de Exportación</Label>
                 <select
                   value={settings.exportFormat}
                   onChange={(e) => setSettings(prev => ({ ...prev, exportFormat: e.target.value }))}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  className="admin-select"
                 >
                   <option value="JSON">JSON</option>
                   <option value="CSV">CSV</option>
@@ -274,8 +278,8 @@ const AdminPanel = () => {
             </div>
           )}
 
-          <div className="flex justify-end pt-4 border-t">
-            <Button onClick={handleSave} className="bg-violet-500 hover:bg-violet-600">
+          <div className="flex justify-end pt-6 border-t border-slate-200">
+            <Button onClick={handleSave} className="bg-violet-500 hover:bg-violet-600 text-white font-semibold">
               <Save className="w-4 h-4 mr-2" />
               Guardar Configuración
             </Button>

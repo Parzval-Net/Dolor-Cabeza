@@ -5,13 +5,15 @@ import Header from '@/components/Header';
 import Dashboard from '@/components/Dashboard';
 import CalendarView from '@/components/CalendarView';
 import TrendsView from '@/components/TrendsView';
+import EpisodesList from '@/components/EpisodesList';
+import AdminPanel from '@/components/AdminPanel';
 import HeadacheForm from '@/components/HeadacheForm';
 import { HeadacheEntry } from '@/types/headache';
 
 const Index = () => {
   const [entries, setEntries] = useState<HeadacheEntry[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'calendar' | 'trends'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'calendar' | 'trends' | 'episodes' | 'admin'>('dashboard');
   const { toast } = useToast();
 
   // Load entries from localStorage on component mount
@@ -41,12 +43,30 @@ const Index = () => {
     });
   };
 
+  const handleUpdateEntry = (updatedEntry: HeadacheEntry) => {
+    setEntries(prev => prev.map(entry => entry.id === updatedEntry.id ? updatedEntry : entry));
+  };
+
+  const handleDeleteEntry = (entryId: string) => {
+    setEntries(prev => prev.filter(entry => entry.id !== entryId));
+  };
+
   const renderCurrentView = () => {
     switch (currentView) {
+      case 'episodes':
+        return (
+          <EpisodesList 
+            entries={entries} 
+            onUpdateEntry={handleUpdateEntry}
+            onDeleteEntry={handleDeleteEntry}
+          />
+        );
       case 'calendar':
         return <CalendarView entries={entries} />;
       case 'trends':
         return <TrendsView entries={entries} />;
+      case 'admin':
+        return <AdminPanel />;
       default:
         return <Dashboard entries={entries} />;
     }

@@ -1,59 +1,38 @@
-
-import { MedicationOption, TriggerOption } from '@/types/headache';
-
-export const medicationOptions: MedicationOption[] = [
-  { id: '1', name: 'Ibuprofeno', dosage: '400mg', type: 'acute' },
-  { id: '2', name: 'Paracetamol', dosage: '500mg', type: 'acute' },
-  { id: '3', name: 'Aspirina', dosage: '500mg', type: 'acute' },
-  { id: '4', name: 'Sumatriptán', dosage: '50mg', type: 'acute' },
-  { id: '5', name: 'Naproxeno', dosage: '250mg', type: 'acute' },
-  { id: '6', name: 'Propranolol', dosage: '40mg', type: 'preventive' },
-  { id: '7', name: 'Topiramato', dosage: '25mg', type: 'preventive' },
+export const medicationOptions = [
+  { id: 'med1', name: 'Paracetamol', dosage: '500mg', type: 'acute' },
+  { id: 'med2', name: 'Ibuprofeno', dosage: '400mg', type: 'acute' },
+  { id: 'med3', name: 'Triptán', dosage: '2.5mg', type: 'acute' },
+  { id: 'med4', name: 'Amitriptilina', dosage: '25mg', type: 'preventive' },
+  { id: 'med5', name: 'Propranolol', dosage: '40mg', type: 'preventive' },
 ];
 
-export const triggerOptions: TriggerOption[] = [
-  { id: '1', name: 'Estrés', category: 'stress' },
-  { id: '2', name: 'Falta de sueño', category: 'lifestyle' },
-  { id: '3', name: 'Alcohol', category: 'food' },
-  { id: '4', name: 'Chocolate', category: 'food' },
-  { id: '5', name: 'Queso', category: 'food' },
-  { id: '6', name: 'Café/Cafeína', category: 'food' },
-  { id: '7', name: 'Luces brillantes', category: 'environmental' },
-  { id: '8', name: 'Ruidos fuertes', category: 'environmental' },
-  { id: '9', name: 'Cambios climáticos', category: 'environmental' },
-  { id: '10', name: 'Menstruación', category: 'hormonal' },
-  { id: '11', name: 'Ovulación', category: 'hormonal' },
-  { id: '12', name: 'Ayuno prolongado', category: 'lifestyle' },
+export const triggerOptions = [
+  { id: 'trig1', name: 'Estrés', category: 'stress' },
+  { id: 'trig2', name: 'Cafeína', category: 'food' },
+  { id: 'trig3', name: 'Chocolate', category: 'food' },
+  { id: 'trig4', name: 'Vino tinto', category: 'food' },
+  { id: 'trig5', name: 'Cambios climáticos', category: 'environmental' },
+  { id: 'trig6', name: 'Falta de sueño', category: 'lifestyle' },
+  { id: 'trig7', name: 'Luces brillantes', category: 'environmental' },
+  { id: 'trig8', name: 'Deshidratación', category: 'lifestyle' },
+  { id: 'trig9', name: 'Menstruación', category: 'hormonal' },
+  { id: 'trig10', name: 'Saltarse comidas', category: 'lifestyle' },
 ];
 
 export const symptomOptions = [
-  'Náuseas',
-  'Vómitos',
+  'Dolor pulsátil',
   'Sensibilidad a la luz',
   'Sensibilidad al sonido',
+  'Náuseas',
+  'Vómitos',
   'Visión borrosa',
-  'Aura visual',
   'Mareos',
   'Rigidez en el cuello',
+  'Aura visual',
+  'Hormigueo',
+  'Confusión',
   'Fatiga',
-  'Irritabilidad',
-];
-
-export const reliefOptions = [
-  'Descanso en habitación oscura',
-  'Compresas frías',
-  'Compresas calientes',
-  'Masaje',
-  'Meditación',
-  'Ejercicio ligero',
-  'Hidratación',
-  'Sueño',
-];
-
-export const moodOptions = [
-  'Muy bien',
-  'Bien',
-  'Normal',
-  'Mal',
-  'Muy mal',
+  'Congestión nasal',
+  'Lagrimeo',
+  'Irritabilidad'
 ];

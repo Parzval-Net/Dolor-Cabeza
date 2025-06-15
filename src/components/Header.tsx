@@ -73,6 +73,7 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
           secondaryColor: parsedSettings.secondaryColor || '#EC4899',
           appIcon: parsedSettings.appIcon || 'Heart'
         });
+        console.log('Settings loaded in Header:', parsedSettings);
       } catch (error) {
         console.error('Error loading admin settings in Header:', error);
       }
@@ -126,9 +127,12 @@ const Header = ({ onNewEntry, currentView, onViewChange }: HeaderProps) => {
             </div>
             <div>
               <h1 
-                className="text-2xl font-bold bg-clip-text text-transparent"
+                className="text-2xl font-bold text-slate-800"
                 style={{
-                  backgroundImage: `linear-gradient(to r, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`
+                  background: `linear-gradient(to r, ${appSettings.primaryColor}, ${appSettings.secondaryColor})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
                 }}
               >
                 {appSettings.appName}

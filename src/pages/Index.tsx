@@ -142,11 +142,7 @@ const Index = () => {
         paddingBottom: 'env(safe-area-inset-bottom)'
       }}
     >
-      <Header 
-        onNewEntry={() => setShowForm(true)}
-        currentView={currentView}
-        onViewChange={setCurrentView}
-      />
+      <Header onNewEntry={() => setShowForm(true)} />
       
       <main className="max-w-6xl mx-auto p-3 lg:p-4 pb-20 lg:pb-8">
         <div className="animate-fade-in">

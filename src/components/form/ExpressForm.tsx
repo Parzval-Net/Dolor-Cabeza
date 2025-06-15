@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Zap, Save, Clock } from 'lucide-react';
+import { Zap, Save } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -22,8 +23,6 @@ import {
 
 interface HeaderProps {
   onNewEntry: () => void;
-  currentView: 'dashboard' | 'calendar' | 'trends' | 'episodes' | 'admin';
-  onViewChange: (view: 'dashboard' | 'calendar' | 'trends' | 'episodes' | 'admin') => void;
 }
 
 const Header = ({ onNewEntry }: HeaderProps) => {
@@ -133,15 +132,15 @@ const Header = ({ onNewEntry }: HeaderProps) => {
             </div>
           </div>
 
-          {/* Botón de nueva entrada - optimizado para móviles con título */}
           <Button
             onClick={onNewEntry}
             title="Registrar dolor"
             aria-label="Registrar nuevo episodio de dolor"
             className="bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 hover:from-violet-600 hover:via-purple-600 hover:to-fuchsia-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 rounded-2xl px-3 py-2 lg:px-6 lg:py-3 active:scale-95 text-sm lg:text-base"
           >
-            <span className="hidden sm:inline mr-2">Registrar dolor</span>
-            <span className="text-lg">+</span>
+            <span className="sm:hidden">Dolor</span>
+            <span className="hidden sm:inline">Registrar dolor</span>
+            <span className="ml-1 text-lg">+</span>
           </Button>
         </div>
       </div>

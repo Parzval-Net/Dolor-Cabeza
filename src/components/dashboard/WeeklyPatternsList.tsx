@@ -1,4 +1,3 @@
-
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Calendar } from 'lucide-react';
 
@@ -17,7 +16,7 @@ const WeeklyPatternsList = ({ entries }: WeeklyPatternsListProps) => {
     return acc;
   }, {} as Record<number, number>);
 
-  const maxCount = Math.max(...Object.values(weeklyData), 1);
+  const maxCount = Math.max(...(Object.values(weeklyData) as number[]), 1);
 
   const getDayColor = (count: number) => {
     const percentage = count / maxCount;

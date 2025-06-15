@@ -1,3 +1,4 @@
+
 export const medicationOptions = [
   { id: 'med1', name: 'Paracetamol', dosage: '500mg', type: 'acute' },
   { id: 'med2', name: 'Ibuprofeno', dosage: '400mg', type: 'acute' },
@@ -35,4 +36,30 @@ export const symptomOptions = [
   'Congestión nasal',
   'Lagrimeo',
   'Irritabilidad'
+];
+
+export const reliefOptions = [
+  'Descanso en habitación oscura',
+  'Aplicar frío en la cabeza',
+  'Aplicar calor en el cuello',
+  'Masaje en las sienes',
+  'Técnicas de relajación',
+  'Dormir',
+  'Beber agua',
+  'Ejercicio ligero',
+  'Respiración profunda',
+  'Música relajante'
+];
+
+export const moodOptions = [
+  'Muy positivo',
+  'Positivo',
+  'Neutral',
+  'Irritado',
+  'Ansioso',
+  'Deprimido',
+  'Estresado',
+  'Cansado',
+  'Enojado',
+  'Confundido'
 ];

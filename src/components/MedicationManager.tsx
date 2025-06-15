@@ -25,7 +25,7 @@ const MedicationManager = () => {
     const savedMedications = localStorage.getItem('custom-medications');
     if (savedMedications) {
       try {
-        const parsed = JSON.parse(savedMedications);
+        const parsed = JSON.parse(savedMedications) as MedicationOption[];
         setMedications(parsed);
       } catch (error) {
         console.error('Error loading medications:', error);
@@ -161,9 +161,9 @@ const MedicationManager = () => {
           
           <div className="space-y-2">
             <Label className="text-slate-800 font-bold">Tipo</Label>
-            <Select onValueChange={(value: 'preventive' | 'acute') => setNewMedication({ ...newMedication, type: value })}>
+            <Select value={newMedication.type} onValueChange={(value: 'preventive' | 'acute') => setNewMedication({ ...newMedication, type: value })}>
               <SelectTrigger className="text-slate-800 font-semibold bg-white border-slate-400">
-                <SelectValue placeholder={newMedication.type === 'acute' ? 'Para crisis' : 'Preventivo'} />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-white border-slate-400">
                 <SelectItem value="acute">Para crisis</SelectItem>

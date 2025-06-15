@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
@@ -9,6 +8,7 @@ import TrendsView from '@/components/TrendsView';
 import EpisodesList from '@/components/EpisodesList';
 import AdminPanel from '@/components/AdminPanel';
 import HeadacheForm from '@/components/HeadacheForm';
+import SimpleHeadacheForm from '@/components/SimpleHeadacheForm';
 import { HeadacheEntry } from '@/types/headache';
 
 const Index = () => {
@@ -146,7 +146,7 @@ const Index = () => {
       />
 
       {showForm && (
-        <HeadacheForm
+        <SimpleHeadacheForm
           onSave={handleSaveEntry}
           onCancel={() => setShowForm(false)}
         />

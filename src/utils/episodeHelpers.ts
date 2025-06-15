@@ -13,9 +13,15 @@ export const getIntensityText = (intensity: number) => {
   return "Extremo";
 };
 
-export const getMoodEmoji = (mood: string) => {
+export const getMoodEmoji = (mood: string | undefined | null) => {
   // Añadir console.log para debuggear qué valores estamos recibiendo
   console.log('Mood received:', mood, 'Type:', typeof mood);
+  
+  // Si mood no existe, está vacío o es null/undefined, usar un emoji basado en intensidad
+  if (!mood || mood.trim() === '') {
+    console.log('Mood is empty, using default');
+    return '😐';
+  }
   
   // Normalizar el estado a minúsculas y eliminar espacios/guiones
   const normalizedMood = mood.toLowerCase().trim().replace(/[-_\s]/g, '');
@@ -58,7 +64,12 @@ export const getMoodEmoji = (mood: string) => {
   return emoji;
 };
 
-export const getMoodText = (mood: string) => {
+export const getMoodText = (mood: string | undefined | null) => {
+  // Si mood no existe, está vacío o es null/undefined
+  if (!mood || mood.trim() === '') {
+    return 'No especificado';
+  }
+  
   // Normalizar el estado y convertir a texto legible
   const normalizedMood = mood.toLowerCase().trim().replace(/[-_\s]/g, '');
   
@@ -92,6 +103,15 @@ export const getMoodText = (mood: string) => {
   };
   
   return moodTextMap[normalizedMood] || 'Regular';
+};
+
+// Nueva función para obtener emoji basado en intensidad cuando no hay mood
+export const getMoodEmojiFromIntensity = (intensity: number) => {
+  if (intensity <= 2) return '🙂';
+  if (intensity <= 4) return '😐';
+  if (intensity <= 6) return '😟';
+  if (intensity <= 8) return '😰';
+  return '😱';
 };
 
 export const getStressColor = (level: number) => {

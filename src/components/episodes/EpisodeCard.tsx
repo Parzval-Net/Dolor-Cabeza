@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HeadacheEntry } from '@/types/headache';
 import { Calendar, Clock, Edit3, Trash2, Brain, Activity } from 'lucide-react';
-import { getIntensityColor, getIntensityText, getMoodEmoji, getMoodText, getStressColor, formatDate } from '@/utils/episodeHelpers';
+import { getIntensityColor, getIntensityText, getMoodEmoji, getMoodText, getStressColor, formatDate, getMoodEmojiFromIntensity } from '@/utils/episodeHelpers';
 
 interface EpisodeCardProps {
   entry: HeadacheEntry;
@@ -13,6 +13,28 @@ interface EpisodeCardProps {
 }
 
 const EpisodeCard = ({ entry, onEdit, onDelete }: EpisodeCardProps) => {
+  // Función para obtener el emoji correcto
+  const getDisplayEmoji = () => {
+    // Si no hay mood o está vacío, usar intensidad
+    if (!entry.mood || entry.mood.trim() === '') {
+      return getMoodEmojiFromIntensity(entry.intensity);
+    }
+    return getMoodEmoji(entry.mood);
+  };
+
+  // Función para obtener el texto correcto
+  const getDisplayMoodText = () => {
+    // Si no hay mood o está vacío, mostrar basado en intensidad
+    if (!entry.mood || entry.mood.trim() === '') {
+      if (entry.intensity <= 2) return 'Leve';
+      if (entry.intensity <= 4) return 'Moderado';
+      if (entry.intensity <= 6) return 'Alto';
+      if (entry.intensity <= 8) return 'Severo';
+      return 'Extremo';
+    }
+    return getMoodText(entry.mood);
+  };
+
   return (
     <Card className="glass-card-mobile border border-violet-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-violet-300">
       <CardHeader className="pb-3">
@@ -60,11 +82,11 @@ const EpisodeCard = ({ entry, onEdit, onDelete }: EpisodeCardProps) => {
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-white/80 rounded-xl p-3 border border-violet-200/30">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-lg">{getMoodEmoji(entry.mood)}</span>
+              <span className="text-lg">{getDisplayEmoji()}</span>
               <span className="text-xs font-medium text-slate-600">Estado</span>
             </div>
             <p className="text-sm font-semibold text-slate-800">
-              {getMoodText(entry.mood)}
+              {getDisplayMoodText()}
             </p>
           </div>
           <div className="bg-white/80 rounded-xl p-3 border border-violet-200/30">

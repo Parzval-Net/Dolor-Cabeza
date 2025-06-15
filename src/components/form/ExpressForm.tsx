@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Zap, Save, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -50,7 +49,7 @@ const ExpressForm = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 safe-area-pt safe-area-pb">
+    <div className="fixed inset-0 bg-gradient-to-br from-rose-50 via-lavender-50 to-coral-50 flex items-center justify-center p-4 z-50 safe-area-pt safe-area-pb">
       <Card className="w-full max-w-sm glass-card-mobile shadow-2xl border-0 rounded-3xl overflow-hidden mx-4">
         <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div className="text-center space-y-3">

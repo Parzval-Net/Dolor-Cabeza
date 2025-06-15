@@ -16,7 +16,7 @@ const MedicationManager = () => {
   const [newMedication, setNewMedication] = useState({
     name: '',
     dosage: '',
-    type: 'acute' as 'preventive' | 'acute'
+    type: 'acute' as const
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const { toast } = useToast();
@@ -26,7 +26,12 @@ const MedicationManager = () => {
     if (savedMedications) {
       try {
         const parsed = JSON.parse(savedMedications) as MedicationOption[];
-        setMedications(parsed);
+        // Asegurar que todos los medicamentos tengan el tipo correcto
+        const validatedMedications = parsed.map(med => ({
+          ...med,
+          type: (med.type === 'preventive' || med.type === 'acute') ? med.type : 'acute'
+        })) as MedicationOption[];
+        setMedications(validatedMedications);
       } catch (error) {
         console.error('Error loading medications:', error);
       }
@@ -126,65 +131,65 @@ const MedicationManager = () => {
   };
 
   return (
-    <Card className="glass-card-dark">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold text-slate-800 flex items-center gap-3">
-          <Pill className="w-6 h-6 text-violet-500" />
-          Gestión de Medicamentos
+    <Card className="glass-card-mobile">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2 md:gap-3">
+          <Pill className="w-5 h-5 md:w-6 md:h-6 text-violet-500" />
+          <span className="text-base md:text-xl">Gestión de Medicamentos</span>
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4 md:space-y-6">
         {/* Add/Edit Form */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-lg border-2 border-slate-300">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-4 md:gap-4 p-3 md:p-4 bg-white/80 rounded-xl border border-violet-200/50">
           <div className="space-y-2">
-            <Label htmlFor="medName" className="text-slate-800 font-bold">Nombre</Label>
+            <Label htmlFor="medName" className="text-sm font-bold text-slate-700">Nombre</Label>
             <Input
               id="medName"
               value={newMedication.name}
               onChange={(e) => setNewMedication({ ...newMedication, name: e.target.value })}
               placeholder="ej. Ibuprofeno"
-              className="text-slate-800 font-semibold bg-white border-slate-400"
+              className="text-sm md:text-base text-slate-800 font-semibold bg-white/90 border-violet-200"
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="medDosage" className="text-slate-800 font-bold">Dosis</Label>
+            <Label htmlFor="medDosage" className="text-sm font-bold text-slate-700">Dosis</Label>
             <Input
               id="medDosage"
               value={newMedication.dosage}
               onChange={(e) => setNewMedication({ ...newMedication, dosage: e.target.value })}
               placeholder="ej. 400mg"
-              className="text-slate-800 font-semibold bg-white border-slate-400"
+              className="text-sm md:text-base text-slate-800 font-semibold bg-white/90 border-violet-200"
             />
           </div>
           
           <div className="space-y-2">
-            <Label className="text-slate-800 font-bold">Tipo</Label>
+            <Label className="text-sm font-bold text-slate-700">Tipo</Label>
             <Select value={newMedication.type} onValueChange={(value: 'preventive' | 'acute') => setNewMedication({ ...newMedication, type: value })}>
-              <SelectTrigger className="text-slate-800 font-semibold bg-white border-slate-400">
+              <SelectTrigger className="text-sm md:text-base text-slate-800 font-semibold bg-white/90 border-violet-200">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-white border-slate-400">
+              <SelectContent className="bg-white/95 border-violet-200">
                 <SelectItem value="acute">Para crisis</SelectItem>
                 <SelectItem value="preventive">Preventivo</SelectItem>
               </SelectContent>
             </Select>
           </div>
           
-          <div className="flex items-end gap-2">
+          <div className="flex items-end gap-2 md:mt-0 mt-2">
             {editingId ? (
               <>
-                <Button onClick={saveEdit} size="sm" className="bg-green-500 hover:bg-green-600">
+                <Button onClick={saveEdit} size="sm" className="flex-1 md:flex-none bg-green-500 hover:bg-green-600 text-xs md:text-sm">
                   Guardar
                 </Button>
-                <Button onClick={cancelEdit} variant="outline" size="sm">
+                <Button onClick={cancelEdit} variant="outline" size="sm" className="flex-1 md:flex-none text-xs md:text-sm">
                   Cancelar
                 </Button>
               </>
             ) : (
-              <Button onClick={addMedication} size="sm" className="bg-violet-500 hover:bg-violet-600">
-                <Plus className="w-4 h-4 mr-1" />
+              <Button onClick={addMedication} size="sm" className="w-full md:w-auto bg-violet-500 hover:bg-violet-600 text-xs md:text-sm">
+                <Plus className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                 Agregar
               </Button>
             )}
@@ -193,33 +198,33 @@ const MedicationManager = () => {
 
         {/* Medications List */}
         <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <h4 className="font-bold text-slate-800">Lista de Medicamentos ({medications.length})</h4>
-            <Button onClick={resetToDefaults} variant="outline" size="sm" className="text-slate-800">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+            <h4 className="font-bold text-slate-800 text-sm md:text-base">Lista de Medicamentos ({medications.length})</h4>
+            <Button onClick={resetToDefaults} variant="outline" size="sm" className="text-slate-800 text-xs md:text-sm self-start sm:self-auto">
               Restaurar por defecto
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3 max-h-80 md:max-h-96 overflow-y-auto">
             {medications.map((medication) => (
-              <div key={medication.id} className="flex items-center justify-between p-3 bg-white rounded-lg border-2 border-slate-300 hover:border-violet-300 transition-colors">
-                <div className="flex-1">
+              <div key={medication.id} className="flex items-center justify-between p-3 bg-white/90 rounded-lg border border-violet-200/50 hover:border-violet-300 transition-colors">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-slate-800">{medication.name}</span>
+                    <span className="font-bold text-slate-800 text-sm md:text-base truncate">{medication.name}</span>
                     {medication.isCommon && (
-                      <Badge variant="secondary" className="text-xs">Común</Badge>
+                      <Badge variant="secondary" className="text-xs flex-shrink-0">Común</Badge>
                     )}
                   </div>
-                  <div className="text-sm text-slate-600 font-semibold">
+                  <div className="text-xs md:text-sm text-slate-600 font-semibold">
                     {medication.dosage} • {medication.type === 'acute' ? 'Crisis' : 'Preventivo'}
                   </div>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-1 flex-shrink-0">
                   <Button
                     onClick={() => startEditing(medication)}
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 hover:bg-blue-100"
+                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-blue-100"
                   >
                     <Edit3 className="w-3 h-3" />
                   </Button>
@@ -227,7 +232,7 @@ const MedicationManager = () => {
                     onClick={() => removeMedication(medication.id)}
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 hover:bg-red-100 text-red-600"
+                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-red-100 text-red-600"
                   >
                     <Trash2 className="w-3 h-3" />
                   </Button>

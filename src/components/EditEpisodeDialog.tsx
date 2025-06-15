@@ -22,15 +22,32 @@ const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) 
 
   // Cargar medicamentos personalizados al montar el componente
   useEffect(() => {
-    const customMedications = localStorage.getItem('custom-medications');
-    if (customMedications) {
-      try {
-        const parsed = JSON.parse(customMedications);
-        setMedicationOptions(parsed);
-      } catch (error) {
-        console.error('Error loading custom medications:', error);
+    const loadCustomMedications = () => {
+      const customMedications = localStorage.getItem('custom-medications');
+      if (customMedications) {
+        try {
+          const parsed = JSON.parse(customMedications);
+          // Asegurar que todos los medicamentos tengan el tipo correcto
+          const validatedMedications = parsed.map((med: any) => ({
+            ...med,
+            type: (med.type === 'preventive' || med.type === 'acute') ? med.type : 'acute'
+          }));
+          setMedicationOptions(validatedMedications);
+        } catch (error) {
+          console.error('Error loading custom medications:', error);
+        }
       }
-    }
+    };
+
+    loadCustomMedications();
+    
+    // Escuchar cambios en medicamentos
+    const handleMedicationsUpdate = () => {
+      loadCustomMedications();
+    };
+    
+    window.addEventListener('medications-updated', handleMedicationsUpdate);
+    return () => window.removeEventListener('medications-updated', handleMedicationsUpdate);
   }, []);
 
   const handleSave = () => {
@@ -57,38 +74,40 @@ const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) 
 
   return (
     <Dialog open={true} onOpenChange={onCancel}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto glass-card-mobile">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-slate-800">
+          <DialogTitle className="text-lg md:text-xl font-bold text-slate-800">
             Editar Episodio
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6 py-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-4 md:space-y-6 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             <div className="space-y-2">
-              <Label htmlFor="date">Fecha</Label>
+              <Label htmlFor="date" className="text-sm font-semibold">Fecha</Label>
               <Input
                 id="date"
                 type="date"
                 value={formData.date}
                 onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                className="mobile-input border-violet-200"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="time">Hora</Label>
+              <Label htmlFor="time" className="text-sm font-semibold">Hora</Label>
               <Input
                 id="time"
                 type="time"
                 value={formData.time}
                 onChange={(e) => setFormData(prev => ({ ...prev, time: e.target.value }))}
+                className="mobile-input border-violet-200"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             <div className="space-y-2">
-              <Label htmlFor="intensity">Intensidad (1-10)</Label>
+              <Label htmlFor="intensity" className="text-sm font-semibold">Intensidad (1-10)</Label>
               <Input
                 id="intensity"
                 type="number"
@@ -96,37 +115,39 @@ const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) 
                 max="10"
                 value={formData.intensity}
                 onChange={(e) => setFormData(prev => ({ ...prev, intensity: Number(e.target.value) }))}
+                className="mobile-input border-violet-200"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="duration">Duración (horas)</Label>
+              <Label htmlFor="stressLevel" className="text-sm font-semibold">Nivel de Estrés (1-5)</Label>
               <Input
-                id="duration"
+                id="stressLevel"
                 type="number"
-                min="0.5"
-                step="0.5"
-                value={formData.duration}
-                onChange={(e) => setFormData(prev => ({ ...prev, duration: Number(e.target.value) }))}
+                min="1"
+                max="5"
+                value={formData.stressLevel}
+                onChange={(e) => setFormData(prev => ({ ...prev, stressLevel: Number(e.target.value) }))}
+                className="mobile-input border-violet-200"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label>Medicamentos</Label>
-            <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
+            <Label className="text-sm font-semibold">Medicamentos</Label>
+            <div className="grid grid-cols-1 gap-2 max-h-32 md:max-h-40 overflow-y-auto bg-white/50 rounded-lg p-3 border border-violet-200/50">
               {medicationOptions.map((med) => {
                 const medicationWithDose = `${med.name} (${med.dosage})`;
                 return (
-                  <label key={med.id} className="flex items-center space-x-2 text-sm p-2 hover:bg-gray-50 rounded">
+                  <label key={med.id} className="flex items-center space-x-2 text-sm p-2 hover:bg-violet-50/50 rounded transition-colors">
                     <input
                       type="checkbox"
                       checked={formData.medications.includes(medicationWithDose)}
                       onChange={(e) => handleCheckboxChange('medications', medicationWithDose, e.target.checked)}
-                      className="rounded border-gray-300"
+                      className="rounded border-violet-300 mobile-touch-target"
                     />
                     <div className="flex-1">
-                      <div className="font-semibold">{med.name}</div>
-                      <div className="text-xs text-gray-600">{med.dosage} • {med.type === 'acute' ? 'Crisis' : 'Preventivo'}</div>
+                      <div className="font-semibold text-slate-800">{med.name}</div>
+                      <div className="text-xs text-slate-600">{med.dosage} • {med.type === 'acute' ? 'Crisis' : 'Preventivo'}</div>
                     </div>
                   </label>
                 );
@@ -135,68 +156,57 @@ const EditEpisodeDialog = ({ entry, onSave, onCancel }: EditEpisodeDialogProps) 
           </div>
 
           <div className="space-y-2">
-            <Label>Desencadenantes</Label>
-            <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
+            <Label className="text-sm font-semibold">Desencadenantes</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-32 overflow-y-auto bg-white/50 rounded-lg p-3 border border-violet-200/50">
               {triggerOptions.map((trigger) => (
                 <label key={trigger.id} className="flex items-center space-x-2 text-sm">
                   <input
                     type="checkbox"
                     checked={formData.triggers.includes(trigger.name)}
                     onChange={(e) => handleCheckboxChange('triggers', trigger.name, e.target.checked)}
-                    className="rounded border-gray-300"
+                    className="rounded border-violet-300"
                   />
-                  <span>{trigger.name}</span>
+                  <span className="text-slate-700">{trigger.name}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label>Síntomas</Label>
-            <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
+            <Label className="text-sm font-semibold">Síntomas</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-32 overflow-y-auto bg-white/50 rounded-lg p-3 border border-violet-200/50">
               {symptomOptions.map((symptom, index) => (
                 <label key={index} className="flex items-center space-x-2 text-sm">
                   <input
                     type="checkbox"
                     checked={formData.symptoms.includes(symptom)}
                     onChange={(e) => handleCheckboxChange('symptoms', symptom, e.target.checked)}
-                    className="rounded border-gray-300"
+                    className="rounded border-violet-300"
                   />
-                  <span>{symptom}</span>
+                  <span className="text-slate-700">{symptom}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="stressLevel">Nivel de Estrés (1-5)</Label>
-            <Input
-              id="stressLevel"
-              type="number"
-              min="1"
-              max="5"
-              value={formData.stressLevel}
-              onChange={(e) => setFormData(prev => ({ ...prev, stressLevel: Number(e.target.value) }))}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="notes">Notas adicionales</Label>
+            <Label htmlFor="notes" className="text-sm font-semibold">Notas adicionales</Label>
             <Textarea
               id="notes"
               value={formData.notes || ''}
               onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
               placeholder="Escribe cualquier información adicional..."
               rows={3}
+              className="mobile-input border-violet-200 resize-none"
             />
           </div>
         </div>
 
-        <div className="flex justify-end space-x-3 pt-4 border-t">
-          <Button variant="outline" onClick={onCancel}>
+        <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 pt-4 border-t border-violet-200/50">
+          <Button variant="outline" onClick={onCancel} className="mobile-button">
             Cancelar
           </Button>
-          <Button onClick={handleSave} className="bg-violet-500 hover:bg-violet-600">
+          <Button onClick={handleSave} className="mobile-button bg-violet-500 hover:bg-violet-600">
             Guardar Cambios
           </Button>
         </div>

@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -134,19 +135,77 @@
   .intensity-9 { @apply bg-red-700 shadow-red-500; }
   .intensity-10 { @apply bg-red-800 shadow-red-600; }
 
-  /* Calendar entry dot styles */
-  .intensity-level-1:not(:has([aria-selected]))::after,
-  .intensity-level-2:not(:has([aria-selected]))::after,
-  .intensity-level-3:not(:has([aria-selected]))::after,
-  .intensity-level-4:not(:has([aria-selected]))::after {
+  /* Calendar specific styles with better contrast */
+  .rdp {
+    --rdp-cell-size: 40px;
+    --rdp-accent-color: rgb(139 92 246);
+    --rdp-background-color: rgb(255 255 255);
+    --rdp-accent-color-dark: rgb(124 58 237);
+    --rdp-background-color-dark: rgb(30 41 59);
+    --rdp-outline: 2px solid var(--rdp-accent-color);
+    --rdp-outline-selected: 2px solid rgba(0, 0, 0, 0.75);
+  }
+
+  /* Calendar day cells with better text contrast */
+  .rdp-day {
+    @apply text-slate-700 font-medium hover:bg-violet-50 hover:text-violet-800 transition-colors;
+  }
+
+  .rdp-day:hover {
+    @apply bg-violet-100 text-violet-900;
+  }
+
+  .rdp-day_selected {
+    @apply bg-violet-500 text-white font-semibold;
+  }
+
+  .rdp-day_today {
+    @apply bg-violet-100 text-violet-900 font-bold ring-2 ring-violet-300;
+  }
+
+  .rdp-day_outside {
+    @apply text-slate-400;
+  }
+
+  .rdp-day_disabled {
+    @apply text-slate-300;
+  }
+
+  /* Calendar headers with better contrast */
+  .rdp-head_cell {
+    @apply text-slate-600 font-semibold text-sm;
+  }
+
+  .rdp-caption_label {
+    @apply text-slate-800 font-bold;
+  }
+
+  /* Navigation buttons */
+  .rdp-nav_button {
+    @apply text-slate-600 hover:text-violet-600 hover:bg-violet-50;
+  }
+
+  /* Calendar entry dot styles with better visibility */
+  .intensity-level-1:not(.rdp-day_selected)::after,
+  .intensity-level-2:not(.rdp-day_selected)::after,
+  .intensity-level-3:not(.rdp-day_selected)::after,
+  .intensity-level-4:not(.rdp-day_selected)::after {
     content: '';
-    @apply absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full;
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full shadow-sm;
   }
   
-  .intensity-level-1::after { @apply bg-emerald-400; }
-  .intensity-level-2::after { @apply bg-orange-400; }
-  .intensity-level-3::after { @apply bg-red-400; }
-  .intensity-level-4::after { @apply bg-red-600; }
+  .intensity-level-1::after { @apply bg-emerald-500 shadow-emerald-300; }
+  .intensity-level-2::after { @apply bg-orange-500 shadow-orange-300; }
+  .intensity-level-3::after { @apply bg-red-500 shadow-red-300; }
+  .intensity-level-4::after { @apply bg-red-700 shadow-red-500; }
+
+  /* Selected day with intensity dots */
+  .rdp-day_selected.intensity-level-1::after,
+  .rdp-day_selected.intensity-level-2::after,
+  .rdp-day_selected.intensity-level-3::after,
+  .rdp-day_selected.intensity-level-4::after {
+    @apply bg-white shadow-white/50;
+  }
   
   .floating-animation {
     animation: floating 3s ease-in-out infinite;

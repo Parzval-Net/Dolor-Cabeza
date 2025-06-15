@@ -92,30 +92,32 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
-          <Calendar
-            modifiers={modifiers}
-            modifiersClassNames={modifiersClassNames}
-            className="p-0"
-            numberOfMonths={1}
-            onDayClick={handleDayClick}
-            selected={selectedDay}
-          />
-          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-slate-600">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-emerald-400 rounded-full"></div>
-              <span>Leve (1-3)</span>
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/30">
+            <Calendar
+              modifiers={modifiers}
+              modifiersClassNames={modifiersClassNames}
+              className="p-0"
+              numberOfMonths={1}
+              onDayClick={handleDayClick}
+              selected={selectedDay}
+            />
+          </div>
+          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
+              <div className="w-3 h-3 bg-emerald-500 rounded-full shadow-sm"></div>
+              <span className="text-slate-700 font-medium">Leve (1-3)</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
-              <span>Moderado (4-6)</span>
+            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
+              <div className="w-3 h-3 bg-orange-500 rounded-full shadow-sm"></div>
+              <span className="text-slate-700 font-medium">Moderado (4-6)</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-              <span>Severo (7-8)</span>
+            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
+              <div className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></div>
+              <span className="text-slate-700 font-medium">Severo (7-8)</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-red-600 rounded-full"></div>
-              <span>Extremo (9-10)</span>
+            <div className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm">
+              <div className="w-3 h-3 bg-red-700 rounded-full shadow-sm"></div>
+              <span className="text-slate-700 font-medium">Extremo (9-10)</span>
             </div>
           </div>
         </CardContent>
@@ -131,21 +133,21 @@ const CalendarView = ({ entries }: CalendarViewProps) => {
           {selectedDayEntries.length > 0 ? (
             <div className="space-y-4">
               {selectedDayEntries.map(entry => (
-                <div key={entry.id} className="glass-card p-4 rounded-xl">
+                <div key={entry.id} className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-white/20 shadow-sm">
                   <div className="flex items-center space-x-3">
                     <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getIntensityGradient(entry.intensity)} flex items-center justify-center shadow-lg text-white font-bold`}>
                       {entry.intensity}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-slate-700">Episodio a las {entry.time}</p>
-                      <p className="text-sm text-slate-500">{entry.duration}h de duración</p>
+                      <p className="font-semibold text-slate-800">Episodio a las {entry.time}</p>
+                      <p className="text-sm text-slate-600">{entry.duration}h de duración</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-10 text-slate-500">
+            <div className="text-center py-10 text-slate-600">
               <p>Selecciona un día en el calendario para ver los detalles.</p>
             </div>
           )}

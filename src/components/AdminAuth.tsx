@@ -79,7 +79,7 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Ingresa tu usuario"
                 required
-                className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500"
+                className="text-slate-900 font-bold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500 placeholder:text-slate-500"
               />
               <p className="text-sm text-slate-600 font-medium">Por defecto: admin</p>
             </div>
@@ -96,7 +96,7 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Ingresa tu contraseña"
                   required
-                  className="text-slate-800 font-semibold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500 pr-10"
+                  className="text-slate-900 font-bold bg-white border-slate-400 focus:border-violet-500 hover:border-slate-500 pr-10 placeholder:text-slate-500"
                 />
                 <button
                   type="button"

@@ -120,7 +120,7 @@ const EpisodesList = ({ entries, onUpdateEntry, onDeleteEntry }: EpisodesListPro
                         onClick={() => setEditingEntry(entry)}
                         variant="ghost"
                         size="sm"
-                        className="h-9 w-9 p-0 hover:bg-violet-100 hover:text-violet-700 transition-colors rounded-lg"
+                        className="h-9 w-9 p-0 bg-blue-100 text-blue-700 border border-blue-200 hover:bg-blue-200 hover:text-blue-800 hover:border-blue-300 transition-all duration-200 rounded-lg shadow-sm"
                       >
                         <Edit3 className="w-4 h-4" />
                       </Button>
@@ -128,7 +128,7 @@ const EpisodesList = ({ entries, onUpdateEntry, onDeleteEntry }: EpisodesListPro
                         onClick={() => handleDelete(entry.id)}
                         variant="ghost"
                         size="sm"
-                        className="h-9 w-9 p-0 hover:bg-red-100 hover:text-red-700 transition-colors rounded-lg"
+                        className="h-9 w-9 p-0 bg-red-100 text-red-700 border border-red-200 hover:bg-red-200 hover:text-red-800 hover:border-red-300 transition-all duration-200 rounded-lg shadow-sm"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

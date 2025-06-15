@@ -42,14 +42,14 @@ const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'medications' | 'data' | 'security'>('general');
   const { toast } = useToast();
 
-  // Authentication check
+  // Verificación de autenticación
   useEffect(() => {
     const authStatus = localStorage.getItem('admin-authenticated');
     const sessionTimestamp = localStorage.getItem('admin-session-timestamp');
     
     if (authStatus === 'true' && sessionTimestamp) {
       const sessionAge = Date.now() - parseInt(sessionTimestamp);
-      const MAX_SESSION_TIME = 24 * 60 * 60 * 1000; // 24 hours
+      const MAX_SESSION_TIME = 24 * 60 * 60 * 1000; // 24 horas
       
       if (sessionAge < MAX_SESSION_TIME) {
         setIsAuthenticated(true);
@@ -64,7 +64,7 @@ const AdminPanel = () => {
     }
   }, []);
 
-  // Load settings
+  // Cargar configuración
   useEffect(() => {
     if (isAuthenticated) {
       const savedSettings = localStorage.getItem('admin-settings');
@@ -79,18 +79,10 @@ const AdminPanel = () => {
     }
   }, [isAuthenticated]);
 
-  const updateDocumentTitle = (appName: string) => {
-    document.title = `${appName} - Seguimiento inteligente de migrañas`;
-    const titleElement = document.getElementById('dynamic-title');
-    if (titleElement) {
-      titleElement.textContent = `${appName} - Seguimiento inteligente de migrañas`;
-    }
-  };
-
   const handleSave = () => {
     try {
       localStorage.setItem('admin-settings', JSON.stringify(settings));
-      updateDocumentTitle(settings.appName);
+      document.title = `${settings.appName} - Seguimiento inteligente de migrañas`;
       window.dispatchEvent(new CustomEvent('admin-settings-updated', { detail: settings }));
       
       toast({
@@ -117,18 +109,6 @@ const AdminPanel = () => {
     });
   };
 
-  const handlePasswordChanged = () => {
-    setShowChangePassword(false);
-  };
-
-  const handleShowChangePassword = () => {
-    setShowChangePassword(true);
-  };
-
-  if (!isAuthenticated) {
-    return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
-  }
-
   const renderTabContent = () => {
     switch (activeTab) {
       case 'general':
@@ -140,24 +120,28 @@ const AdminPanel = () => {
       case 'data':
         return <DataTab settings={settings} onSettingsChange={setSettings} />;
       case 'security':
-        return <SecurityTab onChangePassword={handleShowChangePassword} />;
+        return <SecurityTab onChangePassword={() => setShowChangePassword(true)} />;
       default:
         return null;
     }
   };
 
+  if (!isAuthenticated) {
+    return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
+
   return (
     <>
       {showChangePassword && (
-        <ChangePasswordModal onPasswordChanged={handlePasswordChanged} />
+        <ChangePasswordModal onPasswordChanged={() => setShowChangePassword(false)} />
       )}
       
-      <div className="space-y-4 sm:space-y-6 p-4">
+      <div className="space-y-6 p-4">
         <Card className="admin-panel-card">
-          <CardHeader className="pb-2 sm:pb-6 admin-panel-content">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-              <CardTitle className="text-lg sm:text-2xl font-bold text-slate-800 flex items-center gap-2 sm:gap-3">
-                <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-violet-500" />
+          <CardHeader className="pb-6 admin-panel-content">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <CardTitle className="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                <Settings className="w-6 h-6 text-violet-500" />
                 Panel de Administración
               </CardTitle>
               <Button
@@ -166,7 +150,7 @@ const AdminPanel = () => {
                 size="sm"
                 className="text-slate-800 font-semibold hover:bg-red-100 hover:text-red-800 hover:border-red-300 w-full sm:w-auto bg-white"
               >
-                <LogOut className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                <LogOut className="w-4 h-4 mr-2" />
                 Cerrar Sesión
               </Button>
             </div>
@@ -174,16 +158,16 @@ const AdminPanel = () => {
             <AdminTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </CardHeader>
 
-          <CardContent className="space-y-4 sm:space-y-6 admin-panel-content">
+          <CardContent className="space-y-6 admin-panel-content">
             {renderTabContent()}
 
             {activeTab !== 'medications' && activeTab !== 'security' && (
-              <div className="flex justify-end pt-4 sm:pt-6 border-t border-slate-300">
+              <div className="flex justify-end pt-6 border-t border-slate-300">
                 <Button
                   onClick={handleSave}
                   className="bg-violet-500 hover:bg-violet-600 text-white font-bold shadow-lg w-full sm:w-auto"
                 >
-                  <Save className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                  <Save className="w-4 h-4 mr-2" />
                   Guardar Configuración
                 </Button>
               </div>

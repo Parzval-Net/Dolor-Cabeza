@@ -39,13 +39,6 @@
     background: rgb(255, 255, 255) !important;
   }
 
-  /* Ocultar clases obsoletas */
-  .admin-select,
-  .admin-preview-card,
-  .admin-file-input {
-    display: none;
-  }
-
   /* Optimizaciones para Safari */
   @supports (-webkit-touch-callout: none) {
     .admin-select-fixed,

@@ -1,18 +1,6 @@
 
 @layer base {
-  /* Mejoras de contraste y eliminación de bordes amarillos */
-  button:focus,
-  input:focus,
-  textarea:focus,
-  select:focus,
-  [role="button"]:focus {
-    outline: 2px solid rgb(139, 92, 246) !important;
-    outline-offset: 2px !important;
-    -webkit-focus-ring-color: transparent !important;
-    border-color: rgb(139, 92, 246) !important;
-  }
-
-  /* Focus states - improved accessibility */
+  /* Focus states mejorados - accesibilidad optimizada */
   *:focus {
     outline: none !important;
   }
@@ -22,7 +10,7 @@
     outline-offset: 2px !important;
   }
 
-  /* Remove any remaining yellow focus rings */
+  /* Eliminar bordes amarillos en todos los elementos interactivos */
   button:focus,
   input:focus,
   textarea:focus,
@@ -31,5 +19,6 @@
     outline: 2px solid rgb(139, 92, 246) !important;
     outline-offset: 2px !important;
     -webkit-focus-ring-color: transparent !important;
+    border-color: rgb(139, 92, 246) !important;
   }
 }

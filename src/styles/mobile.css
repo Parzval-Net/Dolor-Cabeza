@@ -1,9 +1,10 @@
 
 @layer base {
-  /* Mejoras de accesibilidad táctil */
+  /* Mejoras de accesibilidad táctil optimizadas */
   .mobile-touch-target {
     min-height: 44px;
     min-width: 44px;
+    touch-action: manipulation;
   }
 
   @media (max-width: 640px) {
@@ -13,16 +14,10 @@
     }
   }
 
-  /* Optimización para formularios en Safari */
+  /* Optimización para formularios */
   .safari-form-button {
     -webkit-appearance: none;
     appearance: none;
-  }
-
-  .safari-button-fix {
-    -webkit-appearance: none;
-    appearance: none;
-    border-radius: 0.75rem;
   }
 
   .safari-interactive-button {
@@ -32,13 +27,15 @@
     -webkit-user-select: none;
   }
 
-  /* Clases auxiliares mejoradas */
+  /* Clases auxiliares unificadas */
   .mobile-input {
     @apply h-12 text-base border-2 border-violet-200 rounded-xl focus:border-violet-500 focus:ring-0 bg-white/90;
+    font-size: 16px !important; /* Prevenir zoom en iOS */
   }
 
   .mobile-button {
-    @apply h-12 px-6 text-base font-semibold rounded-xl transition-all duration-200 touch-manipulation;
+    @apply h-12 px-6 text-base font-semibold rounded-xl transition-all duration-200;
+    touch-action: manipulation;
   }
 
   @media (max-width: 640px) {

@@ -3,9 +3,9 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? "/Dolor-Cabeza/" : "/",
+  // Usamos rutas **relativas** en prod para que nunca inyecte '/Dolor-Cabeza/' ni nada absoluto
+  base: mode === "production" ? "./" : "/",
   server: {
     host: "::",
     port: 8080,

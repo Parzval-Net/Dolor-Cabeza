@@ -14,6 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Mostrar vite.config.ts
+        run: |
+          echo "—— vite.config.ts ——"
+          cat vite.config.ts
+          echo "—————————————"
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -22,16 +28,20 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      - name: Eliminar service worker
+        run: rm -f dist/sw.js
+
+      - name: Fallback 404 → index.html
+        run: cp dist/index.html dist/404.html
+
       - name: Listar contenido de dist
         run: ls -R ./dist
 
-      # ↗️ Actualizado a la versión 3, que ya usa upload-artifact@v4 internamente
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
-      # ↗️ Actualizado a la versión 4 del despliegue
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         with:

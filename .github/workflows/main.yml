@@ -40,9 +40,9 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Forzar que suba **toda** la carpeta
-          path: |
-            dist/**
+          # Simplemente apunta al directorio completo
+          path: dist
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         with:

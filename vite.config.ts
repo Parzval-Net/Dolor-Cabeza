@@ -4,8 +4,11 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  // Usamos rutas **relativas** en prod para que nunca inyecte '/Dolor-Cabeza/' ni nada absoluto
+  // Rutas relativas en prod y sourcemaps habilitados para debugging
   base: mode === "production" ? "./" : "/",
+  build: {
+    sourcemap: true,
+  },
   server: {
     host: "::",
     port: 8080,

@@ -22,6 +22,9 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      - name: Listar contenido de dist
+        run: ls -R ./dist
+
       # ↗️ Actualizado a la versión 3, que ya usa upload-artifact@v4 internamente
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

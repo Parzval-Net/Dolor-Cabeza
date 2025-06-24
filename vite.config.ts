@@ -4,8 +4,8 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  // Rutas relativas en prod y sourcemaps habilitados para debugging
-  base: mode === "production" ? "/Dolor-Cabeza/" : "/",
+  // Al estar en la raíz del dominio, no necesitas base (o déjala como "/")
+  base: "/",
   build: {
     sourcemap: true,
   },

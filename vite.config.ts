@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
   // Rutas relativas en prod y sourcemaps habilitados para debugging
-  base: mode === "production" ? "./" : "/",
+  base: mode === "production" ? "/Dolor-Cabeza/" : "/",
   build: {
     sourcemap: true,
   },
@@ -23,3 +23,4 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
+
